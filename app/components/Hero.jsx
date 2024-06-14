@@ -2,13 +2,12 @@
 import Image from "next/image";
 import myPic from "../../public/images/me.jpg";
 import Button from "./Button";
-import LottieAnimation from "./LottieAnimation";
-import animationData from "../../public/animations/Animation_graph.json";
+import LottieAnimation from "./LottieAnimationHero";
 
 const Hero = () => {
   return (
     <div className="relative h-full flex flex-col items-center justify-center text-center gap-1 px-[15vw]">
-      <LottieAnimation animationData={animationData} />
+      <LottieAnimation />
       <Image
         src={myPic}
         alt="Hassan EL QADI"
