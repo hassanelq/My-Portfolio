@@ -21,7 +21,7 @@ const LottieAnimation = () => {
           style={{
             width: "125%",
             height: "125%",
-            position: "fixed",
+            position: "absolute",
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
