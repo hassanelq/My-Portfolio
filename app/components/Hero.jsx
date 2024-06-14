@@ -2,7 +2,7 @@
 import Image from "next/image";
 import myPic from "../../public/images/me.jpg";
 import Button from "./Button";
-import LottieAnimation from "./LottieAnimationHero";
+import LottieAnimation from "./LottieAnimation";
 
 const Hero = () => {
   return (
