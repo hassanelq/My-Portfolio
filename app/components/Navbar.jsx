@@ -37,12 +37,12 @@ const Navigation = () => {
       <div className="md:hidden flex justify-end w-full">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="fixed text-white focus:outline-none z-20 opacity-70"
+          className="text-white focus:outline-none z-20 opacity-70 mr-10"
         >
           {isOpen ? (
-            <XIcon className="h-8 w-8" />
+            <XIcon className="fixed h-8 w-8" />
           ) : (
-            <MenuIcon className="h-8 w-8 " />
+            <MenuIcon className="absolute h-8 w-8 " />
           )}
         </button>
       </div>
