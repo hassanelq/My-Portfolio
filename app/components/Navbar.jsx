@@ -25,7 +25,7 @@ const Navigation = () => {
   }, [isOpen]);
 
   return (
-    <div className="fixed z-10 w-full flex items-center justify-between py-8 px-4 md:px-8">
+    <div className="absolute z-10 w-full flex items-center justify-between py-8 px-4 md:px-8">
       <div className="hidden md:flex w-full justify-center">
         <nav className="relative w-fit flex flex-row gap-1.5 p-1 bg-gradient-to-b from-[rgba(255,255,255,0.05)] to-[rgba(255,255,255,0)] bg-[rgba(0,0,0,0.1)] border border-[rgba(255,255,255,0.1)] box-border rounded-full shadow-[0px_1px_1px_rgba(0,0,0,0.04),0px_2px_3px_rgba(0,0,0,0.12),0px_6px_9px_rgba(0,0,0,0.6)]">
           {navItems.map(({ href, label }) => (
