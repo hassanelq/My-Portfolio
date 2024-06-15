@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import animationData from "../../public/animations/Animation_graph.json";
 
 const Lottie = dynamic(() => import("react-lottie-player"), { ssr: false });
 
-const LottieAnimation = () => {
+const LottieAnimation = ({ animationData }) => {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -25,7 +24,7 @@ const LottieAnimation = () => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            zIndex: -1,
+            zIndex: 0,
             opacity: 0.3,
             overflow: "hidden",
           }}
