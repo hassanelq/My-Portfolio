@@ -1,7 +1,7 @@
 "use client";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 
 const Navigation = () => {
@@ -15,14 +15,6 @@ const Navigation = () => {
     { href: "/about", label: "About" },
     { href: "/contact", label: "Contact" },
   ];
-
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-  }, [isOpen]);
 
   return (
     <div className="absolute z-10 w-full flex items-center justify-between py-8 px-4 md:px-8">
@@ -45,12 +37,12 @@ const Navigation = () => {
       <div className="md:hidden flex justify-end w-full">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="text-white focus:outline-none z-20"
+          className="fixed text-white focus:outline-none z-20 opacity-70"
         >
           {isOpen ? (
-            <XIcon className="h-8 w-8 opacity-70" />
+            <XIcon className="h-8 w-8" />
           ) : (
-            <MenuIcon className="h-8 w-8 opacity-70" />
+            <MenuIcon className="h-8 w-8 " />
           )}
         </button>
       </div>
