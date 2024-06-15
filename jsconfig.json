@@ -5,6 +5,6 @@
       "@/*": ["./app/components/*"]
     }
   },
-  "include": ["./**/*.js", "./**/*.jsx", "utils/tracing-beam.jsx"]
-  // "exclude": ["node_modules", "**/*.ts"]
+  "include": ["./**/*.js", "./**/*.jsx"],
+  "exclude": ["node_modules", "**/*.ts"]
 }
