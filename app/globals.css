@@ -15,6 +15,7 @@ body {
   /* Hide scrollbar on all browsers */
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
+  scroll-behavior: smooth;
 }
 
 /* Webkit (Chrome, Safari, Opera) */
