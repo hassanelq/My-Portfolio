@@ -47,7 +47,7 @@ const Footer = () => {
         ))}
       </ul> */}
 
-      <div className="flex items-center justify-center py-8 gap-10">
+      <div className="flex items-center justify-center py-8 gap-10 text-center">
         {socials.map(({ href, label, icon }) => (
           <Link key={label} href={href} target="_blank">
             <Image src={icon} width={30} height={30}></Image>

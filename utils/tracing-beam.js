@@ -43,9 +43,9 @@ const TracingBeam = ({ children, className }) => {
   return (
     <motion.div
       ref={ref}
-      className={`relative w-full max-w-4xl mx-auto h-full ${className}`}
+      className={`relative w-full h-full flex justify-end ${className}`}
     >
-      <div className="absolute w-full flex justify-end">
+      <div className="absolute">
         <svg
           viewBox={`0 0 20 ${svgHeight}`}
           width="20"
