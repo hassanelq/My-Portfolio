@@ -16,19 +16,17 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <Head>
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1.0"
-        ></meta>
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta property="og:image" content="<generated>" />
         <meta property="og:image:type" content="<generated>" />
         <meta property="og:image:width" content="<generated>" />
         <meta property="og:image:height" content="<generated>" />
       </Head>
-      <body className={inter.className}>
+      <body className={`${inter.className} overflow-x-hidden`}>
         <TracingBeam>
           <Navigation />
-          {children}
+          <main className="overflow-x-hidden">{children}</main>
           <Footer />
         </TracingBeam>
       </body>
