@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import emailjs from "@emailjs/browser";
-import Button from "./Button";
 
 export default function Contact() {
   const [inputFields, setInputFields] = useState({
