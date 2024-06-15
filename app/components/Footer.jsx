@@ -47,7 +47,7 @@ const Footer = () => {
         ))}
       </ul> */}
 
-      <div className="flex items-center justify-center py-8 gap-10 text-center">
+      <div className="flex items-center justify-center py-8 gap-10 ">
         {socials.map(({ href, label, icon }) => (
           <Link key={label} href={href} target="_blank">
             <Image src={icon} width={30} height={30}></Image>
@@ -55,7 +55,7 @@ const Footer = () => {
         ))}
       </div>
       <Image src={HE_Logo} width={60} height={60} className="py-8"></Image>
-      <p className="text-[#838383] py-8">
+      <p className="text-[#838383] py-8 text-center">
         All rights reserved. © Copyright Hassan EL QADI 2024
       </p>
     </footer>
