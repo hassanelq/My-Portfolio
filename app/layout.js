@@ -3,6 +3,7 @@ import "./globals.css";
 import Navigation from "./components/Navbar";
 import Footer from "./components/Footer";
 import Head from "next/head";
+import TracingBeam from "../utils/tracing-beam.js";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,9 +26,11 @@ export default function RootLayout({ children }) {
         <meta property="og:image:height" content="<generated>" />
       </Head>
       <body className={inter.className}>
-        <Navigation />
-        {children}
-        <Footer />
+        <TracingBeam>
+          <Navigation />
+          {children}
+          <Footer />
+        </TracingBeam>
       </body>
     </html>
   );
