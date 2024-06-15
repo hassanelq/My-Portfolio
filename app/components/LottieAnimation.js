@@ -17,17 +17,7 @@ const LottieAnimation = ({ animationData }) => {
           loop
           animationData={animationData}
           play
-          style={{
-            width: "125%",
-            height: "125%",
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            zIndex: -3,
-            opacity: 0.3,
-            overflow: "hidden",
-          }}
+          class="w-[300%] h-[300%] sm:h-[150%] sm:w-[150%] md:h-[135%] md:w-[135%] lg:h-[125%] lg:w-[125%] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[-3] opacity-30 overflow-hidden"
         />
       )}
     </>

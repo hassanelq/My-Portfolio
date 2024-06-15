@@ -12,22 +12,22 @@ const Hero = () => {
       <Image
         src={myPic}
         alt="Hassan EL QADI"
-        className="opacity-80 rounded-full w-30 h-30 sm:w-34 sm:h-34 md:w-40 md:h-40 lg:w-48 lg:h-48"
+        className="opacity-80 rounded-full w-30 h-30 sm:w-34 sm:h-34 md:w-40 md:h-40 lg:w-44 lg:h-44"
         width={150}
         height={150}
       />
-      <h1 className="font-medium opacity-95 text-[2.4rem] sm:text-[2.8rem] md:text-[3.3rem] lg:text-[3.8rem] xl:text-[4rem] leading-tight pt-2 sm:pt-4 md:pt-6 lg:pt-8">
+      <h1 className="font-medium opacity-95 text-[2.4rem] sm:text-[2.8rem] md:text-[3.3rem] lg:text-[3.8rem] xl:text-[4rem] leading-tight pt-1 sm:pt-3 md:pt-5 lg:pt-3">
         Hassan EL QADI
       </h1>
-      <h2 className="opacity-85 text-xl sm:text-2xl md:text-3xl lg:text-4xl pt-1">
+      <h2 className="opacity-85 text-xl sm:text-2xl md:text-3xl lg:text-4xl pt-1 lg:py-0">
         Software Developer / Data Scientist
       </h2>
-      <p className="font-light opacity-75 px-4 sm:px-8 md:px-12 lg:px-24 xl:px-[15vw] py-2 sm:py-4 md:py-6 lg:py-8">
+      <p className="font-light opacity-75 px-4 sm:px-8 md:px-12 lg:px-24 xl:px-[15vw] py-2 sm:py-4 md:py-6 lg:py-2">
         Passionate about creating innovative solutions in web development, data
         science, and blockchain technology. Currently pursuing a degree in
         Finance & Decision-Making Engineering at ENSA Agadir.
       </p>
-      <div className="pt-14 sm:pt-12 md:pt-10 lg:pt-[4vh]">
+      <div className="pt-14 sm:pt-12 md:pt-10 lg:py-6">
         <Button text="Get in touch" link="/" />
       </div>
     </div>
