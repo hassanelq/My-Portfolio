@@ -7,7 +7,10 @@ import animationData from "../../public/animations/Animation_graph.json";
 
 const Hero = () => {
   return (
-    <div className="relative h-screen flex flex-col items-center gap-1 sm:gap-0 justify-center text-center pt-[5vh] md:pt-[10vh] lg:pt-[15vh] px-3 sm:px-6 md:px-8 lg:px-[10vw]">
+    <section
+      id="home"
+      className="relative h-screen flex flex-col items-center gap-1 sm:gap-0 justify-center text-center pt-[5vh] md:pt-[10vh] lg:pt-[15vh] px-3 sm:px-6 md:px-8 lg:px-[10vw]"
+    >
       <LottieAnimation animationData={animationData} />
       <Image
         src={myPic}
@@ -28,9 +31,9 @@ const Hero = () => {
         Finance & Decision-Making Engineering at ENSA Agadir.
       </p>
       <div className="pt-14 sm:pt-12 md:pt-10 lg:py-6">
-        <Button text="Get in touch" link="/" />
+        <Button text="Get in touch" link="#contact" />
       </div>
-    </div>
+    </section>
   );
 };
 

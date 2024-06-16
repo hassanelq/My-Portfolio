@@ -9,11 +9,11 @@ const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
-    { href: "/", label: "Home" },
-    { href: "/projects", label: "Projects" },
+    { href: "#home", label: "Home" },
+    { href: "#projects", label: "Projects" },
     { href: "/blog", label: "Blog" },
-    { href: "/about", label: "About" },
-    { href: "/contact", label: "Contact" },
+    { href: "#about", label: "About" },
+    { href: "#contact", label: "Contact" },
   ];
 
   return (
@@ -24,7 +24,7 @@ const Navigation = () => {
             <Link
               key={href}
               href={href}
-              className={`px-[16px] py-[6px] rounded-full ${
+              className={`px-[16px] py-[6px] rounded-full hover:text-[#7a7a7a] ${
                 pathname === href ? "bg-[#D4D4D4] text-black" : "text-[#D4D4D4]"
               }`}
             >

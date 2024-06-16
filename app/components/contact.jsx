@@ -75,86 +75,88 @@ export default function Contact() {
   }, [errors]);
 
   return (
-    <form
-      className="flex flex-col gap-4 w-[90vw] max-w-[600px] mx-auto p-4 sm:w-[80vw] md:w-[60vw] lg:w-[50vw]"
-      onSubmit={handleSubmit}
-    >
-      <div className="text-center text-[2.5rem] sm:text-[2.7rem] md:text-[3rem] font-semibold text-[#d4d4d4]">
-        <span className="font-light opacity-50">Get</span> in Touch.
-      </div>
-      <div className="flex flex-col gap-1">
-        <label
-          htmlFor="name"
-          className="font-light text-lg sm:text-xl bg-clip-text text-transparent bg-gradient-to-r from-gray-400 to-gray-600"
-        >
-          Your Name
-        </label>
-        <input
-          value={inputFields.name}
-          onChange={handleChange}
-          type="text"
-          name="name"
-          id="name"
-          className="py-2 px-4 flex-shrink-0 border-b-1 bg-[var(--background,_#303030)] focus:border-white focus:border-b-2 focus:outline-none rounded-[10px]"
-        />
-        {errors.name && (
-          <span className="text-sm text-gray-400">{errors.name}</span>
-        )}
-      </div>
-
-      <div className="flex flex-col gap-1">
-        <label
-          htmlFor="email"
-          className="font-light text-lg sm:text-xl bg-clip-text text-transparent bg-gradient-to-r from-gray-400 to-gray-600"
-        >
-          Your Email
-        </label>
-        <input
-          value={inputFields.email}
-          onChange={handleChange}
-          type="email"
-          name="email"
-          id="email"
-          className="py-2 px-4 flex-shrink-0 border-b-1 bg-[var(--background,_#303030)] focus:border-white focus:border-b-2 focus:outline-none rounded-[10px]"
-        />
-        {errors.email && (
-          <span className="text-sm text-gray-400">{errors.email}</span>
-        )}
-      </div>
-
-      <div className="flex flex-col gap-1">
-        <label
-          htmlFor="text"
-          className="font-light text-lg sm:text-xl bg-clip-text text-transparent bg-gradient-to-r from-gray-400 to-gray-600"
-        >
-          Your Text
-        </label>
-        <textarea
-          value={inputFields.text}
-          onChange={handleChange}
-          name="text"
-          id="text"
-          cols="40"
-          rows="5"
-          className="py-2 px-4 flex-shrink-0 border-b-1 bg-[var(--background,_#303030)] resize-none focus:border-white focus:border-b-2 focus:outline-none rounded-[10px]"
-        />
-
-        {errors.text && (
-          <span className="text-sm text-gray-400">{errors.text}</span>
-        )}
-      </div>
-
-      <button
-        className="relative w-fit flex justify-center items-center m-auto mt-3 px-5 py-3 text-center text-lg sm:text-xl leading-5 font-medium text-[#d4d4d4] box-border shadow-[0px_1px_1px_rgba(0,0,0,0.04),0px_2px_3px_rgba(0,0,0,0.12),0px_6px_9px_rgba(0,0,0,0.6)] rounded-full bg-gradient-to-b from-[rgba(255,255,255,0.05)] to-[rgba(255,255,255,0)] bg-[rgba(0,0,0,0.1)] border border-[rgba(255,255,255,0.1)]"
-        type="submit"
+    <section id="contact">
+      <form
+        className="flex flex-col gap-4 w-[90vw] max-w-[600px] mx-auto p-4 sm:w-[80vw] md:w-[60vw] lg:w-[50vw]"
+        onSubmit={handleSubmit}
       >
-        Send Message
-      </button>
-      {Object.keys(errors).length === 0 && submitting && (
-        <span className="text-lg font-light bg-clip-text text-transparent bg-gradient-to-r from-gray-400 to-gray-600">
-          Thank you for your message!
-        </span>
-      )}
-    </form>
+        <div className="text-center text-[2.5rem] sm:text-[2.7rem] md:text-[3rem] font-semibold text-[#d4d4d4]">
+          <span className="font-light opacity-50">Get</span> in Touch.
+        </div>
+        <div className="flex flex-col gap-1">
+          <label
+            htmlFor="name"
+            className="font-light text-lg sm:text-xl bg-clip-text text-transparent bg-gradient-to-r from-gray-400 to-gray-600"
+          >
+            Your Name
+          </label>
+          <input
+            value={inputFields.name}
+            onChange={handleChange}
+            type="text"
+            name="name"
+            id="name"
+            className="py-2 px-4 flex-shrink-0 border-b-1 bg-[var(--background,_#303030)] focus:border-white focus:border-b-2 focus:outline-none rounded-[10px]"
+          />
+          {errors.name && (
+            <span className="text-sm text-gray-400">{errors.name}</span>
+          )}
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <label
+            htmlFor="email"
+            className="font-light text-lg sm:text-xl bg-clip-text text-transparent bg-gradient-to-r from-gray-400 to-gray-600"
+          >
+            Your Email
+          </label>
+          <input
+            value={inputFields.email}
+            onChange={handleChange}
+            type="email"
+            name="email"
+            id="email"
+            className="py-2 px-4 flex-shrink-0 border-b-1 bg-[var(--background,_#303030)] focus:border-white focus:border-b-2 focus:outline-none rounded-[10px]"
+          />
+          {errors.email && (
+            <span className="text-sm text-gray-400">{errors.email}</span>
+          )}
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <label
+            htmlFor="text"
+            className="font-light text-lg sm:text-xl bg-clip-text text-transparent bg-gradient-to-r from-gray-400 to-gray-600"
+          >
+            Your Text
+          </label>
+          <textarea
+            value={inputFields.text}
+            onChange={handleChange}
+            name="text"
+            id="text"
+            cols="40"
+            rows="5"
+            className="py-2 px-4 flex-shrink-0 border-b-1 bg-[var(--background,_#303030)] resize-none focus:border-white focus:border-b-2 focus:outline-none rounded-[10px]"
+          />
+
+          {errors.text && (
+            <span className="text-sm text-gray-400">{errors.text}</span>
+          )}
+        </div>
+
+        <button
+          className="relative w-fit flex justify-center items-center m-auto mt-3 px-5 py-3 text-center text-lg sm:text-xl leading-5 font-medium text-[#d4d4d4] box-border shadow-[0px_1px_1px_rgba(0,0,0,0.04),0px_2px_3px_rgba(0,0,0,0.12),0px_6px_9px_rgba(0,0,0,0.6)] rounded-full bg-gradient-to-b from-[rgba(255,255,255,0.05)] to-[rgba(255,255,255,0)] bg-[rgba(0,0,0,0.1)] border border-[rgba(255,255,255,0.1)]"
+          type="submit"
+        >
+          Send Message
+        </button>
+        {Object.keys(errors).length === 0 && submitting && (
+          <span className="text-lg font-light bg-clip-text text-transparent bg-gradient-to-r from-gray-400 to-gray-600">
+            Thank you for your message!
+          </span>
+        )}
+      </form>
+    </section>
   );
 }
