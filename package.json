@@ -11,6 +11,7 @@
   "dependencies": {
     "@emailjs/browser": "^4.3.3",
     "@heroicons/react": "^1.0.6",
+    "@tailwindcss/line-clamp": "^0.4.4",
     "clsx": "^2.1.1",
     "framer-motion": "^11.2.10",
     "lottie-web": "^5.12.2",
