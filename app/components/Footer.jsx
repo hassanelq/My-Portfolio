@@ -60,7 +60,7 @@ const Footer = () => {
       <p className="text-[#838383] py-8 text-center">
         All rights reserved. © Copyright Hassan EL QADI 2024
       </p>
-      <BackToTop className="" />
+      <BackToTop />
     </footer>
   );
 };
