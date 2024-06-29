@@ -26,3 +26,30 @@ body {
 ::-webkit-scrollbar {
   display: none;
 }
+
+.arrow-container:hover .arrow {
+  top: 50%;
+}
+
+.arrow-container:hover .arrow:before {
+  transform: translate(-50%, -50%) rotate(-30deg);
+}
+
+.arrow-container:hover .arrow:after {
+  transform: translate(-50%, -50%) rotate(30deg);
+}
+
+.arrow:nth-child(1) {
+  opacity: 0.3;
+  top: calc(15% + (100% / 5));
+}
+
+.arrow:nth-child(2) {
+  opacity: 0.6;
+  top: calc(15% + (200% / 5));
+}
+
+.arrow:nth-child(3) {
+  opacity: 0.9;
+  top: calc(15% + (300% / 5));
+}

@@ -8,6 +8,8 @@ import icon_github from "../../public/images/sm_icons/icon-github.svg";
 
 import HE_Logo from "../../public/images/HE_Logo.svg";
 
+import BackToTop from "./BackTopArrow";
+
 const Footer = () => {
   const socials = [
     {
@@ -58,6 +60,7 @@ const Footer = () => {
       <p className="text-[#838383] py-8 text-center">
         All rights reserved. © Copyright Hassan EL QADI 2024
       </p>
+      <BackToTop className="" />
     </footer>
   );
 };
