@@ -15,7 +15,7 @@ const About = () => {
       </h2>
       <div className="flex gap-4 w-[100%]">
         <div className="flex justify-center items-center rounded-[32px] border-[0px] bg-[radial-gradient(100%_100%_at_50%_0%,_rgba(255,_255,_255,_0.20)_0%,_rgba(255,_255,_255,_0.02)_100%)] [box-shadow:0px] backdrop-filter">
-          <p className="text-[16px] leading-relaxed text-center p-4 md:p-8 w-[100%] opacity-70 font-regular">
+          <p className="text-[16px] leading-relaxed text-center px-3 py-6 md:p-8 w-[100%] opacity-70 font-regular">
             I'm Hassan El Qadi, in my third year of Finance & Decision-Making
             Engineering at ENSA Agadir, with a keen interest in software
             development. My academic and professional experiences are deeply
