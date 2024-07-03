@@ -9,9 +9,9 @@ const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
-    { href: "#home", label: "Home" },
+    { href: "/", label: "Home" },
     { href: "#projects", label: "Projects" },
-    { href: "/blogs", label: "Blogs" },
+    // { href: "/blogs", label: "Blogs" },
     { href: "#about", label: "About" },
     { href: "#contact", label: "Contact" },
   ];
