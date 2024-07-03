@@ -1,6 +1,5 @@
 import IBMLogo from "../public/images/Logos/IBM_logo.svg";
-import MetaLogo from "../public/images/Logos/Meta_Logo.svg";
-import CourseraLogo from "../public/images/Logos/Coursera-Logo.svg";
+import MetaLogo from "../public/images/Logos/Meta_Logo.png";
 
 const certificates = [
   {

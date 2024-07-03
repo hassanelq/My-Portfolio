@@ -61,9 +61,9 @@ const About = () => {
         <h2 className="text-left pt-[1.5rem] pb-[0.7rem] text-[2.1rem] font-semibold text-transparent !bg-clip-text [background:linear-gradient(90deg,_#d4d4d4,_#797979)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]">
           Certificates
         </h2>
-        <div className="flex flex-col gap-3 w-[100%]">
+        <div className="flex flex-wrap gap-3">
           {certificates.map((certificate, index) => (
-            <CertifCard key={index} certificate={certificate} />
+            <CertifCard key={index} data={certificate} />
           ))}
         </div>
       </div>
