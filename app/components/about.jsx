@@ -35,7 +35,7 @@ const About = () => {
         </div>
       </div>
 
-      <div className="flex gap-4 justify-between">
+      <div className="flex gap-4 justify-between flex-col md:flex-row">
         <div>
           <h2 className="text-left pt-[1.5rem] pb-[0.7rem] text-[2.1rem] font-semibold text-transparent !bg-clip-text [background:linear-gradient(90deg,_#d4d4d4,_#797979)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]">
             Experiences

@@ -1,4 +1,6 @@
 import Image from "next/image";
+import Link from "next/link";
+import credlyLogo from "../../public/images/Logos/credly.png";
 
 const CertifCard = ({ data }) => {
   return (
@@ -18,6 +20,17 @@ const CertifCard = ({ data }) => {
         <p className="text-[14px] lg:text-[16px] py-1 opacity-85 font-light">
           {data.description}
         </p>
+
+        <Link
+          href={data.credentialUrl}
+          target="_blank"
+          className="flex gap-3 items-center py-2 px-4 w-fit rounded-[25px] bg-[radial-gradient(100%_100%_at_50%_0%,_rgba(255,_255,_255,_0.10)_0%,_rgba(255,_255,_255,_0.05)_100%)]"
+        >
+          <Image src={credlyLogo} height={20}></Image>
+          <p className="text-[14px] lg:text-[16px] opacity-65 font-light">
+            Verify in Credly
+          </p>
+        </Link>
       </div>
     </div>
   );

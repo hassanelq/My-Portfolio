@@ -1,5 +1,5 @@
 import IBMLogo from "../public/images/Logos/IBM_logo.svg";
-import MetaLogo from "../public/images/Logos/Meta_Logo.png";
+import MetaLogo from "../public/images/Logos/MetaLogo.png";
 
 const certificates = [
   {
@@ -15,7 +15,7 @@ const certificates = [
     title: "Meta Front-End Developer Professional Certificate",
     Date: "June 7, 2021",
     issuer: "Meta",
-    logo: MetaLogo,
+    IssuerLogo: MetaLogo,
     credentialUrl: "https://www.credly.com/go/FEWi6gnP",
     description:
       "The Meta Front-End Developer Certificate is awarded to learners who complete a series of courses on front-end web development, hosted by Coursera. With a focus on React.js, these rigorous, self-paced courses, developed by Meta experts, prepare a candidate for an entry level job as a front-end developer. The courses culminate in the successful completion of a capstone project.",
