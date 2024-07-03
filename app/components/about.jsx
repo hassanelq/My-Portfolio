@@ -1,8 +1,11 @@
 import Image from "next/image";
 import CertifCard from "./CertifCard";
+import EduExpCard from "./EduExpCard";
 import MeImage from "../../public/images/me.jpg";
 
 import certificates from "../../database/certificates";
+import education from "../../database/education";
+import experiences from "../../database/experiences";
 
 const About = () => {
   return (
@@ -31,10 +34,38 @@ const About = () => {
           ></Image>
         </div>
       </div>
-      <div className="flex gap-4 w-[100%]">
-        {certificates.map((certificate, index) => (
-          <CertifCard key={index} certificate={certificate} />
-        ))}
+
+      <div className="flex gap-4 justify-between">
+        <div>
+          <h2 className="text-left pt-[1.5rem] pb-[0.7rem] text-[2.1rem] font-semibold text-transparent !bg-clip-text [background:linear-gradient(90deg,_#d4d4d4,_#797979)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]">
+            Experiences
+          </h2>
+          <div className="flex flex-col gap-3 w-[100%]">
+            {experiences.map((experience, index) => (
+              <EduExpCard key={index} data={experience} />
+            ))}
+          </div>
+        </div>
+        <div>
+          <h2 className="text-left pt-[1.5rem] pb-[0.7rem] text-[2.1rem] font-semibold text-transparent !bg-clip-text [background:linear-gradient(90deg,_#d4d4d4,_#797979)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]">
+            Education
+          </h2>
+          <div className="flex flex-col gap-3 w-[100%]">
+            {education.map((education, index) => (
+              <EduExpCard key={index} data={education} />
+            ))}
+          </div>
+        </div>
+      </div>
+      <div>
+        <h2 className="text-left pt-[1.5rem] pb-[0.7rem] text-[2.1rem] font-semibold text-transparent !bg-clip-text [background:linear-gradient(90deg,_#d4d4d4,_#797979)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]">
+          Certificates
+        </h2>
+        <div className="flex flex-col gap-3 w-[100%]">
+          {certificates.map((certificate, index) => (
+            <CertifCard key={index} certificate={certificate} />
+          ))}
+        </div>
       </div>
     </section>
   );
