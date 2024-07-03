@@ -4,7 +4,7 @@ import credlyLogo from "../../public/images/Logos/credly.png";
 
 const CertifCard = ({ data }) => {
   return (
-    <div className="flex gap-4 justify-center items-center px-6 py-3 rounded-[32px] border-[0px] bg-[radial-gradient(100%_100%_at_50%_0%,_rgba(255,_255,_255,_0.20)_0%,_rgba(255,_255,_255,_0.02)_100%)] [box-shadow:0px] backdrop-filter">
+    <div className="flex flex-col sm:flex-row gap-4 justify-center items-center px-6 py-3 rounded-[32px] border-[0px] bg-[radial-gradient(100%_100%_at_50%_0%,_rgba(255,_255,_255,_0.20)_0%,_rgba(255,_255,_255,_0.02)_100%)] [box-shadow:0px] backdrop-filter">
       <Image
         src={data.IssuerLogo}
         width={80}
