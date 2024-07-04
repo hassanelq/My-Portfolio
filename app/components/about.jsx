@@ -36,7 +36,7 @@ const About = () => {
     // },
   ];
   return (
-    <section id="about" className="px-[3vw] sm:px-[8vw] py-[2rem]">
+    <section id="about" className="px-[3.6vw] sm:px-[8vw] py-[2rem]">
       <h2 className="text-center py-[2rem] text-[2.7rem] font-semibold text-transparent !bg-clip-text [background:linear-gradient(90deg,_#d4d4d4,_#797979)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]">
         About Me
       </h2>
