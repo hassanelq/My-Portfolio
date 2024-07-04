@@ -7,7 +7,7 @@ const ProjectCard = ({ project }) => {
   return (
     <div className="flex h-fit w-[350px] lg:w-[400px] p-[6px] flex-col items-start gap-[6px] rounded-[32px] border-[0px] bg-[radial-gradient(100%_100%_at_50%_0%,_rgba(255,_255,_255,_0.20)_0%,_rgba(255,_255,_255,_0.02)_100%)] [box-shadow:0px] backdrop-filter">
       <Image src={project.image} className="rounded-[25px]"></Image>
-      <div className="pt-1 pb-3 px-5 w-[100%]">
+      <div className="pt-1 pb-3 px-2 sm:px-5 w-[100%]">
         <h2 className="text-[18px] lg:text-[20px] font-medium">
           {project.title}
         </h2>
