@@ -23,7 +23,7 @@ const Hero = () => {
         Hassan EL QADI
       </h1>
       <h2 className="opacity-85 text-xl sm:text-2xl md:text-3xl lg:text-4xl py-2 lg:py-0">
-        Software Developer / Data Scientist
+        Finance & Decision-Making Engineering Student
       </h2>
       <p className="font-light opacity-75 px-2 sm:px-8 md:px-12 lg:px-24 xl:px-[15vw] py-3 sm:py-4 md:py-6 lg:py-2">
         Passionate about creating innovative solutions in web development, data
