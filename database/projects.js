@@ -12,7 +12,7 @@ const projects = [
       {
         title: "Ensaa.ma - Website for ADE, Clubs, and the ENSA Community",
         description:
-          "A dynamic platform for the ENSA community, providing news updates, information about ADE and clubs, and press releases. Designed with Next.js for a responsive and user-friendly experience.",
+          "A platform for the ENSA community, offering news updates, ADE and club information, and press releases. Built with Next.js for a responsive experience.",
         image: ensaa,
         tags: ["Next.js", "Git", "GitHub", "Figma", "SCSS"],
         githubRepo: "https://github.com/XcodeXcodeX/Ensaa.ma",
@@ -21,7 +21,7 @@ const projects = [
       {
         title: "AMBcheck - NFT Discord Bot and Web App",
         description:
-          "A comprehensive solution for user management in Ordinals communities, combining a Discord bot with a web app. Features include NFT ownership verification, wallet linking, and real-time updates.",
+          "A user management solution for Ordinals communities, featuring NFT ownership verification, wallet linking, and real-time updates.",
         image: ambcheck,
         tags: [
           "Node.js",
@@ -44,7 +44,7 @@ const projects = [
       {
         title: "Clustering Visualization App - Academic Project",
         description:
-          "An interactive app developed with Streamlit to simplify clustering analysis. Supports K-Means and Hierarchical clustering, integrates the Elbow Method, and offers multiple data input methods.",
+          "An app using Streamlit for clustering analysis, supporting K-Means and Hierarchical clustering with the Elbow Method and multiple data input methods.",
         image: clusteringProj,
         tags: ["Streamlit", "Pandas", "NumPy", "Matplotlib"],
         githubRepo:
@@ -60,7 +60,7 @@ const projects = [
       {
         title: "Ordinals Sales Bot - Real-Time Sales Tracking and Alerts",
         description:
-          "A solution for tracking and alerting sales activity within the Ordinals NFT ecosystem. Integrates with Discord and Twitter to provide real-time updates, customizable alerts, and comprehensive sales data.",
+          "Tracks and alerts sales activity within the Ordinals NFT ecosystem, integrating with Discord and Twitter for real-time updates.",
         image: ordinalsBot,
         tags: ["Node.js", "Discord.js", "Twitter API", "Linux Server"],
       },
