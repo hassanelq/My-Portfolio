@@ -15,17 +15,17 @@ const Hero = () => {
       <Image
         src={myPic}
         alt="Hassan EL QADI"
-        className="opacity-80 rounded-full w-30 h-30 sm:w-34 sm:h-34 md:w-40 md:h-40 lg:w-44 lg:h-44"
-        width={150}
-        height={150}
+        className="opacity-80 rounded-full w-30 h-30 sm:w-30 sm:h-30 md:w-34 md:h-34 lg:w-40 lg:h-40"
+        width={120}
+        height={120}
       />
       <h1 className="font-medium opacity-95 text-[2.4rem] sm:text-[2.8rem] md:text-[3.3rem] lg:text-[3.8rem] xl:text-[4rem] leading-tight pt-0 sm:pt-3 md:pt-5 lg:pt-3">
         Hassan EL QADI
       </h1>
-      <h2 className="opacity-85 text-xl sm:text-2xl md:text-3xl lg:text-4xl py-2 lg:py-0">
+      <h2 className="opacity-85 text-xl sm:text-2xl md:text-3xl lg:text-4xl py-1 lg:py-0">
         Finance & Decision-Making Engineering Student
       </h2>
-      <p className="font-light opacity-75 px-2 sm:px-8 md:px-12 lg:px-24 xl:px-[15vw] py-3 sm:py-4 md:py-6 lg:py-2">
+      <p className="font-light opacity-75 px-2 sm:px-8 md:px-12 lg:px-24 xl:px-[15vw] py-2 sm:py-3 md:py-5 lg:py-2">
         Passionate about creating innovative solutions in web development, data
         science, and blockchain technology. Currently pursuing a degree in
         Finance & Decision-Making Engineering at ENSA Agadir.

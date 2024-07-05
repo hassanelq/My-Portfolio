@@ -40,33 +40,35 @@ const Navigation = () => {
           className="text-white focus:outline-none z-20 opacity-70 mr-10"
         >
           {isOpen ? (
-            <XIcon className="fixed h-8 w-8" />
+            <XIcon className="fixed h-8 w-8 transition-transform duration-600 transform rotate-45" />
           ) : (
-            <MenuIcon className="absolute h-8 w-8 " />
+            <MenuIcon className="absolute h-8 w-8 transition-transform duration-600 transform rotate-0" />
           )}
         </button>
       </div>
 
-      {isOpen && (
-        <div className="md:hidden fixed top-0 left-0 w-full h-screen backdrop-blur-lg bg-[rgba(0,0,0,0.8)] border-t border-[rgba(255,255,255,0.1)] shadow-lg flex flex-col items-center justify-center z-10">
-          <nav className="flex flex-col items-center gap-4 py-4">
-            {navItems.map(({ href, label }) => (
-              <Link
-                key={href}
-                href={href}
-                className={`px-[16px] py-[6px] rounded-full ${
-                  pathname === href
-                    ? "bg-[#D4D4D4] text-black"
-                    : "text-[#D4D4D4]"
-                }`}
-                onClick={() => setIsOpen(false)}
-              >
-                <p className="text-[18px] font-medium">{label}</p>
-              </Link>
-            ))}
-          </nav>
-        </div>
-      )}
+      <div
+        className={`md:hidden fixed top-0 left-0 w-full h-screen backdrop-blur-lg transition-all duration-500 ${
+          isOpen
+            ? "opacity-100 bg-[rgba(0,0,0,0.3)]"
+            : "opacity-0 pointer-events-none"
+        } flex flex-col items-center justify-center z-10`}
+      >
+        <nav className="flex flex-col items-center gap-4 py-4">
+          {navItems.map(({ href, label }) => (
+            <Link
+              key={href}
+              href={href}
+              className={`px-[16px] py-[6px] rounded-full ${
+                pathname === href ? "bg-[#D4D4D4] text-black" : "text-[#D4D4D4]"
+              }`}
+              onClick={() => setIsOpen(false)}
+            >
+              <p className="text-[18px] font-medium">{label}</p>
+            </Link>
+          ))}
+        </nav>
+      </div>
     </div>
   );
 };
