@@ -4,4 +4,5 @@ Welcome to my personal portfolio! This website is built with Next.js and Tailwin
 
 ## Contact
 Website: https://elqadi.me
+
 LinkedIn: [Hassan EL QADI](https://www.linkedin.com/in/el-qadi/)
