@@ -1,5 +1,8 @@
 import IBMLogo from "../public/images/Logos/IBM_logo.svg";
 import MetaLogo from "../public/images/Logos/MetaLogo.png";
+import metaBadge from "../public/images/badges/metaBadge.png";
+import AIBadge from "../public/images/badges/AIBadge.png";
+import DataIntroBadge from "../public/images/badges/DataIntroBadge.png";
 
 const certificates = [
   {
@@ -7,6 +10,7 @@ const certificates = [
     Date: "July 03, 2024",
     issuer: "IBM",
     IssuerLogo: IBMLogo,
+    badge: DataIntroBadge,
     credentialUrl:
       "https://www.credly.com/badges/d1e2b779-659d-48ad-8010-9c2e30e96c41/public_url",
     description:
@@ -17,6 +21,7 @@ const certificates = [
     Date: "June 24, 2024",
     issuer: "IBM",
     IssuerLogo: IBMLogo,
+    badge: AIBadge,
     credentialUrl: "https://www.credly.com/go/UPMmU0QQ",
     description:
       "The earner understands AI concepts like NLP, computer vision, machine learning, and AI ethics. They can run AI models using IBM Watson Studio.",
@@ -26,6 +31,7 @@ const certificates = [
     Date: "June 7, 2024",
     issuer: "Meta",
     IssuerLogo: MetaLogo,
+    badge: metaBadge,
     credentialUrl: "https://www.credly.com/go/FEWi6gnP",
     description:
       "This certificate covers front-end web development with React.js, preparing learners for entry-level roles through a series of Coursera courses and a capstone project.",
