@@ -16,8 +16,8 @@ const Hero = () => {
         src={myPic}
         alt="Hassan EL QADI"
         className="opacity-80 rounded-full w-30 h-30 sm:w-30 sm:h-30 md:w-34 md:h-34 lg:w-40 lg:h-40"
-        width={120}
-        height={120}
+        width={200}
+        height={200}
       />
       <h1 className="font-medium opacity-95 text-[2.4rem] sm:text-[2.8rem] md:text-[3.3rem] lg:text-[3.8rem] xl:text-[4rem] leading-tight pt-0 sm:pt-3 md:pt-5 lg:pt-3">
         Hassan EL QADI
