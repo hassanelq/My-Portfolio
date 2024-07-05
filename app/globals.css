@@ -16,6 +16,7 @@ body {
   padding: 0;
   overflow-x: hidden;
   overflow-y: auto;
+
   /* Hide scrollbar on all browsers */
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */

@@ -61,13 +61,8 @@ const Footer = () => {
           </Link>
         ))}
       </div>
-      <Image
-        src={HE_Logo}
-        width={60}
-        height={60}
-        className="py-8"
-        alt="HE Logo"
-      ></Image>
+      <Image src={HE_Logo} height="auto" className="py-8" alt="HE Logo" />
+
       <p className="text-[#838383] py-8 text-center">
         All rights reserved. © Copyright Hassan EL QADI 2024
       </p>

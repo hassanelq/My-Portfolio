@@ -31,11 +31,12 @@ const CertifCard = ({ data }) => {
           >
             <Image
               src={credlyLogo}
-              height={20}
-              width={20}
+              width={25}
+              height="auto"
               className="transition-transform duration-300 hover:scale-110"
               alt="Credly Logo"
-            ></Image>
+              style={{ height: "auto" }}
+            />
             <p className="text-[14px] lg:text-[16px] opacity-65 font-light transition-colors duration-300 hover:text-gray-300">
               Verify in Credly
             </p>
