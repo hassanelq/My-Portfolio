@@ -30,10 +30,15 @@ const ProjectCard = ({ project }) => {
             <Link
               href={project.githubRepo}
               target="_blank"
-              className="flex gap-3 items-center 	mt-2 py-2 px-4 w-fit rounded-[25px] bg-[radial-gradient(100%_100%_at_50%_0%,_rgba(255,_255,_255,_0.10)_0%,_rgba(255,_255,_255,_0.05)_100%)]"
+              className="flex gap-3 items-center mt-2 py-2 px-4 w-fit rounded-[25px] bg-[radial-gradient(100%_100%_at_50%_0%,_rgba(255,_255,_255,_0.10)_0%,_rgba(255,_255,_255,_0.05)_100%)] transition-transform duration-300 ease-in-out hover:scale-105 hover:bg-[rgba(255,255,255,0.2)]"
             >
-              <Image src={githubLogo} height={22}></Image>
-              <p className="text-[14px] lg:text-[15px] opacity-65 font-light">
+              <Image
+                src={githubLogo}
+                height={22}
+                width={22}
+                className="transition-transform duration-300 hover:scale-105"
+              ></Image>
+              <p className="text-[14px] lg:text-[15px] opacity-65 font-light transition-colors duration-300 hover:text-gray-300">
                 Github repo
               </p>
             </Link>
@@ -42,10 +47,15 @@ const ProjectCard = ({ project }) => {
             <Link
               href={project.demo}
               target="_blank"
-              className="flex gap-3 items-center 	mt-2 py-2 px-4 w-fit rounded-[25px] bg-[radial-gradient(100%_100%_at_50%_0%,_rgba(255,_255,_255,_0.10)_0%,_rgba(255,_255,_255,_0.05)_100%)]"
+              className="flex gap-3 items-center mt-2 py-2 px-4 w-fit rounded-[25px] bg-[radial-gradient(100%_100%_at_50%_0%,_rgba(255,_255,_255,_0.10)_0%,_rgba(255,_255,_255,_0.05)_100%)] transition-transform duration-300 ease-in-out hover:scale-105 hover:bg-[rgba(255,255,255,0.2)]"
             >
-              <Image src={DemoIcon} height={25}></Image>
-              <p className="text-[14px] lg:text-[15px] opacity-65 font-light">
+              <Image
+                src={DemoIcon}
+                height={25}
+                width={25}
+                className="transition-transform duration-300 hover:scale-105"
+              ></Image>
+              <p className="text-[14px] lg:text-[15px] opacity-65 font-light transition-colors duration-300 hover:text-gray-300">
                 Demo
               </p>
             </Link>
