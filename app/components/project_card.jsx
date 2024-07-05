@@ -6,7 +6,11 @@ import DemoIcon from "../../public/images/Logos/demo.svg";
 const ProjectCard = ({ project }) => {
   return (
     <div className="flex h-fit mx-2 w-[350px] lg:w-[400px] p-[6px] flex-col items-start gap-[6px] rounded-[32px] bg-[radial-gradient(100%_100%_at_50%_0%,_rgba(255,_255,_255,_0.20)_0%,_rgba(255,_255,_255,_0.02)_100%)] backdrop-filter">
-      <Image src={project.image} className="rounded-[25px]"></Image>
+      <Image
+        src={project.image}
+        className="rounded-[25px]"
+        alt="Project Image"
+      ></Image>
       <div className="pt-1 pb-3 px-3 sm:px-5">
         <h2 className="text-[18px] lg:text-[20px] font-medium">
           {project.title}
@@ -37,6 +41,7 @@ const ProjectCard = ({ project }) => {
                 height={22}
                 width={22}
                 className="transition-transform duration-300 hover:scale-105"
+                alt="Github Logo"
               ></Image>
               <p className="text-[14px] lg:text-[15px] opacity-65 font-light transition-colors duration-300 hover:text-gray-300">
                 Github repo
@@ -54,6 +59,7 @@ const ProjectCard = ({ project }) => {
                 height={25}
                 width={25}
                 className="transition-transform duration-300 hover:scale-105"
+                alt="Demo Icon"
               ></Image>
               <p className="text-[14px] lg:text-[15px] opacity-65 font-light transition-colors duration-300 hover:text-gray-300">
                 Demo

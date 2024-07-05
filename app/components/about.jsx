@@ -54,7 +54,7 @@ const About = () => {
           <div className="md:hidden flex items-center justify-center gap-10 ">
             {socials.map(({ href, label, icon }) => (
               <Link key={label} href={href} target="_blank">
-                <Image src={icon} width={30} height={30}></Image>
+                <Image src={icon} width={30} height={30} alt={label}></Image>
               </Link>
             ))}
           </div>
@@ -62,7 +62,7 @@ const About = () => {
         <div className="hidden md:flex gap-10 w-fit p-12 flex-row md:flex-col items-center justify-center rounded-[32px] bg-[radial-gradient(100%_100%_at_50%_0%,_rgba(255,_255,_255,_0.20)_0%,_rgba(255,_255,_255,_0.02)_100%)] backdrop-filter">
           {socials.map(({ href, label, icon }) => (
             <Link key={label} href={href} target="_blank">
-              <Image src={icon} width={200} height={200}></Image>
+              <Image src={icon} width={200} height={200} alt={label}></Image>
             </Link>
           ))}
         </div>
@@ -72,6 +72,7 @@ const About = () => {
             height={300}
             width={300}
             className="rounded-full"
+            alt="Hassan El Qadi"
           ></Image>
         </div>
       </div>

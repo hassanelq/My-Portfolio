@@ -8,6 +8,7 @@ const CategoryProjects = ({ category }) => {
       <Image
         src={Rectangle}
         className="absolute z-[-3] scale-125 lg:scale-100 px-0 lg:px-12 mt-16 sm:mt-12 md:mt-10 lg:mt-0"
+        alt="Rectangle"
       ></Image>
       <div className="text-center pt-20 w-[89%] opacity-85">
         <h2 className="font-medium text-[2.1rem]">{category.type}</h2>

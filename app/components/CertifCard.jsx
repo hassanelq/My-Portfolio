@@ -10,6 +10,7 @@ const CertifCard = ({ data }) => {
         width={80}
         height={80}
         className="p-2 transition-transform duration-300 hover:scale-110"
+        alt="Issuer Logo"
       ></Image>
       <div className="w-[100%] text-center sm:text-left">
         <h2 className="text-[18px] lg:text-[18px] font-medium transition-colors duration-300 hover:text-gray-300">
@@ -33,6 +34,7 @@ const CertifCard = ({ data }) => {
               height={20}
               width={20}
               className="transition-transform duration-300 hover:scale-110"
+              alt="Credly Logo"
             ></Image>
             <p className="text-[14px] lg:text-[16px] opacity-65 font-light transition-colors duration-300 hover:text-gray-300">
               Verify in Credly
@@ -45,6 +47,7 @@ const CertifCard = ({ data }) => {
         width={140}
         height={140}
         className="pt-4 sm:pt-0 opacity-65 hover:opacity-100 hover:scale-105 transition-transform duration-500 ease-in-out "
+        alt="Certificate Badge"
       ></Image>
     </div>
   );

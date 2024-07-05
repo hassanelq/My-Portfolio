@@ -8,6 +8,7 @@ const EduExpCard = ({ data }) => {
         width={80}
         height={80}
         className="p-0 sm:p-2 scale-75 sm:scale-100"
+        alt="Issuer Logo"
       ></Image>
       <div className="w-[100%]">
         <h2 className="text-[18px] lg:text-[18px] font-medium">{data.title}</h2>
