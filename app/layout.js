@@ -30,8 +30,8 @@ export default function RootLayout({ children }) {
           <main className="overflow-x-hidden">{children}</main>
           <Footer />
         </TracingBeam>
+        <Analytics />
       </body>
-      <Analytics />
     </html>
   );
 }
