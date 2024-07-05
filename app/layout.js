@@ -28,7 +28,10 @@ export default function RootLayout({ children }) {
           property="og:description"
           content="Frontend Developer and Data Scientist with a focus on finance and decision-making."
         />
-        <meta property="og:image" content="/images/social-thumbnail.png" />
+        <meta
+          property="og:image"
+          content="https://elqadi.me/images/social-thumbnail.png"
+        />
         <meta property="og:image:type" content="image/png" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
@@ -43,7 +46,10 @@ export default function RootLayout({ children }) {
           name="twitter:description"
           content="Frontend Developer and Data Scientist with a focus on finance and decision-making."
         />
-        <meta name="twitter:image" content="/images/social-thumbnail.png" />
+        <meta
+          name="twitter:image"
+          content="https://elqadi.me/images/social-thumbnail.png"
+        />
       </Head>
       <body className={`${inter.className} overflow-x-hidden`}>
         <TracingBeam>
