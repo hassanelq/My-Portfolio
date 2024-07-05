@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import Head from "next/head";
 import TracingBeam from "../utils/tracing-beam.js";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,6 +32,7 @@ export default function RootLayout({ children }) {
           <Footer />
         </TracingBeam>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
