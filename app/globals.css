@@ -5,6 +5,9 @@
 * {
   box-sizing: border-box;
 }
+html {
+  position: relative;
+}
 
 body {
   @apply bg-dark text-light;
