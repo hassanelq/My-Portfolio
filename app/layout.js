@@ -11,9 +11,9 @@ import ogImage from "../public/images/social-thumbnail.png";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Hassan EL QADI - Finance & Decision-Making Engineering Student",
+  title: "Hassan EL QADI - Portfolio",
   description:
-    "3rd-year Finance & Decision-Making Engineering student at ENSA Agadir. Passionate about data science, blockchain, and innovative tech.",
+    "Finance & Decision-Making Engineering student. Passionate about data science, AI, and innovative tech.",
 
   openGraph: {
     images: [
@@ -47,19 +47,16 @@ export default function RootLayout({ children }) {
         </title>
         <meta
           name="description"
-          content="3rd-year Finance & Decision-Making Engineering student at ENSA Agadir. Passionate about data science, blockchain, and innovative tech."
+          content="Finance & Decision-Making Engineering student. Passionate about data science, AI, and innovative tech."
         />
 
         {/* Open Graph Meta Tags */}
         <meta property="og:url" content="https://elqadi.me/" />
         <meta property="og:type" content="website" />
-        <meta
-          property="og:title"
-          content="Hassan EL QADI - Finance & Decision-Making Engineering Student"
-        />
+        <meta property="og:title" content="Hassan EL QADI - Portfolio" />
         <meta
           property="og:description"
-          content="3rd-year Finance & Decision-Making Engineering student at ENSA Agadir. Passionate about data science, blockchain, and innovative tech."
+          content="Finance & Decision-Making Engineering student. Passionate about data science, AI, and innovative tech."
         />
         <meta
           property="og:image"
@@ -72,13 +69,10 @@ export default function RootLayout({ children }) {
         <meta name="twitter:card" content="summary_large_image" />
         <meta property="twitter:domain" content="elqadi.me" />
         <meta property="twitter:url" content="https://elqadi.me/" />
-        <meta
-          name="twitter:title"
-          content="Hassan EL QADI - Finance & Decision-Making Engineering Student"
-        />
+        <meta name="twitter:title" content="Hassan EL QADI - Portfolio" />
         <meta
           name="twitter:description"
-          content="3rd-year Finance & Decision-Making Engineering student at ENSA Agadir. Passionate about data science, blockchain, and innovative tech."
+          content="Finance & Decision-Making Engineering student. Passionate about data science, AI, and innovative tech."
         />
         <meta
           name="twitter:image"
