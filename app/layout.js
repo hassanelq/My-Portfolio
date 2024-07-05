@@ -6,6 +6,7 @@ import TracingBeam from "../utils/tracing-beam.js";
 import Head from "next/head";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import ogImage from "../public/images/social-thumbnail.png";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,6 +14,25 @@ export const metadata = {
   title: "Hassan EL QADI - Finance & Decision-Making Engineering Student",
   description:
     "3rd-year Finance & Decision-Making Engineering student at ENSA Agadir. Passionate about data science, blockchain, and innovative tech.",
+
+  openGraph: {
+    images: [
+      {
+        url: ogImage.src,
+        width: ogImage.width,
+        height: ogImage.height,
+      },
+    ],
+  },
+  twitter: {
+    images: [
+      {
+        url: ogImage.src,
+        width: ogImage.width,
+        height: ogImage.height,
+      },
+    ],
+  },
 };
 
 export default function RootLayout({ children }) {
