@@ -2,8 +2,29 @@ import clusteringProj from "../public/images/projects/clusteringProj.png";
 import ordinalsBot from "../public/images/projects/ordinalsBot.jpg";
 import ambcheck from "../public/images/projects/ambcheck.png";
 import ensaa from "../public/images/projects/ensaa.png";
+import proj_houseprice from "../public/images/projects/proj_houseprice.png";
 
 const projects = [
+  {
+    title: "Agadir House Prices Prediction",
+    description:
+      "A tool for estimating real estate prices in Agadir using machine learning. Features real-time price predictions with an advanced Gradient Boosting Regressor model.",
+    image: proj_houseprice,
+    tags: [
+      "Python",
+      "Data Science",
+      "Machine Learning",
+      "Web scraping",
+      "Flask",
+      "Linear Regression",
+      "Web Development",
+      "Docker",
+    ],
+    demo: "https://agadir-house-prices.vercel.app/",
+    githubRepo: "https://github.com/hassanelq/Agadir-House-Prices/",
+    type: "Machine Learning",
+  },
+
   {
     title: "Ensaa.ma - Website for ADE, Clubs, and the ENSA Community",
     description:
