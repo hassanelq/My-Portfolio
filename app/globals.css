@@ -57,3 +57,21 @@ body {
   opacity: 0.9;
   top: calc(15% + (300% / 5));
 }
+
+/* Custom gradient text utility */
+
+.gradient-text {
+  @apply text-transparent bg-clip-text;
+  background: linear-gradient(90deg, #d4d4d4, #797979);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-card {
+  @apply rounded-[32px] backdrop-filter;
+  background: radial-gradient(
+    100% 100% at 50% 0%,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+}

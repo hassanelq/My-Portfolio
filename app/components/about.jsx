@@ -37,11 +37,11 @@ const About = () => {
   ];
   return (
     <section id="about" className="px-[3.6vw] sm:px-[8vw] py-[2rem]">
-      <h2 className="text-left py-[2rem] text-[2.7rem] font-semibold text-transparent !bg-clip-text [background:linear-gradient(90deg,_#d4d4d4,_#797979)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]">
+      <h2 className="text-left py-[2rem] text-[2.7rem] font-semibold gradient-text">
         About Me
       </h2>
       <div className="flex flex-col md:flex-row gap-4 w-[100%]">
-        <div className="flex flex-col items-center justify-center gap-6 px-3 py-6 md:p-8 rounded-[32px] border-[0px] bg-[radial-gradient(100%_100%_at_50%_0%,_rgba(255,_255,_255,_0.20)_0%,_rgba(255,_255,_255,_0.02)_100%)] [box-shadow:0px] backdrop-filter">
+        <div className="flex flex-col items-center justify-center gap-6 px-3 py-6 md:p-8 border-[0px] gradient-card">
           <p className="text-[16px] leading-relaxed text-center opacity-70 font-regular">
             I'm Hassan El Qadi, in my third year of Finance & Decision-Making
             Engineering at ENSA Agadir, with a keen interest in software
@@ -66,7 +66,7 @@ const About = () => {
             </Link>
           ))}
         </div>
-        <div className="hidden lg:flex w-[90%] justify-center items-center px-10 py-6 rounded-[32px] border-[0px] bg-[radial-gradient(100%_100%_at_50%_0%,_rgba(255,_255,_255,_0.20)_0%,_rgba(255,_255,_255,_0.02)_100%)] [box-shadow:0px] backdrop-filter">
+        <div className="hidden lg:flex w-[90%] justify-center items-center px-10 py-6 border-[0px] gradient-card">
           <Image
             src={MeImage}
             height={300}
@@ -79,7 +79,7 @@ const About = () => {
 
       <div className="flex gap-4 justify-between flex-col md:flex-row">
         <div>
-          <h2 className="text-center sm:text-left pt-[1.5rem] pb-[0.7rem] text-[2.1rem] font-semibold text-transparent !bg-clip-text [background:linear-gradient(90deg,_#d4d4d4,_#797979)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]">
+          <h2 className="text-center sm:text-left pt-[1.5rem] pb-[0.7rem] text-[2.1rem] font-semibold gradient-text">
             Experiences
           </h2>
           <div className="flex flex-col gap-3 w-[100%]">
@@ -89,7 +89,7 @@ const About = () => {
           </div>
         </div>
         <div>
-          <h2 className="text-center sm:text-left pt-[1.5rem] pb-[0.7rem] text-[2.1rem] font-semibold text-transparent !bg-clip-text [background:linear-gradient(90deg,_#d4d4d4,_#797979)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]">
+          <h2 className="text-center sm:text-left pt-[1.5rem] pb-[0.7rem] text-[2.1rem] font-semibold gradient-text">
             Education
           </h2>
           <div className="flex flex-col gap-3 w-[100%]">
@@ -100,7 +100,7 @@ const About = () => {
         </div>
       </div>
       <div>
-        <h2 className="text-center sm:text-left pt-[1.5rem] pb-[0.7rem] text-[2.1rem] font-semibold text-transparent !bg-clip-text [background:linear-gradient(90deg,_#d4d4d4,_#797979)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]">
+        <h2 className="text-center sm:text-left pt-[1.5rem] pb-[0.7rem] text-[2.1rem] font-semibold gradient-text">
           Certificates
         </h2>
         <div className="flex flex-wrap gap-3">

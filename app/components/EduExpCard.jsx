@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const EduExpCard = ({ data }) => {
   return (
-    <div className="flex gap-2 sm:gap-4 justify-center items-center px-4 sm:px-6 py-3 rounded-[32px] border-[0px] bg-[radial-gradient(100%_100%_at_50%_0%,_rgba(255,_255,_255,_0.20)_0%,_rgba(255,_255,_255,_0.02)_100%)] [box-shadow:0px] backdrop-filter">
+    <div className="flex gap-2 sm:gap-4 justify-center items-center px-4 sm:px-6 py-3 border-[0px] gradient-card">
       <Image
         src={data.IssuerLogo}
         width={80}

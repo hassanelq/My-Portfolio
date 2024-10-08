@@ -24,7 +24,7 @@ export const metadata = {
       "Finance & Decision-Making Engineering student. Passionate about data science, AI, and innovative tech.",
     images: [
       {
-        url: ogImage.src, // You can directly use the ogImage imported from your public folder
+        url: ogImage.src,
         width: 1200,
         height: 630,
         alt: "A thumbnail of Hassan EL QADI's portfolio",
