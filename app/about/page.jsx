@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import CertifCard from "./CertifCard";
-import EduExpCard from "./EduExpCard";
+import CertifCard from "../components/CertifCard";
+import EduExpCard from "../components/EduExpCard";
 
 import certificates from "../../database/certificates";
 import education from "../../database/education";
@@ -9,10 +9,10 @@ import experiences from "../../database/experiences";
 import socials from "../../database/socials";
 import about from "../../database/about";
 
-const About = () => {
+const AboutPage = () => {
   return (
-    <section id="about" className="px-[3.6vw] sm:px-[8vw] py-[2rem]">
-      <h2 className="text-left py-[2rem] text-[2.7rem] font-semibold gradient-text">
+    <div className="px-[3.6vw]  pt-[15vh] sm:px-[8vw] py-[2rem]">
+      <h2 className="text-left pb-10 text-[2.3rem] sm:text-[2.5rem] md:text-[2.7rem] font-semibold gradient-text">
         About Me
       </h2>
       <div className="flex flex-col md:flex-row gap-4 w-[100%]">
@@ -78,8 +78,8 @@ const About = () => {
           ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 
-export default About;
+export default AboutPage;

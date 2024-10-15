@@ -5,7 +5,7 @@ import DemoIcon from "../../public/images/Logos/demo.svg";
 
 const ProjectCard = ({ project }) => {
   return (
-    <div className="flex h-fit mx-2 w-[350px] lg:w-[400px] p-[6px] flex-col items-start gap-[6px] rounded-[32px] bg-[radial-gradient(100%_100%_at_50%_0%,_rgba(255,_255,_255,_0.20)_0%,_rgba(255,_255,_255,_0.02)_100%)] backdrop-filter">
+    <div className="flex h-fit mx-2 w-[350px] lg:w-[400px] p-[6px] flex-col items-start gap-[6px] gradient-card">
       <Image
         src={project.image}
         className="rounded-[25px]"

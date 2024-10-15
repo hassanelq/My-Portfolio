@@ -1,38 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
 
-import icon_insta from "../../public/images/sm_icons/icon-insta.svg";
-import icon_linkedin from "../../public/images/sm_icons/icon-linkedin.svg";
-import icon_mail from "../../public/images/sm_icons/icon-mail.svg";
-import icon_github from "../../public/images/sm_icons/icon-github.svg";
+import socials from "../../database/socials";
 
 import HE_Logo from "../../public/images/HE_Logo.svg";
 
 import BackToTop from "./BackTopArrow";
 
 const Footer = () => {
-  const socials = [
-    {
-      label: "Linkedin",
-      href: "https://www.linkedin.com/in/el-qadi/",
-      icon: icon_linkedin,
-    },
-    {
-      label: "Github",
-      href: "https://github.com/hassanelq/",
-      icon: icon_github,
-    },
-    {
-      label: "Instagram",
-      href: "https://www.instagram.com/hassan_elq/",
-      icon: icon_insta,
-    },
-    // {
-    //   label: "Email",
-    //   href: "hassanelqadi3@gmail.com",
-    //   icon: icon_mail,
-    // },
-  ];
   const navItems = [
     { href: "/projects", label: "Projects" },
     // { href: "/blog", label: "Blog" },
