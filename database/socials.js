@@ -18,11 +18,6 @@ const socials = [
     href: "https://www.instagram.com/hassan_elq/",
     icon: icon_insta,
   },
-  // {
-  //   label: "Email",
-  //   href: "hassanelqadi3@gmail.com",
-  //   icon: icon_mail,
-  // },
 ];
 
 export default socials;
