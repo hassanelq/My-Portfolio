@@ -36,6 +36,17 @@ const projects = [
     type: "web development",
   },
   {
+    title: "Clustering Visualization App - Academic Project",
+    description:
+      "An app using Streamlit for clustering analysis, supporting K-Means and Hierarchical clustering with the Elbow Method and multiple data input methods.",
+    image: clusteringProj,
+    tags: ["Streamlit", "Pandas", "NumPy", "Matplotlib"],
+    githubRepo:
+      "https://github.com/hassanelq/Kmeans-and-herarchical-Clustering/",
+    demo: "https://kmeans-and-herarchicalc.streamlit.app/",
+    type: "data science",
+  },
+  {
     title: "AMBcheck - NFT Discord Bot and Web App",
     description:
       "A user management solution for Ordinals communities, featuring NFT ownership verification, wallet linking, and real-time updates.",
@@ -52,17 +63,7 @@ const projects = [
     demo: "https://www.ambcheck.com/",
     type: "web development",
   },
-  {
-    title: "Clustering Visualization App - Academic Project",
-    description:
-      "An app using Streamlit for clustering analysis, supporting K-Means and Hierarchical clustering with the Elbow Method and multiple data input methods.",
-    image: clusteringProj,
-    tags: ["Streamlit", "Pandas", "NumPy", "Matplotlib"],
-    githubRepo:
-      "https://github.com/hassanelq/Kmeans-and-herarchical-Clustering/",
-    demo: "https://kmeans-and-herarchicalc.streamlit.app/",
-    type: "data science",
-  },
+
   {
     title: "Ordinals Sales Bot - Real-Time Sales Tracking and Alerts",
     description:
