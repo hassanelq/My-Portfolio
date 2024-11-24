@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import credlyLogo from "../../public/images/Logos/credly.png";
+import credlyLogo from "../../../public/images/Logos/credly.png";
 
 const CertifCard = ({ data }) => {
   return (

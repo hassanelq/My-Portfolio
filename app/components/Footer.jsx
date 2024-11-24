@@ -5,7 +5,7 @@ import socials from "../../database/socials";
 
 import HE_Logo from "../../public/images/HE_Logo.svg";
 
-import BackToTop from "./BackTopArrow";
+import BackToTop from "./Utils/BackTopArrow";
 
 const Footer = () => {
   const navItems = [

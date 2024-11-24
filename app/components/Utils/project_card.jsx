@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import githubLogo from "../../public/images/Logos/github.png";
-import DemoIcon from "../../public/images/Logos/demo.svg";
+import githubLogo from "../../../public/images/Logos/github.png";
+import DemoIcon from "../../../public/images/Logos/demo.svg";
 
 const ProjectCard = ({ project }) => {
   return (

@@ -1,5 +1,5 @@
-import ProjectCard from "./project_card";
-import Rectangle from "../../public/images/Rectangle.svg";
+import ProjectCard from "./Utils/project_card";
+import Rectangle from "../../../public/images/Rectangle.svg";
 import Image from "next/image";
 
 const CategoryProjects = ({ category }) => {

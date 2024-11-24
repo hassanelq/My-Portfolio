@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import CertifCard from "./CertifCard";
-import EduExpCard from "./EduExpCard";
+import CertifCard from "./Utils/CertifCard";
+import EduExpCard from "./Utils/EduExpCard";
 
 import certificates from "../../database/certificates";
 import education from "../../database/education";

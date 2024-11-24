@@ -77,7 +77,7 @@ export default function ContactPage() {
   return (
     <div className="w-screen pt-[15vh]">
       <form
-        className="flex flex-col gap-4 w-[90vw] max-w-[600px] mx-auto p-4 sm:w-[80vw] md:w-[60vw] lg:w-[50vw]"
+        className="flex h-auto flex-col gap-4 w-[90vw] max-w-[600px] mx-auto p-4 sm:w-[80vw] md:w-[60vw] lg:w-[50vw]"
         onSubmit={handleSubmit}
       >
         <div className="text-center text-[2.5rem] sm:text-[2.7rem] md:text-[3rem] font-semibold text-[#d4d4d4]">

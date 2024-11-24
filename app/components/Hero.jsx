@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
-import Button from "./Button";
-import LottieAnimation from "./LottieAnimation";
+import Button from "./Utils/Button";
+import LottieAnimation from "./Utils/LottieAnimation";
 import animationData from "../../public/animations/Animation_graph.json";
 import about from "../../database/about";
 
