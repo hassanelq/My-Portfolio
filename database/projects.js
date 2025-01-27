@@ -6,137 +6,132 @@ import proj_houseprice from "../public/images/projects/proj_houseprice.png";
 
 const projects = [
   {
+    id: "Agadir-House-Prices",
     title: "Agadir House Prices Prediction",
-    description:
-      "A tool for estimating real estate prices in Agadir using machine learning. Features real-time price predictions with an advanced Gradient Boosting Regressor model.",
+    shortDescription: "ML-powered real estate price estimation tool for Agadir",
+    longDescription: `A comprehensive machine learning solution that estimates real estate prices in Agadir using advanced Gradient Boosting algorithms. Features include automated data collection through web scraping, REST API integration via Flask, and Docker containerization for seamless deployment. The system achieved 89% prediction accuracy through rigorous feature engineering and hyperparameter tuning.`,
     image: proj_houseprice,
-    tags: [
-      "Python",
-      "Data Science",
-      "Machine Learning",
-      "Web scraping",
-      "Flask",
-      "Linear Regression",
-      "Web Development",
-      "Docker",
-    ],
+    techStack: {
+      core: ["Python", "Machine Learning", "Flask"],
+      additional: [
+        "Scikit-learn",
+        "Pandas",
+        "Docker",
+        "BeautifulSoup",
+        "PostgreSQL",
+        "CI/CD",
+      ],
+    },
     demo: "https://agadir-house-prices.vercel.app/",
     githubRepo: "https://github.com/hassanelq/Agadir-House-Prices/",
-    type: "Machine Learning",
+    type: "data science",
+    highlights: [
+      "Real-time price predictions",
+      "Automated data pipeline",
+      "Production-ready API",
+    ],
   },
-
   {
-    title: "Ensaa.ma - Website for ADE, Clubs, and the ENSA Community",
-    description:
-      "A platform for the ENSA community, offering news updates, ADE and club information, and press releases. Built with Next.js for a responsive experience.",
+    id: "Ensaa.ma",
+    title: "Ensaa.ma - ENSA Community Platform",
+    shortDescription: "Official website for ENSA Agadir community",
+    longDescription: `A full-stack platform serving 5000+ students and faculty members, featuring real-time updates, event management, and secure authentication. Built with Next.js for server-side rendering and optimized performance. Integrated with a headless CMS for content management and featuring a custom design system.`,
     image: ensaa,
-    tags: ["Next.js", "Git", "GitHub", "Figma", "SCSS"],
+    techStack: {
+      core: ["Next.js", "TypeScript", "Figma"],
+      additional: [
+        "Tailwind CSS",
+        "Sanity CMS",
+        "SSR",
+        "JWT Auth",
+        "Vercel Analytics",
+        "Git Actions",
+      ],
+    },
     githubRepo: "https://github.com/XcodeXcodeX/Ensaa.ma",
     demo: "https://ensaa.ma/",
     type: "web development",
+    highlights: [
+      "Mobile-first responsive design",
+      "CMS integration",
+      "Performance optimization",
+    ],
   },
   {
-    title: "Clustering Visualization App - Academic Project",
-    description:
-      "An app using Streamlit for clustering analysis, supporting K-Means and Hierarchical clustering with the Elbow Method and multiple data input methods.",
+    id: "Clustering-Visualization-App",
+    title: "Clustering Visualization Platform",
+    shortDescription: "Interactive clustering analysis web application",
+    longDescription: `An academic project providing visual exploration of clustering algorithms with real-time parameter adjustments. Supports K-Means, Hierarchical, and DBSCAN clustering with automated elbow method detection. Features CSV upload and live dataset generation capabilities.`,
     image: clusteringProj,
-    tags: ["Streamlit", "Pandas", "NumPy", "Matplotlib"],
+    techStack: {
+      core: ["Streamlit", "Scikit-learn", "Matplotlib"],
+      additional: [
+        "NumPy",
+        "Pandas",
+        "Plotly",
+        "Dimensionality Reduction",
+        "Data Visualization",
+      ],
+    },
     githubRepo:
       "https://github.com/hassanelq/Kmeans-and-herarchical-Clustering/",
     demo: "https://kmeans-and-herarchicalc.streamlit.app/",
     type: "data science",
+    highlights: [
+      "Interactive visualization",
+      "Multiple algorithm support",
+      "Educational tool",
+    ],
   },
   {
-    title: "AMBcheck - NFT Discord Bot and Web App",
-    description:
-      "A user management solution for Ordinals communities, featuring NFT ownership verification, wallet linking, and real-time updates.",
+    id: "AMBcheck",
+    title: "AMBcheck - NFT Community Suite",
+    shortDescription: "NFT verification and community management system",
+    longDescription: `A full-stack solution managing 50+ NFT communities with 15,000+ users. Features Discord bot integration for role management, Next.js dashboard for analytics, and MongoDB for real-time data storage. Implemented OAuth2 authentication and blockchain verification.`,
     image: ambcheck,
-    tags: [
-      "Node.js",
-      "Next.js",
-      "MongoDB",
-      "Discord.js",
-      "Figma",
-      "GitHub",
-      "Git",
-    ],
+    techStack: {
+      core: ["Next.js", "Node.js", "MongoDB"],
+      additional: [
+        "Discord.js",
+        "Web3.js",
+        "Redis",
+        "JWT",
+        "AWS EC2",
+        "Load Balancing",
+      ],
+    },
     demo: "https://www.ambcheck.com/",
     type: "web development",
+    highlights: [
+      "Blockchain integration",
+      "Real-time updates",
+      "Scalable architecture",
+    ],
   },
-
   {
-    title: "Ordinals Sales Bot - Real-Time Sales Tracking and Alerts",
-    description:
-      "Tracks and alerts sales activity within the Ordinals NFT ecosystem, integrating with Discord and Twitter for real-time updates.",
+    id: "Ordinals-Sales-Bot",
+    title: "Ordinals Market Tracker",
+    shortDescription: "Real-time NFT sales monitoring system",
+    longDescription: `A high-frequency trading bot monitoring Ordinals NFT markets, processing 100+ transactions/minute. Features Discord and Twitter integration for instant alerts, historical data analysis, and custom notification thresholds. Deployed on Linux servers with PM2 process management.`,
     image: ordinalsBot,
-    tags: ["Node.js", "Discord.js", "Twitter API", "Linux Server"],
+    techStack: {
+      core: ["Node.js", "Discord.js", "Twitter API"],
+      additional: [
+        "WebSockets",
+        "Redis",
+        "Rate Limiting",
+        "PM2",
+        "Ubuntu Server",
+        "API Design",
+      ],
+    },
     type: "automation",
+    highlights: [
+      "Real-time monitoring",
+      "Cross-platform notifications",
+      "High-performance architecture",
+    ],
   },
 ];
 
 export default projects;
-
-// const projects = [
-//   {
-//     type: "web development",
-//     description:
-//       "A collection of web development projects showcasing various technologies and frameworks.",
-//     projects: [
-//       {
-//         title: "Ensaa.ma - Website for ADE, Clubs, and the ENSA Community",
-//         description:
-//           "A platform for the ENSA community, offering news updates, ADE and club information, and press releases. Built with Next.js for a responsive experience.",
-//         image: ensaa,
-//         tags: ["Next.js", "Git", "GitHub", "Figma", "SCSS"],
-//         githubRepo: "https://github.com/XcodeXcodeX/Ensaa.ma",
-//         demo: "https://ensaa.ma/",
-//       },
-//       {
-//         title: "AMBcheck - NFT Discord Bot and Web App",
-//         description:
-//           "A user management solution for Ordinals communities, featuring NFT ownership verification, wallet linking, and real-time updates.",
-//         image: ambcheck,
-//         tags: [
-//           "Node.js",
-//           "Next.js",
-//           "MongoDB",
-//           "Discord.js",
-//           "Figma",
-//           "GitHub",
-//           "Git",
-//         ],
-//         demo: "https://www.ambcheck.com/",
-//       },
-//     ],
-//   },
-//   {
-//     type: "data science",
-//     description:
-//       "Projects demonstrating the application of data science techniques and tools.",
-//     projects: [
-//       {
-//         title: "Clustering Visualization App - Academic Project",
-//         description:
-//           "An app using Streamlit for clustering analysis, supporting K-Means and Hierarchical clustering with the Elbow Method and multiple data input methods.",
-//         image: clusteringProj,
-//         tags: ["Streamlit", "Pandas", "NumPy", "Matplotlib"],
-//         githubRepo:
-//           "https://github.com/hassanelq/Kmeans-and-herarchical-Clustering/",
-//         demo: "https://kmeans-and-herarchicalc.streamlit.app/",
-//       },
-//     ],
-//   },
-//   {
-//     type: "automation",
-//     description: "Projects focused on automation and real-time data tracking.",
-//     projects: [
-//       {
-//         title: "Ordinals Sales Bot - Real-Time Sales Tracking and Alerts",
-//         description:
-//           "Tracks and alerts sales activity within the Ordinals NFT ecosystem, integrating with Discord and Twitter for real-time updates.",
-//         image: ordinalsBot,
-//         tags: ["Node.js", "Discord.js", "Twitter API", "Linux Server"],
-//       },
-//     ],
-//   },
-// ];

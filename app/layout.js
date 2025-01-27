@@ -2,7 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Footer from "./components/Footer";
 import Navigation from "./components/Navbar";
-import TracingBeam from "../utils/tracing-beam.js";
+// import TracingBeam from "../utils/tracing-beam.js";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import ogImage from "../public/images/social-thumbnail.png";
@@ -57,11 +57,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${inter.className} overflow-x-hidden`}>
-        <TracingBeam>
-          <Navigation />
-          <main className="overflow-x-hidden">{children}</main>
-          <Footer />
-        </TracingBeam>
+        {/* <TracingBeam> */}
+        <Navigation />
+        <main className="overflow-x-hidden">{children}</main>
+        <Footer />
+        {/* </TracingBeam> */}
         <SpeedInsights />
         <Analytics />
       </body>

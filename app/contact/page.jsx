@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import emailjs from "@emailjs/browser";
+require("dotenv").config();
 
 export default function ContactPage() {
   const [inputFields, setInputFields] = useState({
@@ -46,9 +47,9 @@ export default function ContactPage() {
   };
 
   const finishSubmit = () => {
-    const serviceId = "service_9ao0c7q";
-    const templateId = "template_424gvax";
-    const publicKey = "WHXSC293BF4cSeWRf";
+    const serviceId = process.env.EMAILJS_SERVICE_ID;
+    const templateId = process.env.EMAILJS_TEMPLATE_ID;
+    const publicKey = process.env.EMAILJS_PUBLIC_KEY;
 
     const templateParams = {
       from_name: name,

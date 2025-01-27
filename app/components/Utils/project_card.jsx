@@ -17,10 +17,10 @@ const ProjectCard = ({ project }) => {
         </h2>
         <p className="text-[14px] lg:text-[16px] pt-1 mb-2 opacity-65 font-light ">
           {/* line-clamp-3 */}
-          {project.description}
+          {project.shortDescription}
         </p>
         <div className="flex flex-wrap gap-1">
-          {project.tags.map((tag, index) => (
+          {project.techStack.core.map((tag, index) => (
             <span
               key={index}
               className="bg-[#f5f5f594] rounded-[10px] px-[10px] py-[5px] text-[black] text-[12px] lg:text-[14px] font-medium"

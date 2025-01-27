@@ -5,11 +5,11 @@ import About from "./components/about";
 
 export default function Home() {
   return (
-    <div>
+    <main>
       <Hero />
       <Projects />
       <About />
       <Contact />
-    </div>
+    </main>
   );
 }

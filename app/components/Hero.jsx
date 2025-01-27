@@ -9,15 +9,19 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="relative h-screen flex flex-col items-center gap-1 sm:gap-0 justify-center text-center pt-[5vh] md:pt-[10vh] lg:pt-[15vh] px-3 sm:px-6 md:px-8 lg:px-[10vw]"
+      className="relative h-screen flex flex-col items-center justify-center text-center px-[4vw] pt-[10vh]"
     >
-      <LottieAnimation animationData={animationData} />
+      <LottieAnimation
+        animationData={animationData}
+        className="w-full max-w-[800px]"
+      />
       <Image
         src={about.meImage}
         alt="Hassan EL QADI"
-        className="opacity-80 rounded-full w-30 h-30 sm:w-30 sm:h-30 md:w-34 md:h-34 lg:w-40 lg:h-40"
-        width={200}
-        height={200}
+        className="opacity-80 rounded-full w-32 h-32 md:w-40 md:h-40"
+        width={160}
+        height={160}
+        priority
       />
       <h1 className="font-medium opacity-95 text-[2.4rem] sm:text-[2.8rem] md:text-[3.3rem] lg:text-[3.8rem] xl:text-[4rem] leading-tight pt-0 sm:pt-3 md:pt-5 lg:pt-3">
         {about.name}
