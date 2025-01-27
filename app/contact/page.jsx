@@ -154,7 +154,7 @@ export default function ContactPage() {
         </button>
 
         {Object.keys(errors).length === 0 && submitting && (
-          <span className="text-lg font-light bg-clip-text text-transparent bg-gradient-to-r from-gray-400 to-gray-600">
+          <span className="text-lg text-center font-light bg-clip-text text-transparent bg-gradient-to-r from-gray-400 to-gray-600">
             Thank you for your message!
           </span>
         )}
