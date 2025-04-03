@@ -13,7 +13,7 @@ const projects = [
     longDescription: `A full-stack web application that performs real-time sentiment analysis of stocks using Reddit, Twitter, and FinViz data. Built with FastAPI and Next.js, it scrapes recent news and social media posts, processes them using FinBERT transformer models, and predicts if a stock is likely to go UP or DOWN. Features rich data visualizations, platform selection, and adjustable analysis timeframe.`,
     image: sentimentApp,
     techStack: {
-      core: ["FastAPI", "Next.js", "Tailwind CSS"],
+      core: ["FastAPI", "Next.js", "scikit-learn", "Twikit"],
       additional: [
         "BeautifulSoup",
         "AsyncPRAW",
