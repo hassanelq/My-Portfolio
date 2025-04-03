@@ -3,8 +3,37 @@ import ordinalsBot from "../public/images/projects/ordinalsBot.jpg";
 import ambcheck from "../public/images/projects/ambcheck.png";
 import ensaa from "../public/images/projects/ensaa.png";
 import proj_houseprice from "../public/images/projects/proj_houseprice.png";
+import sentimentApp from "../public/images/projects/sentimentApp.png";
 
 const projects = [
+  {
+    id: "Stock-Sentiment-Analyzer",
+    title: "Stock Sentiment Analysis & Prediction App",
+    shortDescription: "Multi-source sentiment analysis with stock prediction",
+    longDescription: `A full-stack web application that performs real-time sentiment analysis of stocks using Reddit, Twitter, and FinViz data. Built with FastAPI and Next.js, it scrapes recent news and social media posts, processes them using FinBERT transformer models, and predicts if a stock is likely to go UP or DOWN. Features rich data visualizations, platform selection, and adjustable analysis timeframe.`,
+    image: sentimentApp,
+    techStack: {
+      core: ["FastAPI", "Next.js", "Tailwind CSS"],
+      additional: [
+        "BeautifulSoup",
+        "AsyncPRAW",
+        "Twikit",
+        "HuggingFace Transformers",
+        "PyTorch",
+        "Chart.js",
+        "Pandas",
+        "scikit-learn",
+      ],
+    },
+    githubRepo: "https://github.com/hassanelq/Stocks-sentiment-analysis",
+    demo: "https://stocks-sentiment-analysis0.vercel.app/",
+    type: "data science",
+    highlights: [
+      "Multi-platform scraping support",
+      "Transformer-based sentiment prediction",
+      "Interactive visualizations (charts & breakdowns)",
+    ],
+  },
   {
     id: "Agadir-House-Prices",
     title: "Agadir House Prices Prediction",
