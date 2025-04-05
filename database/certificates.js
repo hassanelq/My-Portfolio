@@ -15,7 +15,7 @@ const certificates = [
     IssuerLogo: ForageLogo,
     badge: JPMorganLogo,
     credentialUrl:
-      "https://forage-uploads-prod.s3.amazonaws.com/completion-certificates/Sj7temL583QAYpHXD/bWqaecPDbYAwSDqJy_Sj7temL583QAYpHXD_Mgtg87a49sG6jWBMG_1743875264410_completion_certificate.pdf",
+      "https://forage-uploads-prod.s3.amazonaws.com/completion-certificates/Sj7temL583QAYpHXD/bWqaecPDbYAwSDqJy_Sj7temL583QAYpHXD_Mgtg87a49sG6jWBMG_1743877054269_completion_certificate.pdf",
     description:
       "This program provided a simulation of the quantitative research process, where I analyzed a book of loans to estimate a customer's probability of default. I also applied dynamic programming techniques to convert FICO scores into categorical data for predicting defaults.",
   },
