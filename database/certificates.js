@@ -3,8 +3,22 @@ import MetaLogo from "../public/images/Logos/MetaLogo.png";
 import metaBadge from "../public/images/badges/metaBadge.png";
 import AIBadge from "../public/images/badges/AIBadge.png";
 import DataIntroBadge from "../public/images/badges/DataIntroBadge.png";
+import JPMorganLogo from "../public/images/Logos/JP-Morgan-Chase-Logo.svg";
+import ForageLogo from "../public/images/Logos/ForageLogo.png";
 
 const certificates = [
+  {
+    title:
+      "JPMorgan Chase & Co. Quantitative Research Virtual Experience Program",
+    Date: "April 2025",
+    issuer: "JPMorgan Chase & Co.",
+    IssuerLogo: ForageLogo,
+    badge: JPMorganLogo,
+    credentialUrl:
+      "https://forage-uploads-prod.s3.amazonaws.com/completion-certificates/Sj7temL583QAYpHXD/bWqaecPDbYAwSDqJy_Sj7temL583QAYpHXD_Mgtg87a49sG6jWBMG_1743875264410_completion_certificate.pdf",
+    description:
+      "This program provided a simulation of the quantitative research process, where I analyzed a book of loans to estimate a customer's probability of default. I also applied dynamic programming techniques to convert FICO scores into categorical data for predicting defaults.",
+  },
   {
     title: "Data Science Orientation",
     Date: "July 03, 2024",
