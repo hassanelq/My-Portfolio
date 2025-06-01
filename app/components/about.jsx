@@ -6,6 +6,7 @@ import EduExpCard from "./Utils/EduExpCard";
 import certificates from "../../database/certificates";
 import education from "../../database/education";
 import experiences from "../../database/experiences";
+import proExpriences from "../../database/proExpriences";
 import socials from "../../database/socials";
 import about from "../../database/about";
 
@@ -46,24 +47,32 @@ const About = () => {
         </div>
       </div>
 
-      <div className="flex gap-4 justify-between flex-col md:flex-row">
+      <div className="flex gap-6 justify-between flex-col md:flex-row">
         <div>
           <h2 className="text-center sm:text-left pt-[1.5rem] pb-[0.7rem] text-[2.1rem] font-semibold gradient-text">
-            Experiences
+            Professional Experience
           </h2>
           <div className="flex flex-col gap-3 w-[100%]">
-            {experiences.map((experience, index) => (
-              <EduExpCard key={index} data={experience} />
+            {proExpriences.map((item, index) => (
+              <EduExpCard key={index} data={item} />
             ))}
           </div>
-        </div>
-        <div>
           <h2 className="text-center sm:text-left pt-[1.5rem] pb-[0.7rem] text-[2.1rem] font-semibold gradient-text">
             Education
           </h2>
           <div className="flex flex-col gap-3 w-[100%]">
             {education.map((education, index) => (
               <EduExpCard key={index} data={education} />
+            ))}
+          </div>
+        </div>
+        <div>
+          <h2 className="text-center sm:text-left pt-[1.5rem] pb-[0.7rem] text-[2.1rem] font-semibold gradient-text">
+            Leadership & Volunteering
+          </h2>
+          <div className="flex flex-col gap-3 w-[100%]">
+            {experiences.map((experience, index) => (
+              <EduExpCard key={index} data={experience} />
             ))}
           </div>
         </div>

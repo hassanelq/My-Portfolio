@@ -5,7 +5,7 @@ const about = {
   tag: "Finance & Decision-Making Engineering Student",
   meImage: MeImage,
   description:
-    "I'm Hassan El Qadi, a fourth-year Finance & Decision-Making Engineering student at ENSA Agadir with a passion for Quantitative Finance and software development. My journey blends advanced financial analytics with cutting-edge technologies, allowing me to dive into the realms of data science and algorithmic trading. With a constant drive to solve complex problems, I'm building a future powered by finance and technology. Join me in exploring the world of quantitative strategies and transformative solutions!",
+    "I'm a final-year Finance & Decision-Making Engineering student at ENSA Agadir, specializing in quantitative finance, financial modeling, and data-driven decision-making. Passionate about algorithmic problem-solving, I’ve built simulation tools, developed full-stack web applications, and worked on projects involving stochastic processes, deep learning, and option pricing models. With solid skills in Python, machine learning, and mathematical modeling, I’m currently seeking a final-year internship to contribute to real-world challenges in market finance, quantitative research, or risk management.",
   descriptionShort:
     "Passionate about quantitative finance, software development, and data science. Currently pursuing a degree in Finance & Decision-Making Engineering at ENSA Agadir.",
 };

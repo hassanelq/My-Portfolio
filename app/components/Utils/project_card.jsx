@@ -6,11 +6,14 @@ import DemoIcon from "../../../public/images/Logos/demo.svg";
 const ProjectCard = ({ project }) => {
   return (
     <div className="flex h-fit mx-2 w-[350px] lg:w-[400px] p-[6px] flex-col items-start gap-[6px] gradient-card">
-      <Image
-        src={project.image}
-        className="rounded-[25px]"
-        alt="Project Image"
-      ></Image>
+      <Link href={`/projects/${project.id}`}>
+        <Image
+          src={project.image}
+          className="rounded-[25px]"
+          alt="Project Image"
+        ></Image>
+      </Link>
+
       <div className="pt-1 pb-3 px-3 sm:px-5">
         <h2 className="text-[18px] lg:text-[20px] font-medium">
           {project.title}

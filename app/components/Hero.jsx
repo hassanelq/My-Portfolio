@@ -32,8 +32,9 @@ const Hero = () => {
       <p className="font-light opacity-75 px-2 sm:px-8 md:px-12 lg:px-24 xl:px-[15vw] py-2 sm:py-3 md:py-5 lg:py-2">
         {about.descriptionShort}
       </p>
-      <div className="pt-14 sm:pt-12 md:pt-10 lg:py-6">
+      <div className="pt-14 sm:pt-12 md:pt-10 lg:py-6 flex gap-4">
         <Button text="Get in touch" link="#contact" />
+        <Button text="View CV" link="/CV_Hassan.pdf" newTab />
       </div>
     </section>
   );
