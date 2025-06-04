@@ -167,7 +167,7 @@ const projects = [
       ],
     },
     githubRepo: "https://github.com/XcodeXcodeX/Ensaa.ma",
-    demo: "https://ensaa.ma/",
+    demo: "https://ensaa-sissan.vercel.app/",
     type: "web development",
     highlights: [
       "Mobile-first responsive design",
@@ -219,7 +219,7 @@ const projects = [
         "Load Balancing",
       ],
     },
-    demo: "https://www.ambcheck.com/",
+    demo: "https://bitcheck.vercel.app/",
     type: "web development",
     highlights: [
       "Blockchain integration",
