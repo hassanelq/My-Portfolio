@@ -44,3 +44,5 @@ See [`docs/README.md`](docs/README.md) for design/specifications and [`docs/DATA
 Import the repository, select Next.js, use `npm ci` and `npm run build`, and select Node.js 22. No database, secrets, or API keys are required. Set the final canonical domain in `content/site.ts`. Vercel Analytics and Speed Insights load in production; their dashboards can be enabled in the Vercel project.
 
 Production publishing and account/domain setup are separate from the local implementation.
+
+If a restricted development environment blocks Turbopack’s internal CSS-worker port, `npm run build -- --webpack` uses Next.js’s supported alternate compiler. The final local verification used that production build.

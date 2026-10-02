@@ -357,3 +357,8 @@ primary action: no distinct CTA color
   --radius-full: 99px;
 }
 ```
+
+
+## Implemented readability adjustment
+
+The owner requested larger typography after the first preview. Body text is now 18px by default; most copy and navigation increased by 2px, small annotations have a 10px minimum, and display headings increased modestly. Mobile buttons wrap and the header prioritizes the name and menu to preserve readable text.

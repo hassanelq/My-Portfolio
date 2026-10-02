@@ -54,7 +54,7 @@ function CanvasPaths({ result }: { result: SimulationResult }) {
       );
       ctx.stroke();
       ctx.fillStyle = "#8d8d8d";
-      ctx.font = "10px monospace";
+      ctx.font = "12px monospace";
       ctx.fillText("START", left, height - 6);
       ctx.textAlign = "right";
       ctx.fillText("TERMINAL", width - 10, height - 6);

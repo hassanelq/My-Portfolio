@@ -106,3 +106,13 @@ The global navigation covers all six routes. About and contact become sections o
 - Substack publication URL and article metadata when the first posts are published.
 
 These inputs do not block building the shared design, home page, projects structure, lab, arcade mechanics, or the articles empty state.
+
+
+## Local verification
+
+- Six routes implemented; responsive smoke checks cover desktop, tablet, and mobile.
+- 16 benchmark and edge-case calculation tests.
+- 9 browser flows cover routes, CV languages, redirects, mobile navigation, filters, lab updates, DCA and arcade scoring.
+- TypeScript and ESLint checks. Production compilation verified with Next.js Webpack after the local sandbox blocked Turbopack’s internal CSS-worker port.
+- Typography enlarged following the owner’s preview feedback.
+- Owner still controls the final content review and publishing. No production deployment was performed.

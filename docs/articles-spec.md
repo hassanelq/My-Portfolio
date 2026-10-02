@@ -30,7 +30,7 @@ Each article goes to its canonical Substack URL. The portfolio index does not du
 
 ## Content Data
 
-Keep the index content separate from presentation in `data/articles-data.ts`:
+Keep the index content separate from presentation in `content/articles.ts`:
 
 ```typescript
 export interface Article {

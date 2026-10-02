@@ -129,7 +129,7 @@ export function DotMap() {
           strokeOpacity=".4"
         />
         <path d="M489 121H560" stroke="#757575" strokeWidth=".7" />
-        <text x="570" y="125" fill="#a5a5a5" fontSize="9" letterSpacing="1.5">
+        <text x="570" y="125" fill="#a5a5a5" fontSize="12" letterSpacing="1.5">
           CASABLANCA
         </text>
       </svg>

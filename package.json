@@ -10,7 +10,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "format": "prettier --write app components content lib *.ts *.mts *.mjs"
+    "format": "prettier --write app components content lib tests *.ts *.mts *.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
