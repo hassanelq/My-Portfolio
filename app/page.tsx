@@ -10,13 +10,13 @@ import {
 } from "lucide-react";
 import {
   hero,
-  metrics,
   about,
   skills,
   experience,
   education,
   certifications,
   honors,
+  extracurricular,
 } from "@/content/portfolio";
 import { site } from "@/content/site";
 import { projects } from "@/content/projects";
@@ -62,15 +62,6 @@ export default function Home() {
           </Link>
         </div>
       </section>
-      <div className="metrics-strip">
-        {metrics.map((metric) => (
-          <div key={metric.label}>
-            <span className="metric-value">{metric.value}</span>
-            <span className="metric-label">{metric.label}</span>
-            <p>{metric.detail}</p>
-          </div>
-        ))}
-      </div>
       <section id="selected-work" className="section">
         <SectionHeading
           number="01"
@@ -168,10 +159,16 @@ export default function Home() {
         />
         <div className="experience-list">
           {experience.map((item) => (
-            <article key={item.company}>
+            <article
+              key={item.company}
+              className={item.current ? "experience-current" : undefined}
+            >
               <div className="experience-company">
                 <h3>{item.company}</h3>
                 <p className="mono">{item.dates}</p>
+                {item.current && (
+                  <span className="experience-status mono">CURRENT ROLE</span>
+                )}
               </div>
               <div>
                 <h4>{item.role}</h4>
@@ -219,9 +216,30 @@ export default function Home() {
           ))}
         </div>
       </section>
-      <section className="section explore-section">
+      <section id="extracurricular" className="section">
         <SectionHeading
           number="04"
+          label="EXTRACURRICULAR"
+          title={"Beyond the classroom.\nPart of a community."}
+        />
+        <div className="community-grid">
+          {extracurricular.map((item, index) => (
+            <article key={item.organization}>
+              <div className="community-meta mono">
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <span>{item.dates}</span>
+              </div>
+              <p className="community-context">{item.context}</p>
+              <h3>{item.organization}</h3>
+              <h4>{item.role}</h4>
+              <p className="community-description">{item.description}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+      <section className="section explore-section">
+        <SectionHeading
+          number="05"
           label="BEYOND THE PORTFOLIO"
           title="Curiosity, in practice."
         />

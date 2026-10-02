@@ -27,7 +27,7 @@ Browser tests start a production server on port 3100 after a build. Local develo
 ## Pages
 
 - `/`: profile, selected work, background, experience and contact
-- `/projects`: eight projects, filters, source and existing demo links
+- `/projects`: nine projects, newest first, filters, source and existing demo links
 - `/lab`: seven interactive quantitative instruments
 - `/tools`: historical DCA comparison in today's MAD
 - `/arcade`: three probability and market games

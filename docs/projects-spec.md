@@ -1,5 +1,8 @@
 # The Projects Showcase: Production Systems & Quantitative Engines
 
+> **Current implementation update:** Options Pricing and Heston Model Calibration are separate projects, with their own repository/demo/report links. The catalog now has **9 projects**, including **4 quantitative finance** projects. `content/projects.ts` sorts all entries by `realizedAt`, newest first, and preserves year-only precision where exact dates are unavailable. Older combined-project visual concepts below are historical references; the current portfolio design system and separate entries take precedence.
+
+
 *Dedicated specification for the `/projects` showcase route.*
 
 > **Production systems, quantitative models, and applied research.**  
@@ -17,8 +20,8 @@ Every project is presented as a vintage-modern macOS terminal-style panel matchi
 
 At the top of the `/projects` page, an interactive pill filter allows instant client-side switching:
 
-- `[ALL (8)]` — Full catalog of engineering & mathematical systems
-- `[QUANTITATIVE FINANCE (3)]` — Derivatives pricing, portfolio stress-testing, yield curves
+- `[ALL (9)]` — Full catalog of engineering & mathematical systems
+- `[QUANTITATIVE FINANCE (4)]` — Derivatives pricing, portfolio stress-testing, yield curves
 - `[APPLIED AI & DATA SCIENCE (2)]` — Financial NLP (FinBERT), Bayesian property valuation
 - `[FULL-STACK & SYSTEMS (3)]` — Artisan ERP, STEM Olympiad platform, Web3 blockchain bots
 

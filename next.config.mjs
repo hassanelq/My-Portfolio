@@ -3,7 +3,7 @@ const redirects = {
   "/contact": "/#contact",
   "/blogs": "/articles",
   "/CV_Hassan.pdf": "/cv/hassan-elqadi-en.pdf",
-  "/projects/Option-Pricing-models": "/projects#options-calibration",
+  "/projects/Option-Pricing-models": "/projects#options-pricing",
   "/projects/MonteCarlo-Finance-Simulator": "/lab#monte-carlo",
   "/projects/Stock-Sentiment-Analyzer": "/projects#finbert",
   "/projects/Agadir-House-Prices": "/projects#real-estate",

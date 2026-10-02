@@ -11,9 +11,8 @@ export const site = {
   location: "Casablanca, Morocco",
   github: "https://github.com/hassanelq",
   linkedin: "https://www.linkedin.com/in/el-qadi/",
-  availability: "Open to opportunities",
-  availabilityDetail:
-    "Quant analyst / developer roles & select freelance projects",
+  availability: "Currently at Perenity Software",
+  availabilityDetail: "Finance, software, and thoughtful collaborations.",
   cv: { en: "/cv/hassan-elqadi-en.pdf", fr: "/cv/hassan-elqadi-fr.pdf" },
 };
 export const navigation = [

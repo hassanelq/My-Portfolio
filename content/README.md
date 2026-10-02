@@ -5,7 +5,7 @@ The site's content lives here, independently of page layouts. Save a file and th
 | File                  | Edit here                                                                                                      |
 | --------------------- | -------------------------------------------------------------------------------------------------------------- |
 | `site.ts`             | Name, description, availability, contact, canonical domain, navigation, CV paths, page introductions           |
-| `portfolio.ts`        | Hero, metrics, about paragraphs, skills, experience, education, certifications, honors                         |
+| `portfolio.ts`        | Hero, about, skills, experience, education, certifications, honors, extracurricular roles                         |
 | `projects.ts`         | Project descriptions, categories, highlights, technologies, repository/demo/report URLs and homepage selection |
 | `articles.ts`         | Substack publication URL and published article metadata                                                        |
 | `tools.ts`            | Tool navigation, placeholder copy, DCA defaults, series styles and sources                                           |
@@ -13,7 +13,7 @@ The site's content lives here, independently of page layouts. Save a file and th
 
 ## Add a project
 
-Add a record to `projects` in `projects.ts`. Copy an existing entry to preserve its shape. `id` is the permanent URL anchor; `category` must match `categories`. Set `featured: true` to show the project on the homepage (three recommended). Omit a link when it does not exist. A private client project is labeled accordingly rather than given an invented repository URL. Project filters and counts update automatically.
+Add a record to `projectEntries` in `projects.ts`. Copy an existing entry to preserve its shape. `id` is the permanent URL anchor; `category` must match `categories`. Set `featured: true` to show the project on the homepage (three recommended). Omit a link when it does not exist. A private client project is labeled accordingly rather than given an invented repository URL. Project filters and counts update automatically. `realizedAt` accepts `YYYY`, `YYYY-MM`, or `YYYY-MM-DD` and sorts the catalog and featured homepage entries newest first. Use only the date precision supported by your records; current entries mostly have a year, so their within-year order is preserved. Repository update dates are not completion dates.
 
 Claims and metrics currently use the supplied portfolio documents, as requested. Review those before publishing. The Artisan ERP repository URL is still unknown; add its actual URL when available.
 
@@ -45,3 +45,7 @@ The versioned observations are in `dca-history.json`; provenance and SHA-256 has
 ## Add a tool
 
 Edit `toolCatalog` in `tools.ts` to add or rename a tool. Entries with `status: "coming-soon"` automatically get a selectable navigation item and placeholder panel. When a tool is ready, add its component and panel to `components/tools/tools-workspace.tsx`, using the entry’s stable ID for the tab/panel relationship. DCA stays mounted when switching tools, so edits are preserved. Series colors reference the shared design tokens; line patterns distinguish the chart comparisons.
+
+## Update experience and extracurricular roles
+
+Edit `experience` or `extracurricular` in `portfolio.ts`. The six extracurricular records render automatically in the homepage’s dedicated section. Set `current: true` on the current professional role to show its label. Perenity Software is recorded as Oct 2026 — Present per the owner’s instruction; update the hero, about copy, and `site.ts` status when that changes.

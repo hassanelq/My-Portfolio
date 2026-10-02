@@ -25,8 +25,8 @@ The six routes, shared visual system, seven lab instruments, three arcade games,
 
 | Route | Deliverable |
 | --- | --- |
-| `/` | Hero with updated role and pitch; key metrics; about; skills matrix; selected projects; Finamaze and Oracle Capital experience; education, honors, CV, and direct contact. Content comes from [`portfolio-content.md`](portfolio-content.md). |
-| `/projects` | Filterable catalog of the eight systems in [`projects-spec.md`](projects-spec.md). Each has a concise problem, solution, stack, evidence-backed metrics, relevant visual or interaction, and working source/demo/report links. Stable section anchors support direct links. |
+| `/` | Hero with current Perenity role and pitch; about; skills matrix; selected projects; Finamaze and Oracle Capital experience; education, honors, six extracurricular roles, CV, and direct contact. Content comes from [`portfolio-content.md`](portfolio-content.md). |
+| `/projects` | Filterable catalog of the nine systems in [`projects-spec.md`](projects-spec.md). Each has a concise problem, solution, stack, evidence-backed metrics, relevant visual or interaction, and working source/demo/report links. Stable section anchors support direct links. |
 | `/lab` | Seven instruments from [`quant-lab-spec.md`](quant-lab-spec.md): Black-Scholes and Greeks, Monte Carlo, efficient frontier, VaR/expected shortfall, DCF, option payoff builder, and binomial tree. Display values are computed from controls rather than copied from example screenshots. |
 | `/tools` | Historical DCA comparison from [`financial-tools-spec.md`](financial-tools-spec.md), inside a left-navigation workspace with selectable future-tool placeholders, portfolio-native styling, compact inputs, checkbox-selected S&P 500/gold/MSCI World lines, a bank baseline, hover/touch/keyboard chart values and reusable help dialogs. |
 | `/arcade` | Three games from [`arcade-spec.md`](arcade-spec.md): chart Turing test, correlation guessing, and Kelly betting. Keep scoring locally in the browser. |
@@ -67,7 +67,7 @@ The global navigation covers all six routes. About and contact become sections o
 
 ### Phase C — Projects and articles
 
-1. Build `/projects` with eight records, category filters, stable anchors, and one shared project presentation component.
+1. Build `/projects` with nine records, category filters, stable anchors, and one shared project presentation component.
 2. Use lightweight static SVG project illustrations. Link to repositories and existing external demos; do not rebuild project applications here.
 3. Build `/articles` as the editorial list. Keep published posts on Substack, sort the local index newest first, and include the empty state until posts exist.
 

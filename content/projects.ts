@@ -4,7 +4,8 @@ export interface Project {
   title: string;
   category: ProjectCategory;
   label: string;
-  year: string;
+  // YYYY, YYYY-MM or YYYY-MM-DD, using only the precision supported by the source.
+  realizedAt: string;
   description: string;
   highlights: string[];
   stack: string[];
@@ -20,26 +21,42 @@ export const categories: { id: "all" | ProjectCategory; label: string }[] = [
   { id: "ai", label: "AI & data science" },
   { id: "systems", label: "Full-stack & systems" },
 ];
-// Public repositories checked against the GitHub API. Omit unavailable links instead of inventing URLs.
-export const projects: Project[] = [
+// Repository links come from the supplied CV or prior GitHub verification. Omit unavailable links.
+const projectEntries: Project[] = [
   {
+    id: "options-pricing",
+    title: "Options pricing",
+    category: "quant",
+    label: "DERIVATIVES / VALUATION",
+    realizedAt: "2025",
+    description:
+      "An interactive option valuation application comparing Black-Scholes analytical prices with Monte Carlo estimates.",
+    highlights: [
+      "Simulates underlying asset dynamics using a stochastic Euler scheme.",
+      "Explores option values and sensitivities across market and contract parameters.",
+    ],
+    stack: ["Python", "FastAPI", "Next.js", "NumPy"],
+    githubUrl: "https://github.com/hassanelq/Options-pricing",
+    liveUrl: "https://options-price.vercel.app/",
+  },
+  {
+    // Preserve the original public anchor for the research/calibration project.
     id: "options-calibration",
-    title: "Options pricing & Heston calibration",
+    title: "Heston model calibration",
     category: "quant",
     label: "DERIVATIVES / HIGH-PERFORMANCE COMPUTING",
-    year: "2025",
+    realizedAt: "2025",
     featured: true,
     description:
-      "A multi-model derivatives engine connecting analytical pricing, numerical methods, and deep learning to calibrate stochastic volatility.",
+      "A stochastic-volatility calibration study using SPX option implied volatility surfaces to compare numerical optimization, FFT, and deep learning.",
     highlights: [
-      "Black-Scholes, Monte Carlo, and American option lattices.",
-      "SPX implied volatility calibration with closed-form, FFT, and neural approaches.",
+      "Calibrates Heston parameters against market implied volatility smiles.",
+      "Benchmarks closed-form, FFT, and neural calibration for accuracy and computation time.",
     ],
-    stack: ["Python", "C++", "PyTorch", "NumPy", "SciPy"],
+    stack: ["Python", "PyTorch", "NumPy", "SciPy"],
     metric: { value: "0.12s", label: "neural calibration" },
     githubUrl:
       "https://github.com/hassanelq/heston-model-calibration-deep-learning",
-    liveUrl: "https://options-price.vercel.app/",
     reportUrl: "/PFA_Calibration_Heston_Hassan_ELQADI.pdf",
   },
   {
@@ -47,7 +64,7 @@ export const projects: Project[] = [
     title: "Portfolio optimization & stress-testing",
     category: "quant",
     label: "RISK / ASSET ALLOCATION",
-    year: "2026",
+    realizedAt: "2026",
     featured: true,
     description:
       "An allocation framework that combines portfolio theory with Entropy Pooling and copulas to explore how portfolios behave under stress.",
@@ -64,7 +81,7 @@ export const projects: Project[] = [
     title: "Yield curves & interest rate swaps",
     category: "quant",
     label: "FIXED INCOME / TERM STRUCTURE",
-    year: "2025",
+    realizedAt: "2025",
     description:
       "Bootstrapping discount curves and exploring short-rate dynamics for fixed-income valuation and interest rate sensitivity.",
     highlights: [
@@ -79,7 +96,7 @@ export const projects: Project[] = [
     title: "Financial sentiment with FinBERT",
     category: "ai",
     label: "NLP / MARKET DATA",
-    year: "2025",
+    realizedAt: "2025",
     description:
       "A financial text pipeline that turns news and social feeds into structured sentiment signals and an accessible analytics dashboard.",
     highlights: [
@@ -95,7 +112,7 @@ export const projects: Project[] = [
     title: "Dar-Dmana Decor workshop ERP",
     category: "systems",
     label: "CLIENT WORK / OPERATIONS",
-    year: "2026",
+    realizedAt: "2026",
     featured: true,
     description:
       "A production platform for a Moroccan artisan workshop, following each bespoke order from intake through quality control and delivery.",
@@ -111,7 +128,7 @@ export const projects: Project[] = [
     title: "STEM learning & Olympiad community",
     category: "systems",
     label: "CLIENT WORK / EDUCATION",
-    year: "2026",
+    realizedAt: "2026",
     description:
       "A learning hub for Professor Saad Choukri, bringing university mathematics, Olympiad problems, and student discussion together.",
     highlights: [
@@ -126,7 +143,7 @@ export const projects: Project[] = [
     title: "Agadir real estate valuation",
     category: "ai",
     label: "MACHINE LEARNING / PROPERTY",
-    year: "2025",
+    realizedAt: "2025",
     description:
       "A property valuation pipeline combining scraped listings, feature engineering, and gradient boosting to understand Agadir’s housing market.",
     highlights: [
@@ -142,7 +159,7 @@ export const projects: Project[] = [
     title: "Ordinals sales tracker & AMBcheck",
     category: "systems",
     label: "AUTOMATION / WEB3",
-    year: "2024",
+    realizedAt: "2024",
     description:
       "Event-driven tools for Bitcoin Ordinals communities: market activity alerts, wallet ownership verification, and automated access management.",
     highlights: [
@@ -154,3 +171,18 @@ export const projects: Project[] = [
     liveUrl: "https://bitcheck.vercel.app/",
   },
 ];
+
+// Both the catalog and homepage consume this list, so ordering stays consistent.
+// Same-date entries retain their order; never use repository update dates as completion dates.
+export const projects = [...projectEntries].sort((a, b) =>
+  b.realizedAt.localeCompare(a.realizedAt),
+);
+
+export function projectDateLabel(date: string) {
+  if (date.length === 4) return date;
+  return new Intl.DateTimeFormat("en-GB", {
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(new Date(`${date.length === 7 ? `${date}-01` : date}T00:00:00Z`));
+}

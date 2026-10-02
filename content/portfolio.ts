@@ -3,29 +3,13 @@ export const hero = {
   eyebrow: "FINANCIAL ENGINEERING × SOFTWARE",
   lines: ["Mathematical rigor.", "Scalable software."],
   description:
-    "I’m Hassan, a financial engineer and developer. I turn complex models into clear insights, and good ideas into software people can use.",
+    "I’m Hassan, a financial engineer and developer, currently a Technical & Functional Consultant at Perenity Software. I connect financial models, business needs, and software people can use.",
 };
-export const metrics = [
-  {
-    value: "0.12s",
-    label: "Heston calibration",
-    detail: "From numerical methods to neural networks",
-  },
-  {
-    value: "1st",
-    label: "Portfolio challenge",
-    detail: "5th Financial Day · ENSA Agadir",
-  },
-  {
-    value: "5+",
-    label: "Full-scale systems",
-    detail: "Quant engines, data pipelines & web platforms",
-  },
-];
 export const about = {
   title: "Two disciplines.\nOne way of thinking.",
   paragraphs: [
     "I’m a Financial Engineering graduate from ENSA Agadir, based in Casablanca. My work sits between mathematical modeling and software craftsmanship.",
+    "Since October 2026, I’m a Technical & Functional Consultant at Perenity Software, the Casablanca-based publisher of the Manar™ financial software suite. The role brings together finance and technology across portfolio management, market operations, risk, and reporting.",
     "At Finamaze and Oracle Capital, I worked on derivatives pricing, stochastic volatility, and portfolio stress-testing. Alongside that, I build web platforms for people and businesses — with the same care for clarity, performance, and the details that matter.",
   ],
 };
@@ -74,6 +58,18 @@ export const skills = [
   },
 ];
 export const experience = [
+  {
+    company: "Perenity Software",
+    role: "Technical & Functional Consultant · Manar™",
+    location: "Casablanca Finance City, Morocco",
+    dates: "Oct 2026 — Present",
+    current: true,
+    points: [
+      "Technical and functional consulting around Manar™, a financial software suite for asset managers, banks, custodians, and insurers.",
+      "Scope spanning portfolio and order management, risk and compliance, reporting, and custody.",
+      "Connecting financial-market requirements with SQL, software configuration, and integration.",
+    ],
+  },
   {
     company: "Finamaze",
     role: "Quantitative Developer · PFE Intern",
@@ -137,12 +133,56 @@ export const honors = [
     title: "1st Place · Portfolio Management Challenge",
     detail: "5th Financial Day, ENSA Agadir · November 2025",
   },
+];
+
+// All six roles from the volunteering CV, ordered by the end of each experience.
+export const extracurricular = [
   {
-    title: "Media & Communications Manager",
-    detail: "Financial Day ENSA · Editions 4 & 5",
+    organization: "Financial Day · ENSA Agadir",
+    role: "Media & Communications Manager",
+    dates: "Oct 2024 — Nov 2025",
+    context: "Editions 4 & 5",
+    description:
+      "Created the event website, visual identity, and communication materials. Coordinated media relations, partners, speakers, and promotion across both editions.",
   },
   {
-    title: "Head of IT & Innovation",
-    detail: "ADE ENSA Agadir · Student community platform",
+    organization: "ADE · ENSA Agadir",
+    role: "Head of Innovation & IT",
+    dates: "Sep 2023 — Aug 2024",
+    context: "Student association",
+    description:
+      "Developed the student community platform and supported the association’s events, visual content, and social-media communication.",
+  },
+  {
+    organization: "Junior Enterprise · ENSA Agadir",
+    role: "Graphic Designer",
+    dates: "Nov 2022 — May 2024",
+    context: "Student-led consulting",
+    description:
+      "Created client-focused visual assets and branding materials in collaboration with the project team.",
+  },
+  {
+    organization: "South Meeting Olympiad",
+    role: "Design Lead & Organizing Committee Member",
+    dates: "23 — 25 Feb 2024",
+    context: "7th edition · Agadir",
+    description:
+      "Created the visual identity and event materials. Supported on-site coordination, photography, video, and coverage of the three-day inter-school event.",
+  },
+  {
+    organization: "AppsClub · ENSA Agadir",
+    role: "Designer & Social Media Manager",
+    dates: "Sep 2022 — Aug 2023",
+    context: "Technology community",
+    description:
+      "Created visual content and promoted technical sessions, conferences, and student events.",
+  },
+  {
+    organization: "Club Formation Sans Frontières",
+    role: "Designer & Social Media Manager",
+    dates: "Jan 2022 — Aug 2023",
+    context: "Training & student initiatives",
+    description:
+      "Designed campaigns and promoted training sessions, orientation forums, meetings, and student initiatives.",
   },
 ];

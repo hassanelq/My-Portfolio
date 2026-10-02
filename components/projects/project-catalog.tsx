@@ -1,7 +1,12 @@
 "use client";
 import { useState } from "react";
 import { ArrowUpRight, CodeXml, FileText } from "lucide-react";
-import { projects, categories, type ProjectCategory } from "@/content/projects";
+import {
+  projects,
+  categories,
+  projectDateLabel,
+  type ProjectCategory,
+} from "@/content/projects";
 import { ProjectMark } from "./project-mark";
 export function ProjectCatalog() {
   const [filter, setFilter] = useState<"all" | ProjectCategory>("all");
@@ -42,7 +47,9 @@ export function ProjectCatalog() {
           <article key={project.id} id={project.id} className="project-entry">
             <div className="project-entry-index mono">
               {(projects.indexOf(project) + 1).toString().padStart(2, "0")}
-              <span>{project.year}</span>
+              <time dateTime={project.realizedAt}>
+                {projectDateLabel(project.realizedAt)}
+              </time>
             </div>
             <div className="project-entry-main">
               <p className="eyebrow">{project.label}</p>

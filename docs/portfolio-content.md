@@ -9,7 +9,7 @@ This document contains the finalized, structured text and data for Hassan EL QAD
 - **Name:** Hassan EL QADI
 - **Role / Title:** Financial Engineer & Full-Stack Developer
 - **Location:** Casablanca, Morocco
-- **Status Badge:** Open to Quant Analyst / Developer Roles & Select Freelance Projects
+- **Status Badge:** Currently at Perenity Software
 - **Tagline:**  
   *Bridging mathematical rigor and scalable software.*
 - **Elevator Pitch:**  
@@ -20,18 +20,13 @@ This document contains the finalized, structured text and data for Hassan EL QAD
 - **Secondary CTA:** Download CV (links to `/cv/CV_Hassan_ELQADI.pdf` or contact)
 - **Direct Contact:** [Email Me](mailto:hassanelqadi3@gmail.com)
 
-### Key Metrics Highlight
-| Metric | Label | Description |
-| :--- | :--- | :--- |
-| **0.12s** | Calibration Speed | Deep learning Heston model calibration vs 2,650s closed-form |
-| **1st Place** | Portfolio Challenge | Winner of ENSA 5th Financial Day Portfolio Management Competition |
-| **5+** | Full-Scale Systems | Built quantitative pricing engines, financial data pipelines, and client web apps |
+The former three-metric strip is removed at the owner’s request. The hero description includes the current Technical & Functional Consultant role at Perenity Software.
 
 ---
 
 ## 2. About Me
 
-I am a Financial Engineer with a dual focus: mathematical modeling and software craftsmanship. 
+I am a Financial Engineer with a dual focus: mathematical modeling and software craftsmanship. Since October 2026, I am a Technical & Functional Consultant at **Perenity Software**, the Casablanca-based publisher of the **Manar™** financial software suite for portfolio management, market operations, risk and reporting.
 
 During my engineering cycle at **ENSA Agadir (Finance & Decision-Making Engineering)** and internships at **Finamaze** and **Oracle Capital**, I focused on stochastic calculus, derivatives valuation (Black-Scholes, Monte Carlo, Heston), and portfolio stress-testing (Entropy Pooling, copulas). Concurrently, I design and ship full-stack web platforms using Next.js, TypeScript, and PostgreSQL for clients and businesses.
 
@@ -62,16 +57,21 @@ Whether calibrating implied volatility surfaces or architecting responsive user 
 
 ## 4. Featured Projects
 
-### Project 1: Options Pricing & Volatility Calibration Suite
-- **Category:** Quantitative Finance & High-Performance Computing
-- **Tag:** Flagship Quant
-- **One-Liner:** Multi-model derivatives valuation engine comparing analytical, lattice, Monte Carlo, and deep learning calibration.
-- **Key Highlights:**
-  - Implemented Black-Scholes analytical pricing and Greeks alongside numerical Monte Carlo simulations with Euler discretization.
-  - Built binomial and trinomial tree algorithms for American options analyzing early-exercise boundaries.
-  - Calibrated the Heston stochastic volatility model on SPX index options, measuring performance trade-offs: Closed-form (2,650s), FFT (45s), and Deep Learning (0.12s).
-- **Stack:** Python, C++, NumPy, SciPy, PyTorch, Matplotlib
-- **Links:** `[GitHub Repo]` | `[Interactive Demo / Docs]`
+### Project 1A: Options Pricing
+- **Category:** Quantitative Finance
+- **Description:** European options valuation with Black-Scholes analytical pricing and Monte Carlo simulation using a stochastic Euler scheme.
+- **Stack:** Python, FastAPI, Next.js, NumPy
+- **Links:** [Repository](https://github.com/hassanelq/Options-pricing) · [Live application](https://options-price.vercel.app/)
+- **Realization date recorded:** 2025
+
+### Project 1B: Heston Model Calibration
+- **Category:** Quantitative Finance
+- **Description:** Calibrates stochastic-volatility parameters on SPX implied volatility surfaces, comparing closed-form, FFT, and neural approaches for accuracy and speed.
+- **Stack:** Python, PyTorch, NumPy, SciPy
+- **Links:** [Repository](https://github.com/hassanelq/heston-model-calibration-deep-learning) · local Heston research report
+- **Realization date recorded:** 2025
+
+The catalog contains nine separate records and sorts by `realizedAt`, newest first. Year-only dates preserve their recorded precision; no completion month is inferred from a repository update or delivery-confirmation date.
 
 ---
 
@@ -128,6 +128,14 @@ Whether calibrating implied volatility surfaces or architecting responsive user 
 
 ## 5. Professional Experience
 
+### Perenity Software — Technical & Functional Consultant · Manar™
+*Casablanca Finance City, Morocco | Oct 2026 – Present*
+- Technical and functional consulting around the Manar™ financial software suite, serving asset managers, banks, custodians and insurers.
+- Scope includes portfolio and order management, risk and compliance, reporting, and custody.
+- Financial-market requirements, SQL, software configuration and integration.
+
+Role and company scope are drawn from the supplied Perenity application README. The owner explicitly requested the current-role display starting October 2026. Recruitment correspondence and personal contract details are excluded from public portfolio copy.
+
 ### Finamaze — Quantitative Developer (PFE Intern)
 *Casablanca, Morocco | Feb 2026 – Jul 2026*
 - Developed a quantitative stress-testing framework for multi-asset investment portfolios using **Entropy Pooling** and copula dependency modeling.
@@ -160,11 +168,21 @@ Whether calibrating implied volatility surfaces or architecting responsive user 
 
 ---
 
-## 7. Honors & Leadership
+## 7. Honors & Extracurricular Experience
 
 - **1st Place Winner — Portfolio Management Challenge:** 5th Financial Day, ENSA Agadir (Nov 2025). Managed multi-asset international stock and crypto allocation with live risk constraints.
-- **Media & Communications Manager — Financial Day ENSA (Editions 4 & 5):** Built event web platform (`finday5.vercel.app`) and directed digital strategy.
-- **Head of IT & Innovation — ADE ENSA Agadir:** Developed dynamic student portal (`ensaa.ma`).
+The dedicated homepage section contains all six roles from the volunteering CV:
+
+| Organization | Role | Dates |
+| --- | --- | --- |
+| Financial Day ENSA Agadir, editions 4 & 5 | Media & Communications Manager | Oct 2024 – Nov 2025 |
+| ADE ENSA Agadir | Head of Innovation & IT | Sep 2023 – Aug 2024 |
+| Junior Enterprise ENSA Agadir | Graphic Designer | Nov 2022 – May 2024 |
+| South Meeting Olympiad, 7th edition | Design Lead & Organizing Committee Member | 23–25 Feb 2024 |
+| AppsClub ENSA Agadir | Designer & Social Media Manager | Sep 2022 – Aug 2023 |
+| Club Formation Sans Frontières | Designer & Social Media Manager | Jan 2022 – Aug 2023 |
+
+The portfolio challenge remains an honor under Experience; the six community roles have their own section.
 
 ---
 

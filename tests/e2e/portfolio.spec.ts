@@ -87,11 +87,11 @@ test("project categories filter records and preserve working destination links",
   page,
 }) => {
   await page.goto("/projects");
-  await expect(page.locator(".project-entry")).toHaveCount(8);
+  await expect(page.locator(".project-entry")).toHaveCount(9);
   await page.getByRole("button", { name: /Quantitative finance/i }).click();
-  await expect(page.locator(".project-entry")).toHaveCount(3);
+  await expect(page.locator(".project-entry")).toHaveCount(4);
   await page.getByRole("button", { name: /All projects/i }).click();
-  await expect(page.locator(".project-entry")).toHaveCount(8);
+  await expect(page.locator(".project-entry")).toHaveCount(9);
   await expect(
     page
       .locator("#options-calibration")

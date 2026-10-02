@@ -28,7 +28,7 @@ Portfolio Platform
 | **[`IMPLEMENTATION_PLAN.md`](IMPLEMENTATION_PLAN.md)** | **Build sequence** | Route map, technical decisions, migration phases, data gates, and release criteria |
 | **[`DESIGN.md`](DESIGN.md)** | **Visual reference** | Dark editorial system, typography, colors, spacing, borders, and component rules |
 | **[`portfolio-content.md`](portfolio-content.md)** | **Pillar 1: Core Showcase** | Hero pitch, metrics, career overview, skills matrix, experience (Finamaze, Oracle Capital), education, contact |
-| **[`projects-spec.md`](projects-spec.md)** | **Pillar 2: Projects Showcase** | **8 Systems & Engines:** Options Calibration (22,000x speedup), Entropy Pooling (ENSA 1st Place), Yield Curves, FinBERT, Artisan ERP, STEM Olympiad, Real Estate ML, Ordinals Bot |
+| **[`projects-spec.md`](projects-spec.md)** | **Pillar 2: Projects Showcase** | **9 Systems & Engines:** Options Pricing, Heston Calibration (22,000x speedup), Entropy Pooling (ENSA 1st Place), Yield Curves, FinBERT, Artisan ERP, STEM Olympiad, Real Estate ML, Ordinals Bot |
 | **[`quant-lab-spec.md`](quant-lab-spec.md)** | **Pillar 3: The Quant Lab** | **7 Instruments:** Black-Scholes, Monte Carlo, Efficient Frontier, VaR, DCF, Option Payoff Builder, Binomial Tree Pricer |
 | **[`financial-tools-spec.md`](financial-tools-spec.md)** | **Pillar 4: Financial Freedom** | Historical monthly DCA, three selectable investments, inflation, percentile outcomes and interactive chart |
 | **[`arcade-spec.md`](arcade-spec.md)** | **Pillar 5: The Arcade** | **3 Games:** The Chart Turing Test (Real S&P vs Random Walk), Guess the Correlation ($\rho$), Kelly Criterion & Gambler's Ruin |
