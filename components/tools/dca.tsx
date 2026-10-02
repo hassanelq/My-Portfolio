@@ -4,7 +4,6 @@ import {
   BookOpen,
   CalendarDays,
   Check,
-  ChevronDown,
   CircleHelp,
   History,
   Info,
@@ -20,6 +19,7 @@ import {
   type SavingsInputs,
 } from "@/lib/math/dca";
 import { DCAChart, dirhams, type SavingsSeries } from "./dca-chart";
+import { SeriesSwatch } from "./series-swatch";
 
 type Popup = "intro" | "method" | "starting" | "monthly" | null;
 const dateLabel = (date: string) =>
@@ -35,8 +35,7 @@ export default function DCA() {
     "gold",
     "world",
   ]);
-  const [comparisonOpen, setComparisonOpen] = useState(false),
-    [popup, setPopup] = useState<Popup>(null);
+  const [popup, setPopup] = useState<Popup>(null);
   const result = useMemo(() => replayHistory(inputs, history), [inputs]);
   const years = inputs.targetAge - inputs.age;
   const allSeries: SavingsSeries[] = result.assets.flatMap((data, index) =>
@@ -48,7 +47,6 @@ export default function DCA() {
   const cash = result.cash ? { ...result.cash, ...dcaCash } : null;
   const series = [...visible, ...(cash ? [cash] : [])];
   const main = visible[0] ?? cash;
-  const others = visible.filter((item) => item.id !== main?.id);
   const unavailable = dcaAssets.filter(
     (asset, index) => selected.includes(asset.id) && !result.assets[index],
   );
@@ -68,225 +66,202 @@ export default function DCA() {
   }
   return (
     <section className="savings-simulator" aria-labelledby="savings-title">
-      <div className="savings-layout">
-        <div className="savings-left">
-          <h1 id="savings-title">What if you invested every month?</h1>
+      <header className="savings-heading">
+        <p className="eyebrow">01 / MONTHLY INVESTING</p>
+        <h1 id="savings-title">
+          DCA simulator<span className="muted-heading">.</span>
+        </h1>
+        <div className="savings-heading-bottom">
+          <p>
+            A regular habit. A longer view.
+            <br />
+            See what monthly investing became through history.
+          </p>
           <button className="savings-info" onClick={() => setPopup("intro")}>
-            <Info size={18} /> What is this?
+            <Info size={18} strokeWidth={1.5} /> What is this?
           </button>
-          <div className="savings-controls">
-            <div className="savings-fields">
-              <NumberStepper
-                label="Current savings"
-                value={inputs.starting}
-                onChange={(value) => field("starting", value)}
-                min={0}
-                max={100000000}
-                step={1000}
-                prefix="DH"
-                help={
-                  <button
-                    className="savings-help"
-                    aria-label="About current savings"
-                    onClick={() => setPopup("starting")}
-                  >
-                    <CircleHelp size={17} />
-                  </button>
-                }
-              />
-              <NumberStepper
-                label="Per month"
-                value={inputs.monthly}
-                onChange={(value) => field("monthly", value)}
-                min={0}
-                max={1000000}
-                step={100}
-                prefix="DH"
-                help={
-                  <button
-                    className="savings-help"
-                    aria-label="About monthly contributions"
-                    onClick={() => setPopup("monthly")}
-                  >
-                    <CircleHelp size={17} />
-                  </button>
-                }
-              />
-              <NumberStepper
-                label="Your age"
-                value={inputs.age}
-                onChange={(value) => field("age", value)}
-                min={18}
-                max={99}
-              />
-              <NumberStepper
-                label="Until age"
-                value={inputs.targetAge}
-                onChange={(value) => field("targetAge", value)}
-                min={inputs.age + 1}
-                max={100}
-              />
-            </div>
-            <button
-              className="savings-compare-toggle"
-              aria-expanded={comparisonOpen}
-              aria-controls="savings-comparisons"
-              onClick={() => setComparisonOpen(!comparisonOpen)}
-            >
-              <span>Compare with</span>
-              <span>
-                {selected.length
-                  ? dcaAssets
-                      .filter((asset) => selected.includes(asset.id))
-                      .map((asset) => asset.label)
-                      .join(", ")
-                  : "Bank only"}
-                <ChevronDown
-                  size={18}
-                  className={comparisonOpen ? "rotated" : ""}
-                />
-              </span>
-            </button>
-            {comparisonOpen && (
-              <fieldset
-                id="savings-comparisons"
-                className="savings-comparisons"
+        </div>
+      </header>
+      <div className="savings-controls">
+        <div className="savings-section-label">
+          <h2>Your starting point</h2>
+          <span className="mono">ADJUST & EXPLORE</span>
+        </div>
+        <div className="savings-fields">
+          <NumberStepper
+            label="Current savings"
+            value={inputs.starting}
+            onChange={(value) => field("starting", value)}
+            min={0}
+            max={100000000}
+            step={1000}
+            prefix="DH"
+            help={
+              <button
+                className="savings-help"
+                aria-label="About current savings"
+                onClick={() => setPopup("starting")}
               >
-                <legend className="sr-only">
-                  Choose investments to compare
-                </legend>
-                {dcaAssets.map((asset) => (
-                  <label key={asset.id}>
-                    <span>
-                      <i style={{ background: asset.color }} />
-                      {asset.label}
-                    </span>
-                    <input
-                      type="checkbox"
-                      checked={selected.includes(asset.id)}
-                      onChange={(event) =>
-                        setSelected((current) =>
-                          event.target.checked
-                            ? [...current, asset.id]
-                            : current.filter((id) => id !== asset.id),
-                        )
-                      }
-                    />
-                    <Check
-                      size={19}
-                      aria-hidden="true"
-                      className={selected.includes(asset.id) ? "checked" : ""}
-                    />
-                  </label>
-                ))}
-              </fieldset>
-            )}
+                <CircleHelp size={16} />
+              </button>
+            }
+          />
+          <NumberStepper
+            label="Per month"
+            value={inputs.monthly}
+            onChange={(value) => field("monthly", value)}
+            min={0}
+            max={1000000}
+            step={100}
+            prefix="DH"
+            help={
+              <button
+                className="savings-help"
+                aria-label="About monthly contributions"
+                onClick={() => setPopup("monthly")}
+              >
+                <CircleHelp size={16} />
+              </button>
+            }
+          />
+          <NumberStepper
+            label="Your age"
+            value={inputs.age}
+            onChange={(value) => field("age", value)}
+            min={18}
+            max={99}
+          />
+          <NumberStepper
+            label="Until age"
+            value={inputs.targetAge}
+            onChange={(value) => field("targetAge", value)}
+            min={inputs.age + 1}
+            max={100}
+          />
+        </div>
+        <fieldset className="savings-comparisons">
+          <legend>Compare with</legend>
+          <div className="savings-comparison-options">
+            {dcaAssets.map((asset) => (
+              <label key={asset.id}>
+                <input
+                  type="checkbox"
+                  checked={selected.includes(asset.id)}
+                  onChange={(event) =>
+                    setSelected((current) =>
+                      event.target.checked
+                        ? [...current, asset.id]
+                        : current.filter((id) => id !== asset.id),
+                    )
+                  }
+                />
+                <span className="savings-checkbox">
+                  <Check size={13} strokeWidth={2} aria-hidden="true" />
+                </span>
+                <SeriesSwatch {...asset} />
+                <span>{asset.label}</span>
+              </label>
+            ))}
           </div>
-          {unavailable.length > 0 && (
-            <p className="savings-unavailable" role="status">
-              {unavailable
-                .map(
-                  (asset) =>
-                    `${asset.label} has up to ${Math.floor((history.assets[asset.id].levels.length - 1) / 12)} complete years of history`,
-                )
-                .join("; ")}
-              . Shorten the horizon to draw{" "}
-              {unavailable.length === 1 ? "this line" : "these lines"}.
-            </p>
-          )}
-          {main ? (
+        </fieldset>
+      </div>
+      {unavailable.length > 0 && (
+        <p className="savings-unavailable" role="status">
+          {unavailable
+            .map(
+              (asset) =>
+                `${asset.label} has up to ${Math.floor((history.assets[asset.id].levels.length - 1) / 12)} complete years of history`,
+            )
+            .join("; ")}
+          . Shorten the horizon to draw{" "}
+          {unavailable.length === 1 ? "this line" : "these lines"}.
+        </p>
+      )}
+      {main ? (
+        <div className="savings-results">
+          <div className="savings-result-heading">
             <div className="savings-outcome" aria-live="polite">
               <p>
-                By {inputs.targetAge},{" "}
-                {main.id === "cash"
-                  ? "leaving it in the bank"
-                  : `in ${main.label}`}{" "}
-                you would have
+                Historical median ·{" "}
+                {main.id === "cash" ? "leaving it in the bank" : main.label}
               </p>
               <h2>{dirhams(main.median)}</h2>
+              <p>At age {inputs.targetAge}, in today’s money.</p>
+            </div>
+            <div className="savings-horizon">
+              <span>
+                {years}
+                <small>years</small>
+              </span>
               <p>
-                in today’s money.
-                {others.length > 0 && (
-                  <>
-                    {" "}
-                    The same payments into{" "}
-                    <span style={{ color: others[0].color }}>
-                      {others[0].label}
-                    </span>{" "}
-                    would be <strong>{dirhams(others[0].median)}</strong>.
-                  </>
-                )}
-                {cash && main.id !== "cash" && (
-                  <>
-                    {" "}
-                    Leaving it in the bank instead,{" "}
-                    <strong>{dirhams(cash.median)}</strong>.
-                  </>
-                )}
+                {inputs.age} → {inputs.targetAge}
               </p>
             </div>
-          ) : (
-            <p className="savings-unavailable" role="status">
-              There is not enough recorded history for a {years}-year
-              comparison. Choose a shorter horizon.
-            </p>
-          )}
+          </div>
+          <DCAChart
+            key={`${inputs.age}-${inputs.targetAge}-${selected.join("-")}`}
+            series={series}
+            age={inputs.age}
+            targetAge={inputs.targetAge}
+          />
+          <div className="savings-chart-caption">
+            <span>Age</span>
+            <span>Hover or tap to explore the values</span>
+          </div>
+          <div className="savings-breakdown">
+            <table>
+              <caption className="sr-only">
+                Historical savings over {years} years, in today’s dirhams
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">At age {inputs.targetAge}</th>
+                  <th scope="col">Median</th>
+                  <th
+                    scope="col"
+                    title="10th percentile of historical outcomes"
+                  >
+                    Lower outcome<span>10th percentile</span>
+                  </th>
+                  <th
+                    scope="col"
+                    title="90th percentile of historical outcomes"
+                  >
+                    Upper outcome<span>90th percentile</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {series.map((item) => (
+                  <tr key={item.id}>
+                    <th scope="row">
+                      <span>
+                        <SeriesSwatch {...item} />
+                        {item.label}
+                      </span>
+                      {item.id === "world" && (
+                        <small>Price only · no dividends</small>
+                      )}
+                    </th>
+                    <td className="savings-median">{dirhams(item.median)}</td>
+                    <td>{dirhams(item.low)}</td>
+                    <td>{dirhams(item.high)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div className="savings-right">
-          {series.length > 0 && (
-            <>
-              <DCAChart
-                key={`${inputs.age}-${inputs.targetAge}-${selected.join("-")}`}
-                series={series}
-                age={inputs.age}
-                targetAge={inputs.targetAge}
-              />
-              <div className="savings-breakdown">
-                <table>
-                  <caption className="sr-only">
-                    Historical savings over {years} years, in today’s dirhams
-                  </caption>
-                  <thead>
-                    <tr>
-                      <th scope="col">Over {years} years</th>
-                      <th
-                        scope="col"
-                        title="10th percentile of historical outcomes"
-                      >
-                        If it went badly
-                      </th>
-                      <th
-                        scope="col"
-                        title="90th percentile of historical outcomes"
-                      >
-                        If it went well
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {series.map((item) => (
-                      <tr key={item.id}>
-                        <th scope="row">
-                          <span>
-                            <i style={{ background: item.color }} />
-                            {item.label}
-                          </span>
-                          <strong>{dirhams(item.median)}</strong>
-                        </th>
-                        <td>{dirhams(item.low)}</td>
-                        <td>{dirhams(item.high)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </>
-          )}
-        </div>
-      </div>
+      ) : (
+        <p className="savings-unavailable" role="status">
+          There is not enough recorded history for a {years}-year comparison.
+          Choose a shorter horizon.
+        </p>
+      )}
       <div className="savings-bottom">
+        <p>Historical results, adjusted for inflation.</p>
         <button className="savings-info" onClick={() => setPopup("method")}>
-          <BookOpen size={18} /> How this works
+          <BookOpen size={18} strokeWidth={1.5} /> How this works
         </button>
       </div>
       <Dialog
@@ -364,7 +339,7 @@ export default function DCA() {
               ))}
             </ul>
             <p>
-              “If it went badly” and “If it went well” are the 10th and 90th
+              “Lower outcome” and “Upper outcome” are the 10th and 90th
               percentiles of the final historical balances, not the worst and
               best possibilities. The available periods differ between
               investments, so differences also reflect which decades are

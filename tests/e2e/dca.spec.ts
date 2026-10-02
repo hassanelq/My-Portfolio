@@ -5,7 +5,7 @@ test("DCA keeps comparison controls simple and recalculates instantly", async ({
 }) => {
   await page.goto("/tools");
   await expect(
-    page.getByRole("heading", { name: "What if you invested every month?" }),
+    page.getByRole("heading", { name: "DCA simulator." }),
   ).toBeVisible();
   await expect(page.getByText("Edit assumptions")).toHaveCount(0);
   await expect(
@@ -16,7 +16,6 @@ test("DCA keeps comparison controls simple and recalculates instantly", async ({
   await expect(page.locator(".savings-outcome h2")).toHaveText("0 DH");
   await page.getByRole("button", { name: "Increase per month" }).click();
   await expect(page.locator(".savings-outcome h2")).not.toHaveText("0 DH");
-  await page.getByRole("button", { name: /Compare with/ }).click();
   await page
     .getByRole("checkbox", { name: "MSCI World", exact: true })
     .uncheck();
@@ -130,3 +129,59 @@ for (const width of [1440, 768, 390, 320])
       .click();
     expect(errors).toEqual([]);
   });
+
+test("tapping the mobile chart keeps values at the tapped age", async ({
+  browser,
+  baseURL,
+}) => {
+  const context = await browser.newContext({
+    baseURL,
+    viewport: { width: 390, height: 950 },
+    hasTouch: true,
+    isMobile: true,
+  });
+  const page = await context.newPage();
+  await page.goto("/tools");
+  const chart = page.getByRole("slider", { name: "Explore savings by age" });
+  await chart.scrollIntoViewIfNeeded();
+  const bounds = (await chart.boundingBox())!;
+  await page.touchscreen.tap(
+    bounds.x + bounds.width / 2,
+    bounds.y + bounds.height / 2,
+  );
+  await expect(chart).toHaveAttribute("aria-valuenow", "37");
+  await expect(page.getByRole("tooltip")).toContainText("Age 37");
+  await expect(page.getByRole("tooltip")).toContainText("MSCI World");
+  await context.close();
+});
+
+test("tool navigation shows coming-soon panels and preserves DCA inputs", async ({
+  page,
+}) => {
+  await page.goto("/tools");
+  const list = page.getByRole("tablist", { name: "Financial tools" });
+  await page.getByLabel("Per month", { exact: true }).fill("2500");
+  await page.getByLabel("Per month", { exact: true }).blur();
+  await list.getByRole("tab", { name: /Savings goal/ }).click();
+  await expect(
+    page.getByRole("tabpanel", { name: /Savings goal/ }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Coming soon.", exact: true }),
+  ).toBeVisible();
+  await expect(page.getByLabel("Per month", { exact: true })).not.toBeVisible();
+  await page.keyboard.press("ArrowDown");
+  await expect(
+    list.getByRole("tab", { name: /Retirement planner/ }),
+  ).toHaveAttribute("aria-selected", "true");
+  await expect(
+    page.getByRole("heading", { name: "Retirement planner." }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Open DCA simulator" }).click();
+  await expect(page.getByLabel("Per month", { exact: true })).toHaveValue(
+    /2\s500/,
+  );
+  await expect(
+    page.getByRole("slider", { name: "Explore savings by age" }),
+  ).toBeVisible();
+});

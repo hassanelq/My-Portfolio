@@ -1,3 +1,25 @@
+// Add tools here to keep the workspace navigation and placeholder copy together.
+export const toolCatalog = [
+  {
+    id: "dca",
+    title: "DCA simulator",
+    description: "Explore monthly investing through real market history.",
+    status: "available",
+  },
+  {
+    id: "savings-goal",
+    title: "Savings goal",
+    description: "Plan the monthly savings needed to reach a goal.",
+    status: "coming-soon",
+  },
+  {
+    id: "retirement",
+    title: "Retirement planner",
+    description: "Explore how saving today could support life after work.",
+    status: "coming-soon",
+  },
+] as const;
+
 // Monthly source observations are in dca-history.json; no editable growth assumptions.
 export const dcaDefaults = {
   starting: 0,
@@ -9,21 +31,30 @@ export const dcaAssets = [
   {
     id: "sp500",
     label: "S&P 500",
-    color: "#f3f3f3",
+    color: "var(--color-chalk)",
+    dash: "",
     basis: "Dividends reinvested",
   },
-  { id: "gold", label: "Gold", color: "#edb939", basis: "Gold price in USD" },
+  {
+    id: "gold",
+    label: "Gold",
+    color: "var(--color-ash)",
+    dash: "8 5",
+    basis: "Gold price in USD",
+  },
   {
     id: "world",
     label: "MSCI World",
-    color: "#28bd72",
+    color: "var(--color-smoke)",
+    dash: "2 5",
     basis: "Price only · excludes dividends",
   },
 ] as const;
 export const dcaCash = {
   id: "cash",
   label: "Leaving it in the bank",
-  color: "#808b9b",
+  color: "var(--color-smoke)",
+  dash: "10 4 2 4",
   basis: "No interest",
 } as const;
 export const dcaSources = [

@@ -11,7 +11,7 @@ for (const width of [1440, 768, 390])
     for (const route of routes) {
       const response = await page.goto(route);
       expect(response?.status()).toBe(200);
-      await expect(page.locator("h1")).toBeVisible();
+      await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
       await page.evaluate(() => document.fonts.ready);
       expect(
         await page.evaluate(

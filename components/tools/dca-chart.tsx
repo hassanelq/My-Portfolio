@@ -1,10 +1,12 @@
 "use client";
 import { useEffect, useId, useRef, useState } from "react";
 import type { HistoricalResult } from "@/lib/math/dca";
+import { SeriesSwatch } from "./series-swatch";
 
 export type SavingsSeries = HistoricalResult & {
   label: string;
   color: string;
+  dash: string;
   basis: string;
 };
 export const dirhams = (value: number) =>
@@ -107,9 +109,14 @@ export function DCAChart({
               x2={width - right}
               y1={Y(value)}
               y2={Y(value)}
-              stroke="#303537"
+              stroke="var(--color-graphite)"
             />
-            <text x={left} y={Y(value) - 9} fill="#aab0b8" fontSize={12}>
+            <text
+              x={left}
+              y={Y(value) - 9}
+              fill="var(--color-smoke)"
+              fontSize={13}
+            >
               {short(value)} DH
             </text>
           </g>
@@ -122,8 +129,8 @@ export function DCAChart({
             textAnchor={
               year === age ? "start" : year === targetAge ? "end" : "middle"
             }
-            fill="#adb3b9"
-            fontSize={12}
+            fill="var(--color-smoke)"
+            fontSize={13}
           >
             {year}
           </text>
@@ -138,6 +145,7 @@ export function DCAChart({
                 )
                 .join(" ")}
               stroke={s.color}
+              strokeDasharray={s.dash}
               strokeWidth={s.id === "cash" ? 1.6 : 2.3}
               fill="none"
             />
@@ -153,7 +161,7 @@ export function DCAChart({
                   x={X(targetAge) + 14}
                   y={endPositions[s.id] + 4}
                   fill={s.color}
-                  fontSize={12}
+                  fontSize={13}
                 >
                   {s.label}
                 </text>
@@ -168,7 +176,7 @@ export function DCAChart({
               x2={X(age + index)}
               y1={top - 8}
               y2={bottom}
-              stroke="#aaa"
+              stroke="var(--color-smoke)"
               strokeDasharray="3 5"
             />
             {series.map((s) => (
@@ -178,7 +186,7 @@ export function DCAChart({
                 cy={Y(s.points[index].value)}
                 r={4}
                 fill={s.color}
-                stroke="#101010"
+                stroke="var(--color-obsidian)"
                 strokeWidth={2}
               />
             ))}
@@ -201,8 +209,10 @@ export function DCAChart({
           aria-valuetext={`Age ${age + (index ?? 0)}. ${series.map((s) => `${s.label}: ${dirhams(s.points[index ?? 0].value)}`).join(". ")}`}
           onPointerMove={locate}
           onPointerDown={locate}
-          onPointerLeave={() => setActive(null)}
-          onFocus={() => setActive(0)}
+          onPointerLeave={(event) => {
+            if (event.pointerType !== "touch") setActive(null);
+          }}
+          onFocus={() => setActive((current) => current ?? 0)}
           onBlur={() => setActive(null)}
           onKeyDown={(event) => {
             if (
@@ -231,7 +241,14 @@ export function DCAChart({
           className="savings-chart-tooltip"
           role="tooltip"
           style={{
-            left: Math.max(4, Math.min(width - 250, X(age + index) + 16)),
+            width: Math.min(300, width - 8),
+            left: Math.max(
+              4,
+              Math.min(
+                width - Math.min(300, width - 8) - 4,
+                X(age + index) + 16,
+              ),
+            ),
             top: 6,
           }}
         >
@@ -239,7 +256,7 @@ export function DCAChart({
           {series.map((s) => (
             <div key={s.id}>
               <span>
-                <i style={{ background: s.color }} />
+                <SeriesSwatch {...s} />
                 {s.label}
               </span>
               <b>{dirhams(s.points[index].value)}</b>
@@ -250,7 +267,7 @@ export function DCAChart({
       <div className="savings-legend">
         {series.map((s) => (
           <span key={s.id} title={s.basis}>
-            <i style={{ background: s.color }} />
+            <SeriesSwatch {...s} />
             {s.label}
           </span>
         ))}

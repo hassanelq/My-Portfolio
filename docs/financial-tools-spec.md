@@ -1,20 +1,28 @@
 # Historical monthly investing simulator
 
-The owner’s latest DCA request supersedes the initial constant-growth calculator. The supplied screenshots guide the compact layout. Keep the portfolio's larger typography and existing site navigation.
+The owner’s latest DCA request supersedes the initial constant-growth calculator. The reference supplies calculation logic and useful details only. The owner requested an original layout using the portfolio design system, not the reference’s colors or composition. Keep the larger typography and existing site navigation.
+
+## Tools workspace
+
+- Left-hand tool list on desktop; horizontally scrollable tabs above the content on mobile.
+- DCA simulator is available. Savings Goal and Retirement Planner each open a “Coming soon” panel.
+- Selection updates the main panel without leaving `/tools`. Returning to DCA preserves the current inputs and comparisons.
+- Keyboard arrows, Home and End navigate the tabs. The tool catalog and placeholder copy live in `content/tools.ts`.
+- Follow `DESIGN.md`: 1200px content column, obsidian canvas, regular Aeonik headlines, Input metadata, graphite dividers, outlined fields, 4–8px corners and compass-gold icons. No green UI accents.
 
 ## Main screen
 
-- Heading: “What if you invested every month?” with a “What is this?” button.
-- Compact controls for current savings, monthly contribution, age and target age, with editable values and plus/minus buttons. Recalculate immediately.
-- “Compare with” expands a checkbox list: S&P 500, Gold and MSCI World. No annual-return fields, flat-rate input, CAC 40 or DAX. The zero-interest bank baseline is always visible.
-- Hero outcome in today’s DH, with a short comparison sentence.
-- Interactive chart: hover, tap or use arrow keys to show the selected assets’ values at an age. Series colors: chalk, gold, green and muted slate.
-- Compact outcome table: median and 10th/90th percentile historical balances over the chosen horizon.
+- Heading: “DCA simulator.” with a short introduction and a “What is this?” button.
+- Inputs above the chart: compact controls for current savings, monthly contribution, age and target age, with editable values and plus/minus buttons. Recalculate immediately.
+- “Compare with” shows inline checkboxes: S&P 500, Gold and MSCI World. No annual-return fields, flat-rate input, CAC 40 or DAX. The zero-interest bank baseline is always visible.
+- Historical median outcome and selected horizon above a full-width chart.
+- Interactive chart: hover, tap or use arrow keys to show the selected assets’ values at an age. Series use chalk, ash and smoke, with distinct solid/dashed/dotted patterns repeated in legends and checkboxes.
+- Divided outcome table: median and lower/upper (10th/90th percentile) historical balances over the chosen horizon.
 - “How this works” button below the results.
 
 ## Shared popups
 
-Define the modal first in `components/ui/dialog.tsx`, then reuse it for the overview, calculation methodology and input explanations. Native dialog behavior provides focus trapping, Escape and focus restoration. Include a close icon, “Got it” button and backdrop dismissal. Long explanations scroll within the modal.
+Define the modal first in `components/ui/dialog.tsx`, then reuse it for the overview, calculation methodology and input explanations. Native dialog behavior provides focus trapping, Escape and focus restoration. Include a close icon, “Got it” button and backdrop dismissal. Long explanations scroll within the modal. Use the shared obsidian surface, neutral hairline border, 8px corners and white pill action; no green outline.
 
 ## Historical method
 
@@ -24,7 +32,7 @@ The available histories differ. MSCI World is price-only; S&P 500 includes reinv
 
 ## Maintenance
 
-- `content/tools.ts`: defaults, colors, labels and source descriptions.
+- `content/tools.ts`: tool catalog, defaults, theme-token series colors/patterns, labels and source descriptions.
 - `content/dca-history.json`: normalized monthly observations.
 - `data/dca/raw/` and `data/dca/manifest.json`: pinned sources and hashes.
 - `scripts/import-dca-data.py`: reproducible import and optional refresh.
