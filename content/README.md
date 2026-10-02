@@ -8,7 +8,7 @@ The site's content lives here, independently of page layouts. Save a file and th
 | `portfolio.ts`        | Hero, metrics, about paragraphs, skills, experience, education, certifications, honors                         |
 | `projects.ts`         | Project descriptions, categories, highlights, technologies, repository/demo/report URLs and homepage selection |
 | `articles.ts`         | Substack publication URL and published article metadata                                                        |
-| `tools.ts`            | DCA default inputs and editable annual-return assumptions                                                      |
+| `tools.ts`            | DCA default inputs, comparison labels/colors and source descriptions                                           |
 | `market-windows.json` | Sourced S&P 500 observations used by the chart game (see `docs/DATA_SOURCES.md`)                               |
 
 ## Add a project
@@ -37,3 +37,7 @@ Replace `public/cv/hassan-elqadi-en.pdf` and `public/cv/hassan-elqadi-fr.pdf`, p
 - `app/`: route composition and metadata.
 
 Run `npm run typecheck` after content edits. Run `npm test` when changing calculations, and `npm run build` before deployment. Keep real data sources and illustrative assumptions clearly distinguished.
+
+## Refresh historical DCA data
+
+The versioned observations are in `dca-history.json`; provenance and SHA-256 hashes are in `data/dca/manifest.json`. Run `python3 scripts/import-dca-data.py` to reproduce the normalized file from pinned raw data, or add `--download` to refresh the public sources. Review coverage, upstream schemas and the configured Yahoo end-date before refreshing. No missing observations are filled with assumed returns. The current snapshot ends in June 2025. `lib/math/dca.ts` contains the rolling-window calculation.

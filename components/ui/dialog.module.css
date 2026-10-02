@@ -1,0 +1,93 @@
+.dialog {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(460px, calc(100vw - 32px));
+  max-height: min(840px, calc(100dvh - 48px));
+  padding: 28px;
+  border: 1px solid #399b5c;
+  border-radius: 26px;
+  background: #222628;
+  color: #f3f3f3;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.dialog::backdrop {
+  background: rgb(0 0 0 / 0.76);
+  backdrop-filter: blur(3px);
+}
+.wide {
+  width: min(760px, calc(100vw - 32px));
+}
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+.header h2 {
+  font-size: 27px;
+  line-height: 1.25;
+  letter-spacing: -0.6px;
+}
+.close {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  background: transparent;
+  border: 0;
+  color: #aeb4b7;
+  border-radius: 50%;
+}
+.close:hover {
+  color: #fff;
+  background: #353a3e;
+}
+.body {
+  font-size: 17px;
+  line-height: 1.65;
+}
+.body p + p {
+  margin-top: 18px;
+}
+.body h3 {
+  font-size: 20px;
+  margin: 28px 0 14px;
+}
+.body a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.body ul {
+  padding-left: 22px;
+}
+.body li + li {
+  margin-top: 14px;
+}
+.footer {
+  margin-top: 26px;
+}
+.footer button {
+  width: 100%;
+  border: 0;
+  padding: 14px 20px;
+  color: #171a1b;
+  background: #f3f3f3;
+  font-size: 16px;
+  border-radius: 999px;
+}
+@media (max-width: 600px) {
+  .dialog {
+    padding: 23px;
+    max-height: calc(100dvh - 32px);
+  }
+  .header h2 {
+    font-size: 25px;
+  }
+  .body {
+    font-size: 16px;
+  }
+}

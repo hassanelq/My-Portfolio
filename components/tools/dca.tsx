@@ -1,216 +1,423 @@
 "use client";
-import { useState } from "react";
-import { ArrowUpRight } from "lucide-react";
-import { dcaAssets, dcaDefaults } from "@/content/tools";
-import { compound } from "@/lib/math/finance";
-import { money, number } from "@/lib/utils";
-import { NumberField } from "@/components/lab/shared";
-import { ChartLegend, LineChart } from "@/components/ui/chart";
+import { useMemo, useState } from "react";
+import {
+  BookOpen,
+  CalendarDays,
+  Check,
+  ChevronDown,
+  CircleHelp,
+  History,
+  Info,
+  Layers,
+} from "lucide-react";
+import { Dialog } from "@/components/ui/dialog";
+import { NumberStepper } from "@/components/ui/number-stepper";
+import { dcaAssets, dcaCash, dcaDefaults, dcaSources } from "@/content/tools";
+import history from "@/content/dca-history.json";
+import {
+  replayHistory,
+  type HistoricalAssetId,
+  type SavingsInputs,
+} from "@/lib/math/dca";
+import { DCAChart, dirhams, type SavingsSeries } from "./dca-chart";
+
+type Popup = "intro" | "method" | "starting" | "monthly" | null;
+const dateLabel = (date: string) =>
+  new Intl.DateTimeFormat("en-GB", {
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(new Date(`${date}-01T00:00:00Z`));
 export default function DCA() {
-  const [draft, setDraft] = useState(dcaDefaults),
-    [rates, setRates] = useState(dcaAssets.map((a) => a.rate)),
-    [calculated, setCalculated] = useState({
-      inputs: dcaDefaults,
-      rates: dcaAssets.map((a) => a.rate),
+  const [inputs, setInputs] = useState<SavingsInputs>(dcaDefaults);
+  const [selected, setSelected] = useState<HistoricalAssetId[]>([
+    "sp500",
+    "gold",
+    "world",
+  ]);
+  const [comparisonOpen, setComparisonOpen] = useState(false),
+    [popup, setPopup] = useState<Popup>(null);
+  const result = useMemo(() => replayHistory(inputs, history), [inputs]);
+  const years = inputs.targetAge - inputs.age;
+  const allSeries: SavingsSeries[] = result.assets.flatMap((data, index) =>
+    data ? [{ ...data, ...dcaAssets[index] }] : [],
+  );
+  const visible = allSeries.filter((item) =>
+    selected.includes(item.id as HistoricalAssetId),
+  );
+  const cash = result.cash ? { ...result.cash, ...dcaCash } : null;
+  const series = [...visible, ...(cash ? [cash] : [])];
+  const main = visible[0] ?? cash;
+  const others = visible.filter((item) => item.id !== main?.id);
+  const unavailable = dcaAssets.filter(
+    (asset, index) => selected.includes(asset.id) && !result.assets[index],
+  );
+  const popupTitles = {
+    intro: "Monthly investing?",
+    method: "How this works",
+    starting: "Current savings",
+    monthly: "Your monthly contribution",
+  };
+  function field(key: keyof SavingsInputs, value: number) {
+    setInputs((current) => {
+      const next = { ...current, [key]: value };
+      if (key === "age" && next.age >= next.targetAge)
+        next.targetAge = next.age + 1;
+      return next;
     });
-  const invalid = draft.targetAge <= draft.age;
-  const results = dcaAssets.map((a, i) => ({
-    ...a,
-    ...compound(calculated.inputs, calculated.rates[i]),
-  }));
-  const years = calculated.inputs.targetAge - calculated.inputs.age;
-  const dirty =
-    JSON.stringify({ inputs: draft, rates }) !== JSON.stringify(calculated);
-  function field(key: keyof typeof draft, value: number) {
-    setDraft({ ...draft, [key]: value });
   }
   return (
-    <>
-      <div className="tool-tabs">
-        <span className="active">DCA simulator</span>
-        <span>
-          More tools <small>IN TIME</small>
-        </span>
-      </div>
-      <div className="dca-layout">
-        <div>
-          <p className="dca-description">
-            A little, every month.
-            <br />
-            Then let time do its thing.
-          </p>
-          <p className="muted">
-            Dollar cost averaging means investing regularly, whatever the price.
-            Explore a fixed-return scenario and see what inflation leaves
-            behind.
-          </p>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (!invalid)
-                setCalculated({ inputs: { ...draft }, rates: [...rates] });
-            }}
-          >
-            <div className="dca-inputs">
-              <NumberField
-                label="STARTING AMOUNT (MAD)"
-                value={draft.starting}
+    <section className="savings-simulator" aria-labelledby="savings-title">
+      <div className="savings-layout">
+        <div className="savings-left">
+          <h1 id="savings-title">What if you invested every month?</h1>
+          <button className="savings-info" onClick={() => setPopup("intro")}>
+            <Info size={18} /> What is this?
+          </button>
+          <div className="savings-controls">
+            <div className="savings-fields">
+              <NumberStepper
+                label="Current savings"
+                value={inputs.starting}
+                onChange={(value) => field("starting", value)}
                 min={0}
                 max={100000000}
-                step={100}
-                onChange={(v) => field("starting", v)}
+                step={1000}
+                prefix="DH"
+                help={
+                  <button
+                    className="savings-help"
+                    aria-label="About current savings"
+                    onClick={() => setPopup("starting")}
+                  >
+                    <CircleHelp size={17} />
+                  </button>
+                }
               />
-              <NumberField
-                label="PER MONTH (MAD)"
-                value={draft.monthly}
+              <NumberStepper
+                label="Per month"
+                value={inputs.monthly}
+                onChange={(value) => field("monthly", value)}
                 min={0}
                 max={1000000}
                 step={100}
-                onChange={(v) => field("monthly", v)}
+                prefix="DH"
+                help={
+                  <button
+                    className="savings-help"
+                    aria-label="About monthly contributions"
+                    onClick={() => setPopup("monthly")}
+                  >
+                    <CircleHelp size={17} />
+                  </button>
+                }
               />
-              <NumberField
-                label="YOUR AGE"
-                value={draft.age}
+              <NumberStepper
+                label="Your age"
+                value={inputs.age}
+                onChange={(value) => field("age", value)}
                 min={18}
                 max={99}
-                onChange={(v) => field("age", Math.round(v))}
               />
-              <NumberField
-                label="UNTIL AGE"
-                value={draft.targetAge}
-                min={19}
+              <NumberStepper
+                label="Until age"
+                value={inputs.targetAge}
+                onChange={(value) => field("targetAge", value)}
+                min={inputs.age + 1}
                 max={100}
-                onChange={(v) => field("targetAge", Math.round(v))}
               />
             </div>
-            <details className="disclosure">
-              <summary>Edit assumptions</summary>
-              <div className="dca-assumptions">
-                {dcaAssets.map((a, i) => (
-                  <NumberField
-                    key={a.id}
-                    label={`${a.label.toUpperCase()} RETURN (%)`}
-                    value={rates[i]}
-                    min={-30}
-                    max={30}
-                    step={0.1}
-                    onChange={(v) =>
-                      setRates(rates.map((r, j) => (j === i ? v : r)))
-                    }
-                  />
-                ))}
-                <NumberField
-                  label="ANNUAL INFLATION (%)"
-                  value={draft.inflation}
-                  min={-5}
-                  max={25}
-                  step={0.1}
-                  onChange={(v) => field("inflation", v)}
+            <button
+              className="savings-compare-toggle"
+              aria-expanded={comparisonOpen}
+              aria-controls="savings-comparisons"
+              onClick={() => setComparisonOpen(!comparisonOpen)}
+            >
+              <span>Compare with</span>
+              <span>
+                {selected.length
+                  ? dcaAssets
+                      .filter((asset) => selected.includes(asset.id))
+                      .map((asset) => asset.label)
+                      .join(", ")
+                  : "Bank only"}
+                <ChevronDown
+                  size={18}
+                  className={comparisonOpen ? "rotated" : ""}
                 />
-              </div>
-            </details>
-            <div className="dca-calculate">
-              <button type="submit" className="button" disabled={invalid}>
-                Calculate <ArrowUpRight size={16} />
-              </button>
-              <span className="mono muted">
-                {invalid
-                  ? "TARGET AGE MUST BE HIGHER"
-                  : dirty
-                    ? "CHANGES NOT YET APPLIED"
-                    : "SCENARIO UP TO DATE"}
               </span>
-            </div>
-          </form>
-          <details className="disclosure">
-            <summary>How this works</summary>
-            <p>
-              These are illustrative constant annual returns, compounded
-              monthly. They are editable assumptions, not historical replay or
-              forecasts. The starting amount is invested immediately; the same
-              nominal contribution is added at the end of every month.
-            </p>
-            <p>
-              Each balance is divided by cumulative inflation to show purchasing
-              power in today’s MAD. “Bank cash” starts at a 0% return
-              assumption. Fees, taxes, and currency movements are excluded. Real
-              markets fluctuate; a smooth curve cannot show that risk.
-            </p>
-          </details>
-        </div>
-        <div className="dca-outcome" aria-live="polite">
-          <span className="eyebrow">
-            AT AGE {calculated.inputs.targetAge} / S&P 500 SCENARIO
-          </span>
-          <h2>{money(results[0].real, "MAD")}</h2>
-          <p>
-            in today’s money. The same payments into gold would be{" "}
-            <strong>{money(results[1].real, "MAD")}</strong>. Kept as bank cash:{" "}
-            <strong>{money(results[2].real, "MAD")}</strong>.
-          </p>
-          <div className="dca-chart">
-            <LineChart
-              label="Projected inflation-adjusted savings by age"
-              series={results.map((a) => ({
-                label: a.label,
-                color: a.color,
-                points: a.points,
-              }))}
-              yDomain={[
-                0,
-                Math.max(
-                  1,
-                  ...results.flatMap((a) => a.points.map((p) => p.y)),
-                ) * 1.06,
-              ]}
-              xLabel="age"
-              yLabel="today’s MAD"
-            />
-            <ChartLegend series={results} />
+            </button>
+            {comparisonOpen && (
+              <fieldset
+                id="savings-comparisons"
+                className="savings-comparisons"
+              >
+                <legend className="sr-only">
+                  Choose investments to compare
+                </legend>
+                {dcaAssets.map((asset) => (
+                  <label key={asset.id}>
+                    <span>
+                      <i style={{ background: asset.color }} />
+                      {asset.label}
+                    </span>
+                    <input
+                      type="checkbox"
+                      checked={selected.includes(asset.id)}
+                      onChange={(event) =>
+                        setSelected((current) =>
+                          event.target.checked
+                            ? [...current, asset.id]
+                            : current.filter((id) => id !== asset.id),
+                        )
+                      }
+                    />
+                    <Check
+                      size={19}
+                      aria-hidden="true"
+                      className={selected.includes(asset.id) ? "checked" : ""}
+                    />
+                  </label>
+                ))}
+              </fieldset>
+            )}
           </div>
-          <p className="chart-caption">
-            {years} years · {number(calculated.inputs.inflation, 1)}% inflation
-            · Fixed nominal monthly contributions
-          </p>
+          {unavailable.length > 0 && (
+            <p className="savings-unavailable" role="status">
+              {unavailable
+                .map(
+                  (asset) =>
+                    `${asset.label} has up to ${Math.floor((history.assets[asset.id].levels.length - 1) / 12)} complete years of history`,
+                )
+                .join("; ")}
+              . Shorten the horizon to draw{" "}
+              {unavailable.length === 1 ? "this line" : "these lines"}.
+            </p>
+          )}
+          {main ? (
+            <div className="savings-outcome" aria-live="polite">
+              <p>
+                By {inputs.targetAge},{" "}
+                {main.id === "cash"
+                  ? "leaving it in the bank"
+                  : `in ${main.label}`}{" "}
+                you would have
+              </p>
+              <h2>{dirhams(main.median)}</h2>
+              <p>
+                in today’s money.
+                {others.length > 0 && (
+                  <>
+                    {" "}
+                    The same payments into{" "}
+                    <span style={{ color: others[0].color }}>
+                      {others[0].label}
+                    </span>{" "}
+                    would be <strong>{dirhams(others[0].median)}</strong>.
+                  </>
+                )}
+                {cash && main.id !== "cash" && (
+                  <>
+                    {" "}
+                    Leaving it in the bank instead,{" "}
+                    <strong>{dirhams(cash.median)}</strong>.
+                  </>
+                )}
+              </p>
+            </div>
+          ) : (
+            <p className="savings-unavailable" role="status">
+              There is not enough recorded history for a {years}-year
+              comparison. Choose a shorter horizon.
+            </p>
+          )}
+        </div>
+        <div className="savings-right">
+          {series.length > 0 && (
+            <>
+              <DCAChart
+                key={`${inputs.age}-${inputs.targetAge}-${selected.join("-")}`}
+                series={series}
+                age={inputs.age}
+                targetAge={inputs.targetAge}
+              />
+              <div className="savings-breakdown">
+                <table>
+                  <caption className="sr-only">
+                    Historical savings over {years} years, in today’s dirhams
+                  </caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">Over {years} years</th>
+                      <th
+                        scope="col"
+                        title="10th percentile of historical outcomes"
+                      >
+                        If it went badly
+                      </th>
+                      <th
+                        scope="col"
+                        title="90th percentile of historical outcomes"
+                      >
+                        If it went well
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {series.map((item) => (
+                      <tr key={item.id}>
+                        <th scope="row">
+                          <span>
+                            <i style={{ background: item.color }} />
+                            {item.label}
+                          </span>
+                          <strong>{dirhams(item.median)}</strong>
+                        </th>
+                        <td>{dirhams(item.low)}</td>
+                        <td>{dirhams(item.high)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          )}
         </div>
       </div>
-      <section className="breakdown-section">
-        <div className="section-topline">
-          <span className="eyebrow">THE NUMBERS</span>
-          <h2>Over {years} years.</h2>
-        </div>
-        <p className="muted">
-          Total cash contributed: {money(results[0].contributed, "MAD")}.
-          Nominal balances are future amounts; today’s values adjust for
-          inflation.
-        </p>
-        <div className="table-scroll">
-          <table className="breakdown-table">
-            <caption className="sr-only">Projected savings breakdown</caption>
-            <thead>
-              <tr>
-                <th scope="col">Scenario</th>
-                <th scope="col">Annual return</th>
-                <th scope="col">Nominal balance</th>
-                <th scope="col">In today’s MAD</th>
-              </tr>
-            </thead>
-            <tbody>
-              {results.map((a, i) => (
-                <tr key={a.id}>
-                  <th scope="row">
-                    <i style={{ background: a.color }} />
-                    {a.label}
-                  </th>
-                  <td>{number(calculated.rates[i], 1)}%</td>
-                  <td>{money(a.nominal, "MAD")}</td>
-                  <td>{money(a.real, "MAD")}</td>
-                </tr>
+      <div className="savings-bottom">
+        <button className="savings-info" onClick={() => setPopup("method")}>
+          <BookOpen size={18} /> How this works
+        </button>
+      </div>
+      <Dialog
+        open={popup !== null}
+        onClose={() => setPopup(null)}
+        title={popup ? popupTitles[popup] : ""}
+        size={popup === "method" ? "wide" : "compact"}
+        footer={<button onClick={() => setPopup(null)}>Got it</button>}
+      >
+        {popup === "intro" && (
+          <div className="savings-intro-list">
+            <div>
+              <CalendarDays size={21} />
+              <p>
+                Put the same amount in every month, whatever the market does.
+              </p>
+            </div>
+            <div>
+              <History size={21} />
+              <p>
+                Replay recorded market history, adjusted for Moroccan inflation.
+              </p>
+            </div>
+            <div>
+              <Layers size={21} />
+              <p>
+                Choose S&P 500, gold, and MSCI World. Compare them with leaving
+                your money in the bank.
+              </p>
+            </div>
+          </div>
+        )}
+        {popup === "starting" && (
+          <p>
+            The amount you already have available to invest. It goes in at the
+            start of each historical period. Start at zero if you’re building
+            your savings from scratch.
+          </p>
+        )}
+        {popup === "monthly" && (
+          <p>
+            The same amount is added at the end of every month. Contributions
+            stay fixed in nominal dirhams; the chart adjusts the resulting
+            balance for the inflation experienced during each historical period.
+          </p>
+        )}
+        {popup === "method" && (
+          <div className="savings-method">
+            <p>
+              Investing the same amount every month is dollar-cost averaging.
+              You buy more units when prices are lower and fewer when prices are
+              higher, without trying to time the market.
+            </p>
+            <p>
+              This calculator replays recorded monthly returns. Your current
+              savings go in at the start, and your monthly contribution is added
+              after each month’s return. There are no fixed growth-rate
+              assumptions.
+            </p>
+            <p>
+              For your {years}-year horizon, we replay every complete {years}
+              -year stretch of each series, moving the starting month forward
+              one month at a time. Each point on a line is the median balance at
+              that age across the same set of complete periods. The median line
+              combines many histories; it is not one actual investment journey.
+            </p>
+            <ul className="savings-window-list">
+              {dcaAssets.map((asset, index) => (
+                <li key={asset.id}>
+                  <strong>{asset.label}</strong>:{" "}
+                  {result.assets[index]?.windows ?? 0} complete windows ·{" "}
+                  {dateLabel(history.assets[asset.id].start)} to{" "}
+                  {dateLabel(history.end)}.
+                </li>
               ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </>
+            </ul>
+            <p>
+              “If it went badly” and “If it went well” are the 10th and 90th
+              percentiles of the final historical balances, not the worst and
+              best possibilities. The available periods differ between
+              investments, so differences also reflect which decades are
+              included.
+            </p>
+            <p>
+              Everything is shown in today’s purchasing power. Each historical
+              balance is divided by the change in Moroccan consumer prices since
+              that period’s starting month. The bank earns no interest, receives
+              the same deposits, and is adjusted for inflation in the same way.
+              It uses all eligible CPI windows from {dateLabel(history.start)}.
+            </p>
+            <p>
+              S&P 500 dividends are reinvested. MSCI World here is a price-only
+              index: its dividends are excluded, which understates a reinvested
+              holding. Gold has no dividends. These differences matter when
+              comparing the lines.
+            </p>
+            <p>
+              The market series are in US dollars. Showing them as DH assumes no
+              change in exchange rates; no historical USD/MAD conversion is
+              applied. Taxes, fees and trading costs are excluded. Past results
+              do not predict future returns.
+            </p>
+            <h3>Where the data comes from</h3>
+            <ul>
+              {dcaSources.map((source) => (
+                <li key={source.title}>
+                  <a href={source.url} target="_blank" rel="noreferrer">
+                    {source.title} ↗
+                  </a>
+                  <p>{source.description}</p>
+                </li>
+              ))}
+            </ul>
+            <p>
+              All lines stop at {dateLabel(history.end)}, the latest shared
+              month in this snapshot. Data retrieved{" "}
+              {new Intl.DateTimeFormat("en-GB", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+                timeZone: "UTC",
+              }).format(new Date(`${history.retrievedOn}T00:00:00Z`))}
+              . No missing months are filled with assumed returns.
+            </p>
+            <p>
+              Built on past data to help you think it through. Not financial
+              advice.
+            </p>
+          </div>
+        )}
+      </Dialog>
+    </section>
   );
 }

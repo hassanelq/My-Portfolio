@@ -9,7 +9,7 @@ The owner approved starting the rebuild with the following decisions, which supe
 - Adopt the supplied content for now, with typed editable records for later review.
 - Replace the old CV with the English/French PDFs now in `docs/`; include an EN/FR selector.
 - Show **Articles coming soon.** until Substack posts exist.
-- Keep DCA simple: editable constant-return projections with explicit assumptions. Historical replay is deferred.
+- DCA was initially simplified to constant-return projections. The subsequent owner request replaces it with historical replay, MSCI World, checkbox comparisons, reusable popups and an interactive chart.
 - Link projects to repositories and known existing demos; do not implement those project applications inside the portfolio.
 
 The six routes, shared visual system, seven lab instruments, three arcade games, metadata, redirects, font cleanup and content guide are implemented. Publishing and the final content review remain separate steps. See `DATA_SOURCES.md` for the data and methodology used.
@@ -28,7 +28,7 @@ The six routes, shared visual system, seven lab instruments, three arcade games,
 | `/` | Hero with updated role and pitch; key metrics; about; skills matrix; selected projects; Finamaze and Oracle Capital experience; education, honors, CV, and direct contact. Content comes from [`portfolio-content.md`](portfolio-content.md). |
 | `/projects` | Filterable catalog of the eight systems in [`projects-spec.md`](projects-spec.md). Each has a concise problem, solution, stack, evidence-backed metrics, relevant visual or interaction, and working source/demo/report links. Stable section anchors support direct links. |
 | `/lab` | Seven instruments from [`quant-lab-spec.md`](quant-lab-spec.md): Black-Scholes and Greeks, Monte Carlo, efficient frontier, VaR/expected shortfall, DCF, option payoff builder, and binomial tree. Display values are computed from controls rather than copied from example screenshots. |
-| `/tools` | Initial fixed-return DCA projection based on [`financial-tools-spec.md`](financial-tools-spec.md), with starting amount, monthly deposit, current age, target age, chart, nominal/real breakdown, and clear methodology. Historical replay is deferred. |
+| `/tools` | Historical DCA comparison from [`financial-tools-spec.md`](financial-tools-spec.md), with compact inputs, checkbox-selected S&P 500/gold/MSCI World lines, a bank baseline, hover/touch/keyboard chart values and reusable help dialogs. |
 | `/arcade` | Three games from [`arcade-spec.md`](arcade-spec.md): chart Turing test, correlation guessing, and Kelly betting. Keep scoring locally in the browser. |
 | `/articles` | Minimal dated list linking to canonical Substack posts, following [`articles-spec.md`](articles-spec.md). Show an honest empty state until the first article and publication URL exist. |
 
@@ -84,8 +84,8 @@ The global navigation covers all six routes. About and contact become sections o
 
 ### Phase E — Financial tool and arcade
 
-1. Build the initial DCA engine from editable constant nominal annual assumptions. Show monthly compounding, end-of-month contributions, inflation-adjusted values, and a nominal/real breakdown. Do not display historical percentiles.
-2. Label MAD as the projection unit and explain that currency movements, taxes and fees are excluded. Historical FX/inflation datasets belong to a later historical edition. Expose the current assumptions in “How this works.”
+1. Replay each complete monthly-start window of the selected duration. Add fixed nominal contributions at month-end, deflate using observed Moroccan CPI, and display pointwise median lines and final P10/P90 outcomes.
+2. Keep market history and CPI versioned with sources and a deterministic importer. Explain the constant-FX interpretation, different historical coverage, and total-return versus price-only distinction inside “How this works.”
 3. Build the three arcade games, including source-backed market windows for the chart test, scoring and lives for correlation, and a fair Kelly comparison using the same flip sequence. Keep localStorage data limited to game scores/preferences.
 
 **Exit:** calculations and game rules match their written methodology; data sources and limitations are visible to users.

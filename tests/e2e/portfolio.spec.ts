@@ -133,23 +133,6 @@ test("lab recalculates, guards invalid DCF values and runs the simulation worker
     expect(await page.locator(hash!).count()).toBe(1);
   }
 });
-test("DCA applies inputs, handles a zero scenario, and rejects reversed ages", async ({
-  page,
-}) => {
-  await page.goto("/tools");
-  await page.getByLabel("STARTING AMOUNT (MAD)").fill("0");
-  await page.getByLabel("PER MONTH (MAD)").fill("0");
-  await page.getByRole("button", { name: "Calculate", exact: true }).click();
-  await expect(page.locator(".dca-outcome h2")).toHaveText("MAD 0");
-  await page.getByLabel("UNTIL AGE", { exact: true }).fill("25");
-  await expect(
-    page.getByRole("button", { name: "Calculate", exact: true }),
-  ).toBeDisabled();
-  await page.getByLabel("UNTIL AGE", { exact: true }).fill("65");
-  await expect(
-    page.getByRole("button", { name: "Calculate", exact: true }),
-  ).toBeEnabled();
-});
 test("arcade completes five chart rounds, persists correlation scores and resets Kelly", async ({
   page,
 }) => {

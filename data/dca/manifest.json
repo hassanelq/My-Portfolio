@@ -1,0 +1,55 @@
+{
+  "retrievedOn": "2026-10-02",
+  "cutoff": "2025-06",
+  "sources": [
+    {
+      "file": "sp500.csv",
+      "url": "https://datahub.io/core/s-and-p-500/_r/-/data/data.csv",
+      "sha256": "3a45dffabc414afc298c12159abc84c2875f88175ff3d4473ef7417e725ecac6"
+    },
+    {
+      "file": "gold.csv",
+      "url": "https://datahub.io/core/gold-prices/_r/-/data/monthly.csv",
+      "sha256": "6821c07f866d91cddc8beacd942d9548912216f816183565e47cef2c7add0b47"
+    },
+    {
+      "file": "msci-world.json",
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/%5E990100-USD-STRD?period1=0&period2=1767225600&interval=1mo",
+      "sha256": "e21c552486409a7a9753c5cfc625cba78b196624b4ded4ee647c8f23fecbe2af"
+    },
+    {
+      "file": "sp500-total-return.json",
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/%5ESP500TR?period1=1640995200&period2=1767225600&interval=1mo",
+      "sha256": "72cb3639261b3a52509f844b6f4eeb31f65cd7c8baa49e08da3553b41f7f6d96"
+    },
+    {
+      "file": "morocco-cpi.json",
+      "url": "https://api.db.nomics.world/v22/series/IMF/IFS/M.MA.PCPI_IX?observations=1",
+      "sha256": "0202b7578e9b4284060909144941f73216f970f3fb78303abe071c9829a3b846"
+    }
+  ],
+  "series": {
+    "sp500": {
+      "start": "1960-01",
+      "end": "2025-06",
+      "observations": 786
+    },
+    "gold": {
+      "start": "1968-01",
+      "end": "2025-06",
+      "observations": 690
+    },
+    "world": {
+      "start": "1985-01",
+      "end": "2025-06",
+      "observations": 486
+    }
+  },
+  "cpi": {
+    "provider": "IMF IFS via DBnomics",
+    "series": "M.MA.PCPI_IX",
+    "start": "1960-01",
+    "end": "2025-06",
+    "observations": 786
+  }
+}
