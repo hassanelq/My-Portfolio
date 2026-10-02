@@ -2102,6 +2102,204 @@ svg {
 }
 
 /* Financial tools: the portfolio's typography, hairlines and neutral palette. */
+.savings-fields.retirement-fields {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.retirement-advanced-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 24px;
+  padding: 12px 0 0;
+  color: var(--color-smoke);
+  border: 0;
+  background: transparent;
+  font-size: 15px;
+}
+.retirement-advanced-toggle > span {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.retirement-advanced-toggle > span svg {
+  color: var(--color-gold);
+}
+.retirement-advanced-toggle .rotated {
+  transform: rotate(180deg);
+}
+.retirement-advanced {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  padding-top: 24px;
+}
+.retirement-select {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: var(--color-smoke);
+  font-size: 15px;
+  min-width: 0;
+}
+.retirement-select select {
+  width: 100%;
+  height: 54px;
+  padding: 10px;
+  border: 1px solid var(--color-iron);
+  border-radius: 4px;
+  background: var(--color-obsidian);
+  color: var(--color-chalk);
+  font-size: 15px;
+}
+.retirement-advanced > p {
+  grid-column: 1 / -1;
+  color: var(--color-smoke);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.retirement-outcomes {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+  gap: 32px;
+  align-items: center;
+  margin-bottom: 40px;
+}
+.retirement-monthly {
+  border-left: 1px solid var(--color-graphite);
+  padding-left: 28px;
+}
+.retirement-monthly p {
+  color: var(--color-smoke);
+  font-size: 15px;
+  line-height: 1.6;
+}
+.retirement-monthly strong {
+  display: block;
+  font-size: 32px;
+  line-height: 1.3;
+  font-weight: 400;
+  letter-spacing: -0.8px;
+  margin: 12px 0;
+  overflow-wrap: anywhere;
+}
+.retirement-mode-note {
+  padding: 18px;
+  border: 1px solid var(--color-iron);
+  border-radius: 4px;
+  font-size: 16px;
+  color: var(--color-ash);
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+.retirement-chart-note {
+  color: var(--color-smoke);
+  font-size: 14px;
+  line-height: 1.7;
+  max-width: 680px;
+  margin-bottom: 30px;
+}
+.retirement-evidence {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+  border-block: 1px solid var(--color-graphite);
+}
+.retirement-evidence > div {
+  padding: 24px 20px;
+  border-right: 1px solid var(--color-graphite);
+}
+.retirement-evidence > div:first-child {
+  padding-left: 0;
+}
+.retirement-evidence > div:last-child {
+  padding-right: 0;
+  border-right: 0;
+}
+.retirement-evidence dt,
+.retirement-evidence small {
+  font-size: 13px;
+  color: var(--color-smoke);
+  line-height: 1.5;
+}
+.retirement-evidence dd {
+  font-size: 30px;
+  letter-spacing: -0.7px;
+  margin: 12px 0 8px;
+}
+.retirement-evidence dd > span {
+  font-size: 17px;
+  letter-spacing: 0;
+  color: var(--color-smoke);
+}
+.retirement-evidence small {
+  display: block;
+  font-size: 12px;
+}
+.retirement-alternatives {
+  margin-top: 40px;
+}
+.retirement-alternatives table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+.retirement-alternatives th,
+.retirement-alternatives td {
+  padding: 20px 16px;
+  border-bottom: 1px solid var(--color-graphite);
+  font-weight: 400;
+}
+.retirement-alternatives thead th {
+  padding-top: 0;
+  color: var(--color-smoke);
+  font-size: 14px;
+}
+.retirement-alternatives td,
+.retirement-alternatives th:last-child {
+  text-align: right;
+}
+.retirement-alternatives tbody th {
+  font-size: 22px;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+.retirement-alternatives tbody th > span {
+  display: block;
+  font-size: 13px;
+  color: var(--color-smoke);
+  margin-top: 7px;
+}
+.retirement-alternatives .retirement-selected-row {
+  background: var(--color-carbon);
+  border-left: 2px solid var(--color-chalk);
+}
+.retirement-alternatives td {
+  color: var(--color-smoke);
+  font-size: 15px;
+}
+.retirement-alternatives td button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  color: var(--color-chalk);
+  border: 0;
+  background: transparent;
+  font-size: 20px;
+  padding: 8px 0;
+  white-space: nowrap;
+}
+.retirement-alternatives td button:hover {
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+.retirement-alternatives > p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--color-smoke);
+  margin-top: 20px;
+}
 .tools-workspace {
   display: grid;
   grid-template-columns: 220px minmax(0, 1fr);
@@ -2645,8 +2843,20 @@ svg {
   .tools-navigation button > svg {
     display: none;
   }
-  .savings-fields {
+  .savings-fields,
+  .savings-fields.retirement-fields {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .retirement-fields .number-stepper:first-child {
+    grid-column: 1 / -1;
+  }
+  .retirement-outcomes {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .retirement-monthly {
+    border-left: 0;
+    padding-left: 0;
   }
   .savings-heading-bottom {
     display: block;
@@ -2695,6 +2905,25 @@ svg {
   }
 }
 @media (max-width: 600px) {
+  .retirement-advanced,
+  .retirement-evidence {
+    grid-template-columns: 1fr;
+  }
+  .retirement-evidence > div {
+    padding: 20px 0;
+    border-right: 0;
+    border-bottom: 1px solid var(--color-graphite);
+  }
+  .retirement-evidence > div:last-child {
+    border-bottom: 0;
+  }
+  .retirement-alternatives th,
+  .retirement-alternatives td {
+    padding-inline: 10px;
+  }
+  .retirement-alternatives tbody th {
+    font-size: 20px;
+  }
   .savings-heading-bottom {
     display: block;
   }
@@ -2806,6 +3035,9 @@ svg {
 @media (max-width: 480px) {
   .savings-fields .number-stepper:nth-child(-n + 2) {
     grid-column: 1 / -1;
+  }
+  .retirement-fields .number-stepper:nth-child(2) {
+    grid-column: auto;
   }
   .number-stepper-controls > button {
     width: 32px;

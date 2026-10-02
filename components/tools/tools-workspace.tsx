@@ -4,7 +4,13 @@ import { useRef, useState } from "react";
 import { ArrowRight, ArrowUpRight, Crosshair } from "lucide-react";
 import { toolCatalog } from "@/content/tools";
 
-export function ToolsWorkspace({ children }: { children: React.ReactNode }) {
+export function ToolsWorkspace({
+  children,
+  retirement,
+}: {
+  children: React.ReactNode;
+  retirement: React.ReactNode;
+}) {
   const [active, setActive] = useState<string>("dca");
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
 
@@ -87,6 +93,15 @@ export function ToolsWorkspace({ children }: { children: React.ReactNode }) {
           tabIndex={0}
         >
           {children}
+        </div>
+        <div
+          role="tabpanel"
+          id="tool-panel-retirement"
+          aria-labelledby="tool-tab-retirement"
+          hidden={active !== "retirement"}
+          tabIndex={0}
+        >
+          {retirement}
         </div>
         {toolCatalog
           .filter((tool) => tool.status === "coming-soon")

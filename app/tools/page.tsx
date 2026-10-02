@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
 import DCA from "@/components/tools/dca";
 import { ToolsWorkspace } from "@/components/tools/tools-workspace";
+import Retirement from "@/components/tools/retirement";
 export const metadata: Metadata = {
   alternates: { canonical: "/tools" },
   title: "Financial Tools",
   description:
-    "Explore monthly investing with historical S&P 500, gold and MSCI World returns, adjusted for Moroccan inflation.",
+    "Explore monthly investing and retirement planning with historical market returns and inflation-adjusted calculations.",
 };
 export default function ToolsPage() {
   return (
     <div className="page-container tools-page">
-      <ToolsWorkspace>
+      <ToolsWorkspace retirement={<Retirement />}>
         <DCA />
       </ToolsWorkspace>
     </div>

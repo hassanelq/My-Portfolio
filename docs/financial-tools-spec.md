@@ -1,12 +1,12 @@
-# Historical monthly investing simulator
+# Financial tools
 
 The owner’s latest DCA request supersedes the initial constant-growth calculator. The reference supplies calculation logic and useful details only. The owner requested an original layout using the portfolio design system, not the reference’s colors or composition. Keep the larger typography and existing site navigation.
 
 ## Tools workspace
 
 - Left-hand tool list on desktop; horizontally scrollable tabs above the content on mobile.
-- DCA simulator is available. Savings Goal and Retirement Planner each open a “Coming soon” panel.
-- Selection updates the main panel without leaving `/tools`. Returning to DCA preserves the current inputs and comparisons.
+- DCA simulator and Retirement Planner are available. Savings Goal opens a “Coming soon” panel.
+- Selection updates the main panel without leaving `/tools`. Returning to either calculator preserves its inputs and settings.
 - Keyboard arrows, Home and End navigate the tabs. The tool catalog and placeholder copy live in `content/tools.ts`.
 - Follow `DESIGN.md`: 1200px content column, obsidian canvas, regular Aeonik headlines, Input metadata, graphite dividers, outlined fields, 4–8px corners and compass-gold icons. No green UI accents.
 
@@ -37,3 +37,27 @@ The available histories differ. MSCI World is price-only; S&P 500 includes reinv
 - `data/dca/raw/` and `data/dca/manifest.json`: pinned sources and hashes.
 - `scripts/import-dca-data.py`: reproducible import and optional refresh.
 - `lib/math/dca.ts`: calculation engine and independent benchmark tests.
+
+## Retirement planner
+
+The owner’s FIRE reference supplies the functionality and explanation topics. Use the same portfolio design as DCA: inputs above results, a full-width interactive chart, graphite dividers, outlined controls and neutral series with gold icons. Do not reproduce the reference’s split-screen layout or green accents.
+
+- Main inputs: monthly living costs, current age and retirement age. Defaults: 8,000 DH, 25 and 45.
+- Advanced: existing investments (default zero), planning end age (75), historical stress test or average-return spend-down, Moroccan or US inflation.
+- Show the FIRE number, monthly investment required, initial withdrawal rate, historical starts funded and retirement duration. The end age is a planning horizon, not a life-expectancy estimate.
+- The default tests every complete historical retirement period and finds the capital needed to fund all of them. The rate, most demanding start and window count are computed, never copied from the reference.
+- Accumulation uses the historical compound real return as a smooth estimate. Monthly contributions are constant in purchasing power, so they must increase with inflation. This differs from DCA’s fixed nominal monthly deposits.
+- The chart separates estimated accumulation from withdrawals during the most demanding historical period, marks the retirement age, and exposes balances through hover, touch and keyboard controls. `components/ui/age-chart.tsx` is shared with DCA.
+- Average-return mode models spending down at one constant real return, while showing how many actual historical periods its target would fund. Label this mode and its sequence-of-returns risk visibly.
+- Compare 3,000 DH/month, the calculated contribution and 12,000 DH/month. Recalculate the required capital for each candidate age’s remaining retirement duration. Clicking an age applies it to the plan.
+- Explain zero spending, sufficient existing investments and immediate funding shortfalls. Unsupported horizons show a coverage message, without extrapolated history.
+- Reuse `Dialog` for “How much to invest?”, living costs, the retirement horizon and “How this works”. The method popup includes dynamic figures, actual dataset coverage, the longer US reference and source links.
+
+### Retirement maintenance
+
+- `content/retirement.ts`: defaults, comparison contributions and reference descriptions.
+- `lib/math/retirement.ts`: monthly historical withdrawal engine and accumulation calculations; independent nominal-ledger benchmarks in `retirement.test.ts`.
+- `content/retirement-us-history.json`: longer US market/CPI reference. Moroccan calculations reuse `dca-history.json`.
+- `data/retirement/`: pinned BLS CPI and provenance manifest; market raw files are shared with DCA.
+- `scripts/import-retirement-data.py`: rebuild the US reference, or refresh BLS with `--download`.
+- `DATA_SOURCES.md`: exact timing, equations, source splice, limitations and reproducibility.

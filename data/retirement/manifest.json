@@ -1,0 +1,24 @@
+{
+  "retrievedOn": "2026-10-02",
+  "start": "1928-01",
+  "end": "2025-06",
+  "observations": 1170,
+  "sources": [
+    {
+      "file": "data/dca/raw/sp500.csv",
+      "sha256": "3a45dffabc414afc298c12159abc84c2875f88175ff3d4473ef7417e725ecac6",
+      "url": "https://datahub.io/core/s-and-p-500"
+    },
+    {
+      "file": "data/dca/raw/sp500-total-return.json",
+      "sha256": "72cb3639261b3a52509f844b6f4eeb31f65cd7c8baa49e08da3553b41f7f6d96",
+      "url": "https://finance.yahoo.com/quote/%5ESP500TR/history/"
+    },
+    {
+      "file": "data/retirement/raw/us-cpi.json",
+      "sha256": "e2a31ba45e71f653a6e66a3da2110cb5b3b541fe15ff8abf0e30d14fb377b981",
+      "url": "https://api.bls.gov/publicAPI/v2/timeseries/data/CUUR0000SA0?startyear=2023&endyear=2025"
+    }
+  ],
+  "method": "Monthly reinvested Shiller dividends through 2023-06, then Yahoo total-return ratios. Shiller US CPI through 2023-06, then BLS CPI-U unadjusted changes. No missing months are interpolated."
+}

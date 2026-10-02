@@ -13,21 +13,31 @@ test("DCA keeps comparison controls simple and recalculates instantly", async ({
   ).toHaveCount(0);
   await page.getByLabel("Per month", { exact: true }).fill("0");
   await page.getByLabel("Per month", { exact: true }).blur();
-  await expect(page.locator(".savings-outcome h2")).toHaveText("0 DH");
+  await expect(page.locator("#tool-panel-dca .savings-outcome h2")).toHaveText(
+    "0 DH",
+  );
   await page.getByRole("button", { name: "Increase per month" }).click();
-  await expect(page.locator(".savings-outcome h2")).not.toHaveText("0 DH");
+  await expect(
+    page.locator("#tool-panel-dca .savings-outcome h2"),
+  ).not.toHaveText("0 DH");
   await page
     .getByRole("checkbox", { name: "MSCI World", exact: true })
     .uncheck();
-  await expect(page.locator(".savings-legend")).not.toContainText("MSCI World");
+  await expect(
+    page.locator("#tool-panel-dca .savings-legend"),
+  ).not.toContainText("MSCI World");
   await page.getByRole("checkbox", { name: "MSCI World", exact: true }).check();
-  await expect(page.locator(".savings-legend")).toContainText("MSCI World");
+  await expect(page.locator("#tool-panel-dca .savings-legend")).toContainText(
+    "MSCI World",
+  );
   for (const name of ["S&P 500", "Gold", "MSCI World"])
     await page.getByRole("checkbox", { name, exact: true }).uncheck();
-  await expect(page.locator(".savings-outcome")).toContainText(
+  await expect(page.locator("#tool-panel-dca .savings-outcome")).toContainText(
     "leaving it in the bank",
   );
-  await expect(page.locator(".savings-legend > span")).toHaveCount(1);
+  await expect(
+    page.locator("#tool-panel-dca .savings-legend > span"),
+  ).toHaveCount(1);
 });
 
 test("shared popups support Escape, backdrop, focus restoration and scroll", async ({
@@ -93,7 +103,9 @@ test("chart exposes all selected values through hover and keyboard", async ({
   await expect(
     page.getByRole("status").filter({ hasText: "MSCI World has up to" }),
   ).toBeVisible();
-  await expect(page.locator(".savings-legend")).not.toContainText("MSCI World");
+  await expect(
+    page.locator("#tool-panel-dca .savings-legend"),
+  ).not.toContainText("MSCI World");
 });
 
 for (const width of [1440, 768, 390, 320])
@@ -177,7 +189,7 @@ test("tool navigation shows coming-soon panels and preserves DCA inputs", async 
   await expect(
     page.getByRole("heading", { name: "Retirement planner." }),
   ).toBeVisible();
-  await page.getByRole("button", { name: "Open DCA simulator" }).click();
+  await list.getByRole("tab", { name: /DCA simulator/ }).click();
   await expect(page.getByLabel("Per month", { exact: true })).toHaveValue(
     /2\s500/,
   );

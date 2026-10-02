@@ -16,7 +16,7 @@ export const toolCatalog = [
     id: "retirement",
     title: "Retirement planner",
     description: "Explore how saving today could support life after work.",
-    status: "coming-soon",
+    status: "available",
   },
 ] as const;
 
