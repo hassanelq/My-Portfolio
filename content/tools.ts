@@ -7,12 +7,6 @@ export const toolCatalog = [
     status: "available",
   },
   {
-    id: "savings-goal",
-    title: "Savings goal",
-    description: "Plan the monthly savings needed to reach a goal.",
-    status: "coming-soon",
-  },
-  {
     id: "retirement",
     title: "Retirement planner",
     description: "Explore how saving today could support life after work.",
