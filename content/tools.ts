@@ -1,4 +1,4 @@
-// Add tools here to keep the workspace navigation and placeholder copy together.
+// Add tools here and their matching panels in ToolsWorkspace.
 export const toolCatalog = [
   {
     id: "dca",
@@ -17,6 +17,13 @@ export const toolCatalog = [
     title: "Emergency fund",
     description:
       "Find a cash cushion for your income, household and essential costs.",
+    status: "available",
+  },
+  {
+    id: "rent-buy",
+    title: "Rent or buy?",
+    description:
+      "Compare owning a home with renting it and investing the difference.",
     status: "available",
   },
 ] as const;

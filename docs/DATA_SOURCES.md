@@ -109,6 +109,12 @@ The current choice counts are `3 × 4 × 3 × 4 × 4 × 3 × 3 = 5,184`, all exe
 
 General guidance on keeping emergency cash safe, accessible and separate is supported by the [CFPB emergency fund guide](https://www.consumerfinance.gov/an-essential-guide-to-building-an-emergency-fund/), consulted 3 October 2026. This source does not endorse this scoring table. Local benefit eligibility and bank/deposit-protection terms are not inferred; users supply their own situation. No specific product or jurisdictional protection limit is recommended. Answers stay in React state, survive tool switching and clear on reload; no AI processes them.
 
+## Rent or buy
+
+See [`rent-buy-spec.md`](rent-buy-spec.md) for the full research record, formulas, source links and input assumptions, consulted 3 October 2026. This tool models equal starting cash and monthly resources, amortizes a fixed-rate loan, invests the difference on either path and compares net wealth after a hypothetical sale in today’s DH.
+
+Two dated observations seed the example: BAM’s Q1 2025 broad real-estate lending rate of 5.18%, and BAM / ANCFCC’s Q3 2025 residential price change of 1.5% year-on-year. These are not live borrower quotes or long-term forecasts. All remaining values are explicit scenario assumptions. The model does not replay market data or infer a property’s actual rent, appreciation or tax status. No new historical dataset or live API is used.
+
 ## Quant Lab
 
 - Black-Scholes: European, no dividends; analytical Greeks. Vega/rho per percentage point, theta per calendar day. Expiry and zero-volatility cases use explicit limiting conventions.

@@ -25,6 +25,8 @@ export function AgeChart({
   endLabels = true,
   sliderLabel = "Explore savings by age",
   chartLabel = "Historical savings in today’s dirhams",
+  axisLabel = "Age",
+  tickInterval = 10,
 }: {
   series: AgeSeries[];
   age: number;
@@ -33,6 +35,8 @@ export function AgeChart({
   endLabels?: boolean;
   sliderLabel?: string;
   chartLabel?: string;
+  axisLabel?: string;
+  tickInterval?: number;
 }) {
   const container = useRef<HTMLDivElement>(null),
     [width, setWidth] = useState(720),
@@ -53,17 +57,20 @@ export function AgeChart({
     top = 32,
     bottom = height - 36,
     plotWidth = width - left - right;
-  const rawMax = Math.max(
-    1000,
-    ...series.flatMap((s) => s.points.map((p) => p.value)),
-  );
-  const magnitude = 10 ** Math.floor(Math.log10(rawMax / 4));
+  const values = series.flatMap((s) => s.points.map((p) => p.value));
+  const rawMax = Math.max(1000, ...values);
+  const rawMin = Math.min(0, ...values);
+  const range = rawMax - rawMin;
+  const magnitude = 10 ** Math.floor(Math.log10(range / 4));
   const step =
-    [1, 2, 5, 10].find((n) => n * magnitude >= rawMax / 4)! * magnitude;
+    [1, 2, 5, 10].find((n) => n * magnitude >= range / 4)! * magnitude;
   const maximum = Math.ceil(rawMax / step) * step;
+  const minimum = Math.floor(rawMin / step) * step;
+  const firstTick = minimum === 0 ? step : minimum;
   const X = (year: number) =>
     left + ((year - age) / (targetAge - age)) * plotWidth;
-  const Y = (value: number) => bottom - (value / maximum) * (bottom - top);
+  const Y = (value: number) =>
+    bottom - ((value - minimum) / (maximum - minimum)) * (bottom - top);
   const index =
     active === null ? null : Math.max(0, Math.min(targetAge - age, active));
   const activeValues = series.flatMap((s) => {
@@ -73,9 +80,10 @@ export function AgeChart({
   const ticks = [
     age,
     ...Array.from(
-      { length: Math.ceil((targetAge - age) / 10) + 1 },
-      (_, i) => Math.ceil((age + 1) / 10) * 10 + i * 10,
-    ).filter((n) => n < targetAge - 2),
+      { length: Math.ceil((targetAge - age) / tickInterval) + 1 },
+      (_, i) =>
+        Math.ceil((age + 1) / tickInterval) * tickInterval + i * tickInterval,
+    ).filter((n) => n < targetAge - Math.min(2, tickInterval / 2)),
     targetAge,
   ];
   const endings = series
@@ -104,7 +112,7 @@ export function AgeChart({
     <div className="savings-chart" ref={container}>
       <p className="sr-only" id={hint}>
         Hover or tap to explore. With the chart focused, use left and right
-        arrow keys to change age.
+        arrow keys to change {axisLabel.toLowerCase()}.
       </p>
       <svg
         viewBox={`0 0 ${width} ${height}`}
@@ -112,8 +120,8 @@ export function AgeChart({
         aria-label={chartLabel}
       >
         {Array.from(
-          { length: Math.round(maximum / step) },
-          (_, i) => (i + 1) * step,
+          { length: Math.round((maximum - firstTick) / step) + 1 },
+          (_, i) => firstTick + i * step,
         ).map((value) => (
           <g key={value}>
             <line
@@ -244,7 +252,7 @@ export function AgeChart({
           aria-valuemin={age}
           aria-valuemax={targetAge}
           aria-valuenow={age + (index ?? 0)}
-          aria-valuetext={`Age ${age + (index ?? 0)}. ${activeValues.map((s) => `${s.label}: ${dirhams(s.value)}`).join(". ")}`}
+          aria-valuetext={`${axisLabel} ${age + (index ?? 0)}. ${activeValues.map((s) => `${s.label}: ${dirhams(s.value)}`).join(". ")}`}
           onPointerMove={locate}
           onPointerDown={locate}
           onPointerLeave={(event) => {
@@ -290,7 +298,9 @@ export function AgeChart({
             top: 6,
           }}
         >
-          <strong>Age {age + index}</strong>
+          <strong>
+            {axisLabel} {age + index}
+          </strong>
           {activeValues.map((s) => (
             <div key={s.id}>
               <span>

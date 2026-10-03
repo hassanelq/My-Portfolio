@@ -1,17 +1,19 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { ArrowRight, ArrowUpRight, Crosshair } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { toolCatalog } from "@/content/tools";
 
 export function ToolsWorkspace({
   children,
   retirement,
   emergency,
+  rentBuy,
 }: {
   children: React.ReactNode;
   retirement: React.ReactNode;
   emergency: React.ReactNode;
+  rentBuy: React.ReactNode;
 }) {
   const [active, setActive] = useState<string>("dca");
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -75,10 +77,7 @@ export function ToolsWorkspace({
               }}
             >
               <span className="tools-navigation-number">0{index + 1}</span>
-              <span className="tools-navigation-label">
-                {tool.title}
-                {tool.status === "coming-soon" && <small>Coming soon</small>}
-              </span>
+              <span className="tools-navigation-label">{tool.title}</span>
               {active === tool.id && (
                 <ArrowUpRight size={16} aria-hidden="true" />
               )}
@@ -114,41 +113,15 @@ export function ToolsWorkspace({
         >
           {emergency}
         </div>
-        {toolCatalog
-          .filter((tool) => tool.status === "coming-soon")
-          .map((tool) => (
-            <div
-              key={tool.id}
-              role="tabpanel"
-              id={`tool-panel-${tool.id}`}
-              aria-labelledby={`tool-tab-${tool.id}`}
-              hidden={active !== tool.id}
-              tabIndex={0}
-            >
-              <section className="tool-coming-soon">
-                <p className="eyebrow">THE TOOLKIT / COMING SOON</p>
-                <h1>{tool.title}.</h1>
-                <p className="tool-coming-description">{tool.description}</p>
-                <div className="tool-coming-message">
-                  <Crosshair size={40} strokeWidth={1} aria-hidden="true" />
-                  <h2>Coming soon.</h2>
-                  <p>
-                    This tool is on the way. Explore monthly investing while it
-                    takes shape.
-                  </p>
-                  <button
-                    className="button"
-                    onClick={() => {
-                      setActive("dca");
-                      tabs.current[0]?.focus();
-                    }}
-                  >
-                    Open DCA simulator <ArrowRight size={18} />
-                  </button>
-                </div>
-              </section>
-            </div>
-          ))}
+        <div
+          role="tabpanel"
+          id="tool-panel-rent-buy"
+          aria-labelledby="tool-tab-rent-buy"
+          hidden={active !== "rent-buy"}
+          tabIndex={0}
+        >
+          {rentBuy}
+        </div>
       </div>
     </div>
   );

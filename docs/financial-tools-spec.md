@@ -5,9 +5,9 @@ The owner’s latest DCA request supersedes the initial constant-growth calculat
 ## Tools workspace
 
 - Left-hand tool list on desktop; horizontally scrollable tabs above the content on mobile.
-- DCA simulator, Retirement Planner and Emergency Fund are available. Savings Goal opens a “Coming soon” panel.
+- Four available tools: DCA simulator, Retirement Planner, Emergency Fund and Rent or Buy. The Savings Goal placeholder is removed.
 - Selection updates the main panel without leaving `/tools`. Returning to a calculator preserves its inputs and settings, including incomplete emergency-fund answers.
-- Keyboard arrows, Home and End navigate the tabs. The tool catalog and placeholder copy live in `content/tools.ts`.
+- Keyboard arrows, Home and End navigate the tabs. The tool catalog lives in `content/tools.ts`.
 - Follow `DESIGN.md`: 1200px content column, obsidian canvas, regular Aeonik headlines, Input metadata, graphite dividers, outlined fields, 4–8px corners and compass-gold icons. No green UI accents.
 
 ## Main screen
@@ -84,3 +84,9 @@ Use the DCA design system and shared `Dialog`. The owner explicitly requested qu
 - `tests/e2e/emergency.spec.ts`: question flow, retained state, direct edits, keyboard controls, popups and responsive layouts.
 
 The reference supplies the month thresholds but no per-choice weights. This version defines and documents its own weights; it does not claim to reproduce the reference’s 9,072 combinations. See `DATA_SOURCES.md` for the exact table.
+
+## Rent or buy
+
+The fourth tool compares owning a home with renting an equivalent home and investing the difference. Six main inputs and expandable assumptions update a wealth comparison, interactive chart, monthly-cost summary, sustained break-even and exit breakdown. Both paths have equal starting resources and invest their monthly savings symmetrically. The comparison includes amortization, purchase/sale costs, maintenance, insurance, rental deposits and inflation; tax allowances are explicit.
+
+Read [`rent-buy-spec.md`](rent-buy-spec.md) for the researched sources, dated Moroccan benchmarks, exact monthly equations, assumptions, limits and maintenance paths. This is an editable future scenario, not a replay of historical housing data. Shared chart support now covers negative wealth and a Year axis.

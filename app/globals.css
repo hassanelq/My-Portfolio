@@ -2102,6 +2102,211 @@ svg {
 }
 
 /* Financial tools: the portfolio's typography, hairlines and neutral palette. */
+.rent-buy-fields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px 16px;
+  align-items: start;
+}
+.number-input {
+  min-width: 0;
+}
+.number-input label {
+  display: block;
+  font-size: 15px;
+  color: var(--color-smoke);
+  margin-bottom: 10px;
+  line-height: 22px;
+}
+.number-input input {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  height: 54px;
+  border: 1px solid var(--color-iron);
+  border-radius: 4px;
+  background: var(--color-obsidian);
+  color: var(--color-chalk);
+  padding: 10px 12px;
+  font-size: 22px;
+  font-variant-numeric: tabular-nums;
+}
+.number-input input[aria-invalid="true"] {
+  border-color: var(--color-smoke);
+  border-style: dashed;
+}
+.number-input small {
+  display: block;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-smoke);
+  margin-top: 10px;
+}
+.rent-buy-input-note,
+.rent-buy-chart-note,
+.rent-buy-breakdown > p,
+.rent-buy-horizons > p {
+  color: var(--color-smoke);
+  font-size: 15px;
+  line-height: 1.7;
+  margin-top: 20px;
+  max-width: 720px;
+}
+.rent-buy-advanced {
+  margin-top: 24px;
+}
+.rent-buy-advanced > p {
+  color: var(--color-smoke);
+  font-size: 15px;
+  line-height: 1.7;
+}
+.rent-buy-advanced fieldset {
+  padding: 24px 0 0;
+  margin-top: 30px;
+  min-width: 0;
+  border: 0;
+  border-top: 1px solid var(--color-graphite);
+}
+.rent-buy-advanced legend {
+  padding-right: 18px;
+  font-size: 19px;
+}
+.rent-buy-assumption-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+.rent-buy-assumption-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+  padding-top: 20px;
+  font-size: 14px;
+  color: var(--color-smoke);
+}
+.rent-buy-outcome h2 {
+  overflow-wrap: anywhere;
+}
+.rent-buy-outcome {
+  margin-bottom: 32px;
+}
+.rent-buy-balances {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+  padding: 24px 0;
+  border-block: 1px solid var(--color-graphite);
+  margin-bottom: 36px;
+}
+.rent-buy-balances span,
+.rent-buy-balances small {
+  display: block;
+  color: var(--color-smoke);
+  font-size: 15px;
+  line-height: 1.6;
+}
+.rent-buy-balances strong {
+  display: block;
+  font-size: clamp(25px, 2.5vw, 34px);
+  font-weight: 400;
+  margin: 12px 0;
+  overflow-wrap: anywhere;
+}
+.rent-buy-evidence {
+  margin-top: 28px;
+}
+.rent-buy-evidence dd {
+  font-size: 23px;
+  line-height: 1.4;
+  letter-spacing: -0.5px;
+  overflow-wrap: anywhere;
+}
+.rent-buy-horizons {
+  margin: 36px 0;
+}
+.rent-buy-horizons h2 {
+  font-size: 23px;
+  font-weight: 400;
+  margin-bottom: 20px;
+}
+.rent-buy-horizons [role="group"] {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.rent-buy-horizons button {
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 4px;
+  background: none;
+  border: 1px solid var(--color-iron);
+  color: var(--color-smoke);
+}
+.rent-buy-horizons button[aria-pressed="true"] {
+  border-color: var(--color-chalk);
+  color: var(--color-chalk);
+}
+.rent-buy-breakdown {
+  padding-top: 32px;
+  border-top: 1px solid var(--color-graphite);
+}
+.rent-buy-table-wrap {
+  overflow-x: auto;
+}
+.rent-buy-breakdown table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  font-size: 16px;
+}
+.rent-buy-breakdown th,
+.rent-buy-breakdown td {
+  padding: 18px 10px;
+  border-bottom: 1px solid var(--color-graphite);
+  font-weight: 400;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+.rent-buy-breakdown th:first-child {
+  width: 40%;
+  padding-left: 0;
+  text-align: left;
+}
+.rent-buy-breakdown td:last-child,
+.rent-buy-breakdown th:last-child {
+  padding-right: 0;
+}
+.rent-buy-breakdown thead th,
+.rent-buy-breakdown tbody th {
+  color: var(--color-smoke);
+}
+.rent-buy-breakdown tfoot {
+  font-size: 20px;
+}
+@media (max-width: 1100px) {
+  .rent-buy-fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 600px) {
+  .rent-buy-fields,
+  .rent-buy-assumption-fields {
+    grid-template-columns: 1fr;
+  }
+  .rent-buy-balances {
+    gap: 16px;
+  }
+  .rent-buy-breakdown table {
+    font-size: 15px;
+  }
+  .rent-buy-breakdown tfoot {
+    font-size: 17px;
+  }
+  .rent-buy-breakdown th,
+  .rent-buy-breakdown td {
+    padding-inline: 6px;
+  }
+}
 .emergency-questionnaire {
   padding: 32px 0;
 }

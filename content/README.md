@@ -8,9 +8,10 @@ The site's content lives here, independently of page layouts. Save a file and th
 | `portfolio.ts`        | Hero, about, skills, experience, education, certifications, honors, extracurricular roles                         |
 | `projects.ts`         | Project descriptions, categories, highlights, technologies, repository/demo/report URLs and homepage selection |
 | `articles.ts`         | Substack publication URL and published article metadata                                                        |
-| `tools.ts`            | Tool navigation, placeholder copy, DCA defaults, series styles and sources                                           |
+| `tools.ts`            | Tool navigation, DCA defaults, series styles and sources                                           |
 | `retirement.ts`       | FIRE planner defaults, alternative monthly contributions and research references |
 | `emergency.ts`        | Emergency-fund questions, choices, scoring points, month bands and guidance source |
+| `rent-buy.ts`         | Rent/buy defaults, assumption fields, limits, explanations and dated source notes |
 | `market-windows.json` | Sourced S&P 500 observations used by the chart game (see `docs/DATA_SOURCES.md`)                               |
 
 ## Add a project
@@ -46,7 +47,11 @@ The versioned observations are in `dca-history.json`; provenance and SHA-256 has
 
 ## Add a tool
 
-Edit `toolCatalog` in `tools.ts` to add or rename a tool. Entries with `status: "coming-soon"` automatically get a selectable navigation item and placeholder panel. When a tool is ready, add its component and panel to `components/tools/tools-workspace.tsx`, using the entry’s stable ID for the tab/panel relationship. Available calculators stay mounted when switching tools, so edits and questionnaire progress are preserved. Series colors reference the shared design tokens; line patterns distinguish the chart comparisons.
+Edit `toolCatalog` in `tools.ts` to add or rename a tool, then add its component and panel to `components/tools/tools-workspace.tsx`, using the entry’s stable ID for the tab/panel relationship. The four tools are DCA, retirement, emergency savings and rent/buy. There are no placeholder panels. Available calculators stay mounted when switching tools, so edits and questionnaire progress are preserved. Series colors reference the shared design tokens; line patterns distinguish the chart comparisons.
+
+## Maintain the rent/buy example
+
+Edit `rent-buy.ts` for defaults and advanced assumption descriptions. The 5.18% mortgage benchmark and 1.5% home-growth starting value are dated 2025 references, not live offers or forecasts. Other numbers are illustrative. The engine in `lib/math/rent-buy.ts` uses monthly amortization, equal cash resources, symmetric investment of savings, hypothetical exit costs and inflation. See `docs/rent-buy-spec.md` for the source record and complete equations. Updating a source does not automatically justify using its latest observation as a future growth forecast.
 
 ## Edit emergency-fund questions and rules
 

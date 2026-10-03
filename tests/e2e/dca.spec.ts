@@ -167,27 +167,27 @@ test("tapping the mobile chart keeps values at the tapped age", async ({
   await context.close();
 });
 
-test("tool navigation shows coming-soon panels and preserves DCA inputs", async ({
+test("tool navigation shows four working tools and preserves DCA inputs", async ({
   page,
 }) => {
   await page.goto("/tools");
   const list = page.getByRole("tablist", { name: "Financial tools" });
   await page.getByLabel("Per month", { exact: true }).fill("2500");
   await page.getByLabel("Per month", { exact: true }).blur();
-  await list.getByRole("tab", { name: /Savings goal/ }).click();
+  await expect(list.getByRole("tab")).toHaveCount(4);
+  await expect(list).not.toContainText("Coming soon");
+  await list.getByRole("tab", { name: /Retirement planner/ }).click();
   await expect(
-    page.getByRole("tabpanel", { name: /Savings goal/ }),
-  ).toBeVisible();
-  await expect(
-    page.getByRole("heading", { name: "Coming soon.", exact: true }),
+    page.getByRole("heading", { name: "Retirement planner." }),
   ).toBeVisible();
   await expect(page.getByLabel("Per month", { exact: true })).not.toBeVisible();
   await page.keyboard.press("ArrowDown");
   await expect(
-    list.getByRole("tab", { name: /Retirement planner/ }),
+    list.getByRole("tab", { name: /Emergency fund/ }),
   ).toHaveAttribute("aria-selected", "true");
+  await page.keyboard.press("End");
   await expect(
-    page.getByRole("heading", { name: "Retirement planner." }),
+    page.getByRole("heading", { name: "Rent or buy?", exact: true }),
   ).toBeVisible();
   await list.getByRole("tab", { name: /DCA simulator/ }).click();
   await expect(page.getByLabel("Per month", { exact: true })).toHaveValue(

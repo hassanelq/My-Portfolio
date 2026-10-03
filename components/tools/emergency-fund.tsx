@@ -68,7 +68,7 @@ export default function EmergencyFund() {
       aria-labelledby="emergency-title"
     >
       <header className="savings-heading">
-        <p className="eyebrow">04 / ROOM TO BREATHE</p>
+        <p className="eyebrow">03 / ROOM TO BREATHE</p>
         <h1 id="emergency-title">
           Emergency fund<span className="muted-heading">.</span>
         </h1>

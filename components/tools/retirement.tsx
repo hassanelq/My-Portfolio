@@ -133,7 +133,7 @@ export default function Retirement() {
       aria-labelledby="retirement-title"
     >
       <header className="savings-heading">
-        <p className="eyebrow">03 / FINANCIAL INDEPENDENCE</p>
+        <p className="eyebrow">02 / FINANCIAL INDEPENDENCE</p>
         <h1 id="retirement-title">
           Retirement planner<span className="muted-heading">.</span>
         </h1>
