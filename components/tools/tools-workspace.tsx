@@ -7,9 +7,11 @@ import { toolCatalog } from "@/content/tools";
 export function ToolsWorkspace({
   children,
   retirement,
+  emergency,
 }: {
   children: React.ReactNode;
   retirement: React.ReactNode;
+  emergency: React.ReactNode;
 }) {
   const [active, setActive] = useState<string>("dca");
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -102,6 +104,15 @@ export function ToolsWorkspace({
           tabIndex={0}
         >
           {retirement}
+        </div>
+        <div
+          role="tabpanel"
+          id="tool-panel-emergency"
+          aria-labelledby="tool-tab-emergency"
+          hidden={active !== "emergency"}
+          tabIndex={0}
+        >
+          {emergency}
         </div>
         {toolCatalog
           .filter((tool) => tool.status === "coming-soon")

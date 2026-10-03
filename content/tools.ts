@@ -18,6 +18,13 @@ export const toolCatalog = [
     description: "Explore how saving today could support life after work.",
     status: "available",
   },
+  {
+    id: "emergency",
+    title: "Emergency fund",
+    description:
+      "Find a cash cushion for your income, household and essential costs.",
+    status: "available",
+  },
 ] as const;
 
 // Monthly source observations are in dca-history.json; no editable growth assumptions.

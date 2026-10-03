@@ -5,8 +5,8 @@ The owner’s latest DCA request supersedes the initial constant-growth calculat
 ## Tools workspace
 
 - Left-hand tool list on desktop; horizontally scrollable tabs above the content on mobile.
-- DCA simulator and Retirement Planner are available. Savings Goal opens a “Coming soon” panel.
-- Selection updates the main panel without leaving `/tools`. Returning to either calculator preserves its inputs and settings.
+- DCA simulator, Retirement Planner and Emergency Fund are available. Savings Goal opens a “Coming soon” panel.
+- Selection updates the main panel without leaving `/tools`. Returning to a calculator preserves its inputs and settings, including incomplete emergency-fund answers.
 - Keyboard arrows, Home and End navigate the tabs. The tool catalog and placeholder copy live in `content/tools.ts`.
 - Follow `DESIGN.md`: 1200px content column, obsidian canvas, regular Aeonik headlines, Input metadata, graphite dividers, outlined fields, 4–8px corners and compass-gold icons. No green UI accents.
 
@@ -61,3 +61,26 @@ The owner’s FIRE reference supplies the functionality and explanation topics. 
 - `data/retirement/`: pinned BLS CPI and provenance manifest; market raw files are shared with DCA.
 - `scripts/import-retirement-data.py`: rebuild the US reference, or refresh BLS with `--download`.
 - `DATA_SOURCES.md`: exact timing, equations, source splice, limitations and reproducibility.
+
+## Emergency fund
+
+Use the DCA design system and shared `Dialog`. The owner explicitly requested questions with choices and numeric inputs instead of AI or a free-text description.
+
+- Guided first pass: nine steps, comprising essential monthly spending, seven risk factors and current cash savings. One question per screen, with progress, Back and Continue controls. Choices must be explicit; spending must be positive. Cash starts at a visible, editable zero.
+- Risk factors: income stability, unemployment support, dependents, home/fixed-bill burden, time to replace income, downturn exposure and required loan payments.
+- The final step opens the result: 3, 6, 9 or 12 months; target in DH; the largest contributing factors; existing coverage and remaining amount to save. Self-employed users receive at least six months.
+- All nine answers are editable together beneath the result. Changes recalculate immediately, without another questionnaire. Switching tools preserves progress and results. Reload clears the in-memory answers.
+- The month scale is a result indicator, not a slider that bypasses the scoring rule. Progress toward the target is capped visually at 100%; extra savings are shown as a surplus.
+- “How much cash?” describes the actual guided flow. “How this works” gives every choice’s points, the bands, current score and arithmetic. It distinguishes this planning heuristic from the historical simulations in the other tools.
+- Give general guidance on accessible, separate bank savings and link the CFPB emergency-fund guide. Do not assume local unemployment eligibility, advertise a specific bank or copy the reference’s legal terms.
+- No AI, external calculation service, database or stored personal profile. All calculations run in the browser.
+
+### Emergency fund maintenance
+
+- `content/emergency.ts`: question wording, choices, points, explanations, bands and source link.
+- `lib/math/emergency.ts`: deterministic scoring, target, coverage and remaining savings.
+- `components/tools/emergency-fund.tsx`: questionnaire, editable results and shared popups.
+- `lib/math/emergency.test.ts`: boundary, validation and exhaustive choice checks.
+- `tests/e2e/emergency.spec.ts`: question flow, retained state, direct edits, keyboard controls, popups and responsive layouts.
+
+The reference supplies the month thresholds but no per-choice weights. This version defines and documents its own weights; it does not claim to reproduce the reference’s 9,072 combinations. See `DATA_SOURCES.md` for the exact table.

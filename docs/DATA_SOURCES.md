@@ -87,6 +87,28 @@ Zero spending needs zero capital. Flat and negative real returns are supported. 
 
 All retirement assets are S&P 500 equities with reinvested dividends. A DH label assumes unchanged USD/MAD exchange rates. No tax, fees, access costs, pensions, variable spending, bonds or inheritance target is modeled. The longer US reference changes both inflation and market coverage; it is not a forecast of Moroccan prices. Figures use observed CPI changes, never a fixed inflation assumption.
 
+## Emergency cash cushion
+
+This tool uses a deterministic planning heuristic, not a dataset or historical backtest. The supplied reference gives thresholds but does not disclose answer weights. We retain its thresholds and self-employment minimum, while defining an explicit scoring table in `content/emergency.ts`:
+
+| Factor | Choice → points |
+| --- | --- |
+| Income | Steady → 0; variable/interrupted → 2; self-employed → 3 |
+| Unemployment support | Essentials covered → 0; partial → 1; none or unsure → 2 |
+| Dependents | Just you → 0; shared support → 1; primarily your responsibility → 2 |
+| Housing and fixed bills | Mortgage-free with bills ≤30%, or combined costs ≤30% of pay → 0; >30% to 60% → 1; >60% or no current income → 2 |
+| Replacing income | Under 3 months → 0; 3–6 months → 1; over 6 months or unsure → 2 |
+| Downturn exposure | Low → 0; unsure → 1; likely hit early → 2 |
+| Required loan repayments | None → 0; under 20% of pay → 1; ≥20% or repayments without current income → 2 |
+
+Scores 0–4 map to 3 months, 5–7 to 6 months, 8 to 9 months and 9+ to 12 months. Apply a minimum of 6 months for self-employment. These weights are editorial planning assumptions, not empirically calibrated loss probabilities. All seven answers are required; uncertainty is an explicit choice with the stated score.
+
+`target = months × monthlyEssentialSpending`; `remaining = max(0, target − currentCash)`. Coverage is current cash divided by monthly spending. Progress is capped at 100%; surplus cash is reported separately. Amount inputs are whole DH, spending is at least 1 DH and cash is nonnegative. No interest, future inflation, benefit income or investment return is added. Housing and debt can both add risk points, but actual repayments are included only once in essential spending.
+
+The current choice counts are `3 × 4 × 3 × 4 × 4 × 3 × 3 = 5,184`, all exercised by the unit tests. The reference’s 9,072-combination claim is not used. Tests establish deterministic behavior, not financial validation of the heuristic.
+
+General guidance on keeping emergency cash safe, accessible and separate is supported by the [CFPB emergency fund guide](https://www.consumerfinance.gov/an-essential-guide-to-building-an-emergency-fund/), consulted 3 October 2026. This source does not endorse this scoring table. Local benefit eligibility and bank/deposit-protection terms are not inferred; users supply their own situation. No specific product or jurisdictional protection limit is recommended. Answers stay in React state, survive tool switching and clear on reload; no AI processes them.
+
 ## Quant Lab
 
 - Black-Scholes: European, no dividends; analytical Greeks. Vega/rho per percentage point, theta per calendar day. Expiry and zero-volatility cases use explicit limiting conventions.

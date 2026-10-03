@@ -14,7 +14,7 @@ Portfolio Platform
 ├── 1. Core Showcase (/)          # Profile, Overview, Experience, Skills, Contact
 ├── 2. Projects Showcase (/projects) # 8 Production Systems & Quant Engines
 ├── 3. The Quant Lab (/lab)       # 7 Exact Mathematical Instruments in your browser
-├── 4. Financial Freedom (/tools) # Historical DCA and FIRE retirement planning
+├── 4. Financial Freedom (/tools) # Historical DCA, FIRE and emergency cash planning
 ├── 5. The Arcade (/arcade)       # 3 Educational Probabilistic & Quantitative Games
 └── 6. Articles (/articles)      # Writing index linking to full posts on Substack
 ```
@@ -30,7 +30,7 @@ Portfolio Platform
 | **[`portfolio-content.md`](portfolio-content.md)** | **Pillar 1: Core Showcase** | Hero pitch, metrics, career overview, skills matrix, experience (Finamaze, Oracle Capital), education, contact |
 | **[`projects-spec.md`](projects-spec.md)** | **Pillar 2: Projects Showcase** | **9 Systems & Engines:** Options Pricing, Heston Calibration (22,000x speedup), Entropy Pooling (ENSA 1st Place), Yield Curves, FinBERT, Artisan ERP, STEM Olympiad, Real Estate ML, Ordinals Bot |
 | **[`quant-lab-spec.md`](quant-lab-spec.md)** | **Pillar 3: The Quant Lab** | **7 Instruments:** Black-Scholes, Monte Carlo, Efficient Frontier, VaR, DCF, Option Payoff Builder, Binomial Tree Pricer |
-| **[`financial-tools-spec.md`](financial-tools-spec.md)** | **Pillar 4: Financial Freedom** | Historical DCA and FIRE retirement planner, inflation, withdrawal tests and interactive charts |
+| **[`financial-tools-spec.md`](financial-tools-spec.md)** | **Pillar 4: Financial Freedom** | Historical DCA, FIRE retirement and an editable emergency-fund questionnaire |
 | **[`arcade-spec.md`](arcade-spec.md)** | **Pillar 5: The Arcade** | **3 Games:** The Chart Turing Test (Real S&P vs Random Walk), Guess the Correlation ($\rho$), Kelly Criterion & Gambler's Ruin |
 | **[`articles-spec.md`](articles-spec.md)** | **Pillar 6: Articles** | Minimal article index inspired by the supplied reference image; full posts published on Substack |
 | **[`architecture-and-stack.md`](architecture-and-stack.md)** | **Earlier technical blueprint** | Route structure and TypeScript math examples; follow the implementation plan for current stack and design decisions |
