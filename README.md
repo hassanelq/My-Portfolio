@@ -29,15 +29,15 @@ Browser tests start a production server on port 3100 after a build. Local develo
 - `/`: profile, selected work, background, experience and contact
 - `/projects`: nine projects, newest first, filters, source and existing demo links
 - `/lab`: seven interactive quantitative instruments
-- `/tools`: historical DCA comparison in today's MAD
+- `/tools`: DCA, retirement, emergency fund and rent/buy calculators
 - `/arcade`: three probability and market games
-- `/articles`: Substack article index; starts with “Articles coming soon.”
+- `/articles`: published Substack articles from a publication RSS feed
 
 ## Make it yours
 
 Edit the typed files in [`content/`](content/README.md). CV PDFs are in `public/cv/` with an EN/FR selector. Visual rules are in `app/globals.css`; calculation functions and their tests are in `lib/math/`.
 
-See [`docs/README.md`](docs/README.md) for design/specifications and [`docs/DATA_SOURCES.md`](docs/DATA_SOURCES.md) for model assumptions and dataset provenance. The DCA calculator replays monthly S&P 500, gold and MSCI World observations with Moroccan CPI. See the data notes for coverage and return-basis differences.
+See [`docs/README.md`](docs/README.md) for the current documentation and [`docs/data-sources.md`](docs/data-sources.md) for model assumptions and dataset provenance. The DCA calculator replays monthly S&P 500, gold and MSCI World observations with Moroccan CPI. See the data notes for coverage and return-basis differences.
 
 ## Vercel
 

@@ -1,6 +1,8 @@
 # Rent or buy?
 
-Fourth tool in `/tools`, after DCA, retirement and emergency savings. The owner requested an original comparison tool, using the portfolio’s established visual system. The Savings Goal placeholder has been removed.
+**Workspace ID:** `rent-buy` · **UI:** `components/tools/rent-buy.tsx` · **Engine:** `lib/math/rent-buy.ts`.
+
+Compare buying a home with renting an equivalent home and investing the difference. This is the fourth active tool, using the shared portfolio design and [workspace behavior](README.md).
 
 ## Experience
 
@@ -120,3 +122,14 @@ This is a transparent scenario calculator, not backtested property performance. 
 - `tests/e2e/rent-buy.spec.ts`: live controls, negative balances, holding periods, input persistence, chart pointer/touch/keyboard, dialogs and four responsive sizes.
 
 No live API is required. Review each dated source and its scope before changing a benchmark; preserve the distinction between observations and scenario assumptions.
+
+
+## Input validation
+
+All inputs must be finite. Cash costs, loan rates and cost percentages cannot be negative. The down payment is between 0% and 100%; mortgage term and holding horizon are whole years from 1 to 50. Growth/return/inflation factors must stay above −100% annually. The UI uses tighter ranges, recorded alongside advanced fields in `content/rent-buy.ts`.
+
+Decimal inputs allow intermediate typing without sending invalid values to the engine. Zero interest, a cash purchase, negative investment returns, declining home values and negative exit wealth are supported. A result within 1 DH is approximately level. No salary or borrowing-eligibility test is inferred from a valid scenario.
+
+## Documentation maintenance
+
+Keep default values, source dates and scope consistent with `content/rent-buy.ts`. The source table above records the original research; no source download is required to run this tool. See [data sources](../data-sources.md) for the model inventory and [development](../development.md) for verification commands.

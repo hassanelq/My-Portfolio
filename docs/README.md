@@ -1,44 +1,49 @@
-# Hassan EL QADI — Quant & Engineering Digital Platform
+# Portfolio documentation
 
-- **Project:** Personal Portfolio, Projects Showcase, Quant Lab, Financial Freedom Tools, Probabilistic Arcade & Articles
-- **Live Version:** [elqadi.vercel.app](https://elqadi.vercel.app/)
-- **Architecture Status:** Initial rebuild implemented locally; see [`IMPLEMENTATION_PLAN.md`](IMPLEMENTATION_PLAN.md)
-- **Target Stack:** Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4, SVG/HTML5 Canvas, Vercel
+Current implementation, reviewed **3 October 2026**. These guides describe the application in this repository. Runtime copy and defaults live in `content/`; calculations live in `lib/math/`.
 
----
+## Start here
 
-## The 6 Platform Pillars
+| Guide | What it covers |
+| --- | --- |
+| [Design reference](DESIGN.md) | Preserved visual reference, typography, palette and readability adjustments |
+| [Architecture](architecture.md) | Stack, routes, rendering, components, state and data flow |
+| [Development](development.md) | Local setup, checks, dataset updates and Vercel deployment |
+| [Content guide](content-guide.md) | Where and how to edit copy, projects, CVs, articles and defaults |
+| [Portfolio](portfolio.md) | Homepage sections, current role and six extracurricular experiences |
+| [Projects](projects.md) | Nine project records, ordering, categories and external links |
+| [Articles](articles.md) | Substack RSS integration and source-switching workflow |
+| [Data sources](data-sources.md) | Dataset inventory, provenance and links to each model's methodology |
 
-```text
-Portfolio Platform
-├── 1. Core Showcase (/)          # Profile, Overview, Experience, Skills, Contact
-├── 2. Projects Showcase (/projects) # 8 Production Systems & Quant Engines
-├── 3. The Quant Lab (/lab)       # 7 Exact Mathematical Instruments in your browser
-├── 4. Financial Freedom (/tools) # DCA, FIRE, emergency cash and rent vs. buy
-├── 5. The Arcade (/arcade)       # 3 Educational Probabilistic & Quantitative Games
-└── 6. Articles (/articles)      # Writing index linking to full posts on Substack
-```
+## Feature documentation
 
----
+### Financial tools — detailed
 
-## Master Documentation Suite
+[Workspace and shared behavior](tools/README.md)
 
-| Document | Pillar / Scope | Key Contents |
-| :--- | :--- | :--- |
-| **[`IMPLEMENTATION_PLAN.md`](IMPLEMENTATION_PLAN.md)** | **Build sequence** | Route map, technical decisions, migration phases, data gates, and release criteria |
-| **[`DESIGN.md`](DESIGN.md)** | **Visual reference** | Dark editorial system, typography, colors, spacing, borders, and component rules |
-| **[`portfolio-content.md`](portfolio-content.md)** | **Pillar 1: Core Showcase** | Hero pitch, metrics, career overview, skills matrix, experience (Finamaze, Oracle Capital), education, contact |
-| **[`projects-spec.md`](projects-spec.md)** | **Pillar 2: Projects Showcase** | **9 Systems & Engines:** Options Pricing, Heston Calibration (22,000x speedup), Entropy Pooling (ENSA 1st Place), Yield Curves, FinBERT, Artisan ERP, STEM Olympiad, Real Estate ML, Ordinals Bot |
-| **[`quant-lab-spec.md`](quant-lab-spec.md)** | **Pillar 3: The Quant Lab** | **7 Instruments:** Black-Scholes, Monte Carlo, Efficient Frontier, VaR, DCF, Option Payoff Builder, Binomial Tree Pricer |
-| **[`financial-tools-spec.md`](financial-tools-spec.md)** | **Pillar 4: Financial Freedom** | Historical DCA, FIRE retirement and an editable emergency-fund questionnaire |
-| **[`rent-buy-spec.md`](rent-buy-spec.md)** | **Pillar 4: Rent or buy** | Equal-resource housing comparison, mortgage amortization, invested savings, costs, benchmarks and sources |
-| **[`arcade-spec.md`](arcade-spec.md)** | **Pillar 5: The Arcade** | **3 Games:** The Chart Turing Test (Real S&P vs Random Walk), Guess the Correlation ($\rho$), Kelly Criterion & Gambler's Ruin |
-| **[`articles-spec.md`](articles-spec.md)** | **Pillar 6: Articles** | Minimal article index inspired by the supplied reference image; full posts published on Substack |
-| **[`architecture-and-stack.md`](architecture-and-stack.md)** | **Earlier technical blueprint** | Route structure and TypeScript math examples; follow the implementation plan for current stack and design decisions |
+1. [DCA simulator](tools/dca.md) — monthly historical investing, inflation and percentile outcomes.
+2. [Retirement planner](tools/retirement.md) — historical withdrawals, accumulation and alternative retirement ages.
+3. [Emergency fund](tools/emergency-fund.md) — guided questions, explicit scoring and editable results.
+4. [Rent or buy?](tools/rent-or-buy.md) — mortgage, housing costs, investment opportunity cost and exit wealth.
 
+### Quant lab — concise
 
----
+[Overview](quant-lab/README.md) · [Black-Scholes](quant-lab/black-scholes.md) · [Monte Carlo](quant-lab/monte-carlo.md) · [Efficient frontier](quant-lab/efficient-frontier.md) · [Value at risk](quant-lab/value-at-risk.md) · [DCF](quant-lab/dcf.md) · [Option payoffs](quant-lab/option-payoffs.md) · [Binomial tree](quant-lab/binomial-tree.md)
 
-## Current implementation
+### Arcade — concise
 
-See [`../content/README.md`](../content/README.md) to edit the site and [`DATA_SOURCES.md`](DATA_SOURCES.md) for calculation assumptions and dataset provenance. The current version uses historical DCA observations, existing project links, English/French CVs, and an articles empty state. [`DESIGN.md`](DESIGN.md) supplies the current visual direction; older visual descriptions in the feature specs are superseded by it.
+[Overview](arcade/README.md) · [Chart Turing test](arcade/chart-turing-test.md) · [Guess the correlation](arcade/guess-the-correlation.md) · [Kelly criterion](arcade/kelly-criterion.md)
+
+## Current scope
+
+Six routes are implemented: `/`, `/projects`, `/lab`, `/tools`, `/arcade`, `/articles`. There are four active financial tools, seven lab instruments and three games. Articles reads Hassan's publication feed first and shows Zeta's four newest posts in a separate reading section. Projects link to their repositories and existing demos. English and French CVs are served from `public/cv/`.
+
+The rebuild plans and superseded feature blueprints have been consolidated into these guides. Deployment status is managed in Vercel; this documentation does not certify a production release.
+
+## Keeping this current
+
+- Update the relevant feature page whenever behavior, formulas, assumptions or data coverage changes.
+- Update the content guide when a content field or publishing workflow changes.
+- Preserve the source dates of financial benchmarks; a documentation edit does not refresh a dataset.
+- Keep detailed methods in the tool's own file. The source index points there rather than repeating the equations.
+- `DESIGN.md` remains the original reference. Current portfolio overrides are summarized in [architecture](architecture.md); executable styling lives in `app/globals.css`.
