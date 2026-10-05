@@ -25,6 +25,12 @@ The wizard shows progress, Back and Continue. Choices must be explicit; earlier 
 
 After completion, all nine answers are editable together beneath the result. Changing any field recalculates immediately without rerunning the wizard. Tool switching preserves incomplete progress and completed results; reload clears the in-memory answers.
 
+## Plain-language interface
+
+The user-facing fields say “Basic monthly spending”, “Emergency savings so far”, “Your pay”, “Job-loss payments”, “People you support”, “Home and regular bills”, “Time to find work”, “Work during hard times” and “Loan payments”. Percentage choices include examples per 1,000 of take-home pay. “I work for myself” maps to the existing self-employed answer and six-month minimum. The question IDs, answer values, weights, number of steps and thresholds are unchanged.
+
+During the questions, short explanations remain visible. On the result screen, question-mark buttons explain each editable answer on hover, keyboard focus or click/tap, keeping the form short. Advanced scoring details are in the guide.
+
 ## Results
 
 - Target duration: 3, 6, 9 or 12 months.
@@ -32,7 +38,7 @@ After completion, all nine answers are editable together beneath the result. Cha
 - Current coverage in months, amount remaining, progress and any surplus.
 - An indicative month scale that cannot override the rules.
 - General guidance on keeping cash accessible and separate.
-- Shared “How much cash?” and “How this works” dialogs. The latter exposes the scoring table, current score and arithmetic.
+- Shared “How much cash?” and “How this works” dialogs. The latter has six linked sections, LaTeX formulas, complete rule tables and a live worked calculation. Before the questionnaire is complete, it clearly labels the 3,000 spending / 2,000 saved calculation as an illustration, not the user’s result.
 
 ## Scoring, sources and limits
 
@@ -61,6 +67,22 @@ General guidance on keeping emergency cash safe, accessible and separate is supp
 A steady income, confirmed support, no dependents, low housing burden, quick return to work, low downturn exposure and no loans score zero: **3 months**. At 3,000 DH monthly spending with 2,000 DH saved, the target is 9,000 DH and the remaining amount is 7,000 DH.
 
 Changing only income to self-employed adds 3 points. The ordinary band is still 3 months, but the self-employment floor makes the target **6 months**, or 18,000 DH for the same spending. Holding 20,000 DH would show a 2,000 DH surplus and progress capped at 100%.
+
+## On-screen methodology
+
+`components/tools/emergency-method.tsx` uses the same question data and calculation engine as the form. It has sections for inputs, point rules, month bands, money calculations, interpreting answers, and storage/limits. Tables expose every available option, each current answer’s points, the target, saved cash, remaining cash, surplus and months already covered.
+
+For score $Q$, point weights $p_i$, monthly essentials $E$ and cash saved $S$:
+
+$$
+Q=\sum_{i=1}^{7}p_i,\qquad T=M E,\qquad L=\max(0,T-S),\qquad X=\max(0,S-T).
+$$
+
+$$
+\text{covered months}=S/E,\qquad \text{progress}=\min(1,S/T).
+$$
+
+The month-band table and six-month minimum are shown explicitly. The guide explains that uncertain answers use stated scores, support is not deducted as cash income, and home-loan payments count only once in spending even if they influence two risk questions. It distinguishes deterministic rule coverage (5,184 combinations) from financial validation.
 
 ## Validation and maintenance
 

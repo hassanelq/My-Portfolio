@@ -3729,15 +3729,15 @@ svg {
     margin-bottom: 6px;
   }
   .savings-breakdown .savings-median::before {
-    content: "Median";
+    content: "Middle result";
     align-self: center;
     margin: 0;
   }
   .savings-breakdown td:nth-child(3)::before {
-    content: "Lower outcome";
+    content: "Lower result";
   }
   .savings-breakdown td:nth-child(4)::before {
-    content: "Upper outcome";
+    content: "Higher result";
   }
   .savings-breakdown td:nth-child(4) {
     text-align: right;
@@ -3905,4 +3905,15 @@ svg {
 }
 .retirement-salary-share {
   color: var(--color-chalk);
+}
+
+/* Keep short field labels aligned with their optional explanations. */
+.number-input-label {
+  margin-bottom: 10px;
+}
+.number-input .number-input-label label {
+  margin-bottom: 0;
+}
+.number-input-label .ui-tooltip {
+  flex-shrink: 0;
 }

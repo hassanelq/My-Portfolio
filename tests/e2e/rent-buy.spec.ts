@@ -15,17 +15,21 @@ test("fourth tool recalculates both paths and retains its inputs", async ({
   await expect(page.getByRole("tablist")).not.toContainText("Savings goal");
   const original = await panel.locator(".rent-buy-outcome h2").innerText();
   await panel
-    .getByLabel("Equivalent rent / month", { exact: true })
+    .getByLabel("Rent for a similar home / month", { exact: true })
     .fill("10000");
-  await panel.getByLabel("Equivalent rent / month", { exact: true }).blur();
+  await panel
+    .getByLabel("Rent for a similar home / month", { exact: true })
+    .blur();
   await expect(panel.locator(".rent-buy-outcome h2")).not.toHaveText(original);
   await expect(panel.locator(".rent-buy-outcome")).toContainText(
-    "Buying leaves more",
+    "Buying leaves you with more",
   );
-  await panel.getByLabel("Down payment (%)", { exact: true }).fill("100");
-  await panel.getByLabel("Down payment (%)", { exact: true }).blur();
+  await panel
+    .getByLabel("Paid from your savings (%)", { exact: true })
+    .fill("100");
+  await panel.getByLabel("Paid from your savings (%)", { exact: true }).blur();
   await expect(panel.locator(".rent-buy-evidence")).toContainText(
-    "Mortgage 0 DH",
+    "Loan payment 0 DH",
   );
   await panel.getByRole("button", { name: "20 years", exact: true }).click();
   await expect(
@@ -34,7 +38,7 @@ test("fourth tool recalculates both paths and retains its inputs", async ({
   await page.getByRole("tab", { name: /Emergency fund/ }).click();
   await page.getByRole("tab", { name: /Rent or buy/ }).click();
   await expect(
-    panel.getByLabel("Down payment (%)", { exact: true }),
+    panel.getByLabel("Paid from your savings (%)", { exact: true }),
   ).toHaveValue("100");
   await expect(
     panel.getByLabel("Years in the home", { exact: true }),
@@ -46,12 +50,16 @@ test("advanced assumptions handle losses and zero-rate loans without clipping ne
 }) => {
   const panel = await openTool(page);
   await panel
-    .getByRole("button", { name: "Costs & assumptions", exact: true })
+    .getByRole("button", { name: "More settings", exact: true })
     .click();
-  await panel.getByLabel("Down payment (%)", { exact: true }).fill("0");
-  await panel.getByLabel("Mortgage rate (% / year)", { exact: true }).fill("0");
   await panel
-    .getByLabel("Home price growth (% / year)", { exact: true })
+    .getByLabel("Paid from your savings (%)", { exact: true })
+    .fill("0");
+  await panel
+    .getByLabel("Home-loan interest (% / year)", { exact: true })
+    .fill("0");
+  await panel
+    .getByLabel("Home value change (% / year)", { exact: true })
     .fill("-20");
   await panel.getByLabel("Years in the home", { exact: true }).fill("1");
   await panel.getByLabel("Years in the home", { exact: true }).blur();
@@ -59,10 +67,10 @@ test("advanced assumptions handle losses and zero-rate loans without clipping ne
     panel.locator(".rent-buy-balances > div").last().locator("strong"),
   ).toHaveText(/^[-−]/);
   await expect(panel.locator(".rent-buy-outcome")).toContainText(
-    "Renting leaves more",
+    "Renting leaves you with more",
   );
   const chart = panel.getByRole("slider", {
-    name: "Explore rent and buy wealth by year",
+    name: "Explore money left from renting or buying by year",
   });
   await chart.focus();
   await page.keyboard.press("End");
@@ -75,10 +83,10 @@ test("advanced assumptions handle losses and zero-rate loans without clipping ne
     .evaluateAll((nodes) => nodes.map((node) => node.getAttribute("d")));
   expect(paths.every((path) => path && !/NaN|Infinity/.test(path))).toBe(true);
   await panel
-    .getByLabel("Effective tax on sale gain (%)", { exact: true })
+    .getByLabel("Tax on profit when selling (%)", { exact: true })
     .fill("20");
   await expect(panel.locator(".rent-buy-assumption-summary")).toContainText(
-    "20% allowance",
+    "20% estimate",
   );
 });
 
@@ -87,7 +95,7 @@ test("chart supports hover and keyboard with years and both portfolios", async (
 }) => {
   const panel = await openTool(page);
   const chart = panel.getByRole("slider", {
-    name: "Explore rent and buy wealth by year",
+    name: "Explore money left from renting or buying by year",
   });
   await chart.focus();
   await page.keyboard.press("End");
@@ -147,12 +155,20 @@ for (const width of [1440, 768, 390, 320])
     });
     await expect(method).toContainText("Q1 2025");
     await expect(method).toContainText("not current quotes");
+    await expect(method.locator(".savings-method-section")).toHaveCount(7);
+    await expect(method.locator(".katex-error")).toHaveCount(0);
+    await expect(
+      method.getByRole("region", { name: "Worked housing months" }),
+    ).toBeAttached();
+    await expect(
+      method.getByRole("region", { name: "Housing outcome calculation" }),
+    ).toBeAttached();
     await expect(
       method.getByRole("link", { name: /Zillow Research/ }),
     ).toBeAttached();
     await method.getByRole("button", { name: "Got it" }).click();
     await panel
-      .getByRole("button", { name: "Costs & assumptions", exact: true })
+      .getByRole("button", { name: "More settings", exact: true })
       .click();
     expect(
       await page.evaluate(
@@ -179,7 +195,7 @@ test("touch chart keeps the selected year visible", async ({
   const page = await context.newPage();
   const panel = await openTool(page);
   const chart = panel.getByRole("slider", {
-    name: "Explore rent and buy wealth by year",
+    name: "Explore money left from renting or buying by year",
   });
   await chart.scrollIntoViewIfNeeded();
   const bounds = (await chart.boundingBox())!;

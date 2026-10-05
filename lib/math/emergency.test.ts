@@ -73,7 +73,7 @@ describe("emergency cash rules", () => {
     expect(plan.target).toBe(48000);
     expect(plan.reasons).toEqual([
       "You depend on income from your own work or business.",
-      "Unemployment support is not confirmed.",
+      "You do not know if you would receive job-loss payments.",
     ]);
     expect(plan.selfEmployedFloor).toBe(false);
   });

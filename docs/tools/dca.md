@@ -36,6 +36,8 @@ Both DCA CPI series are aligned to January 1960–June 2025, so changing inflati
 - “How this works” is a sectioned guide with LaTeX equations, a live input summary, data coverage and window counts, a 12-month worked example from the selected headline series, and the current outcome table.
 - Selection and inputs persist when switching tools, then reset on reload.
 
+The main view calls the median “Middle result”, P10 “Lower result” (about one in ten past periods below) and P90 “Higher result” (about one in ten above). Mathematical percentile definitions remain in the methodology. Country choices use “Morocco” and “United States”; the CPI calculations are unchanged.
+
 ## Data and calculation
 
 Original source snapshot retrieved **2 October 2026**; the bond series was added **4 October 2026**. All DCA series are cut off at **June 2025** because this is the last observed Moroccan monthly CPI month in the downloaded IMF series. No extrapolation is used.

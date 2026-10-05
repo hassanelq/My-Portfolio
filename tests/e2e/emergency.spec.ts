@@ -7,7 +7,7 @@ async function openTool(page: Page) {
 }
 async function finish(panel: Locator) {
   await panel
-    .getByLabel("Monthly essential spending", { exact: true })
+    .getByLabel("Basic monthly spending", { exact: true })
     .fill("3000");
   await panel.getByRole("button", { name: "Continue", exact: true }).click();
   for (const value of [
@@ -22,7 +22,9 @@ async function finish(panel: Locator) {
     await panel.locator(`input[type=radio][value="${value}"]`).check();
     await panel.getByRole("button", { name: "Continue", exact: true }).click();
   }
-  await panel.getByLabel("Cash already saved", { exact: true }).fill("2000");
+  await panel
+    .getByLabel("Emergency savings so far", { exact: true })
+    .fill("2000");
   await panel.getByRole("button", { name: "See my result" }).click();
 }
 
@@ -32,25 +34,23 @@ test("questionnaire requires explicit answers and preserves progress when going 
   const panel = await openTool(page);
   const next = panel.getByRole("button", { name: "Continue", exact: true });
   await expect(next).toBeDisabled();
-  await panel.getByLabel("Monthly essential spending").fill("0");
+  await panel.getByLabel("Basic monthly spending").fill("0");
   await expect(next).toBeDisabled();
-  await panel.getByLabel("Monthly essential spending").fill("3500");
+  await panel.getByLabel("Basic monthly spending").fill("3500");
   await next.click();
   await expect(next).toBeDisabled();
-  await panel.getByRole("radio", { name: /^Self-employed/ }).check();
+  await panel.getByRole("radio", { name: /^I work for myself/ }).check();
   await panel.getByRole("button", { name: "Back", exact: true }).click();
-  await expect(panel.getByLabel("Monthly essential spending")).toHaveValue(
-    "3500",
-  );
+  await expect(panel.getByLabel("Basic monthly spending")).toHaveValue("3500");
   await next.click();
   await expect(
-    panel.getByRole("radio", { name: /^Self-employed/ }),
+    panel.getByRole("radio", { name: /^I work for myself/ }),
   ).toBeChecked();
   await page.getByRole("tab", { name: /DCA simulator/ }).click();
   await page.getByRole("tab", { name: /Emergency fund/ }).click();
   await expect(panel.getByText("Question 2 of 9")).toBeVisible();
   await expect(
-    panel.getByRole("radio", { name: /^Self-employed/ }),
+    panel.getByRole("radio", { name: /^I work for myself/ }),
   ).toBeChecked();
 });
 
@@ -69,19 +69,21 @@ test("results expose every input and recompute without repeating the questions",
     panel.getByRole("button", { name: "Continue", exact: true }),
   ).toHaveCount(0);
   await panel
-    .getByLabel("Income stability", { exact: true })
+    .getByLabel("Your pay", { exact: true })
     .selectOption("self-employed");
   await expect(panel.locator(".emergency-target")).toHaveText(/18\s000 DH/);
   await expect(panel.locator(".emergency-reasons")).toContainText(
     "minimum of six months",
   );
   await panel
-    .getByLabel("Monthly essential spending", { exact: true })
+    .getByLabel("Basic monthly spending", { exact: true })
     .fill("4000");
-  await panel.getByLabel("Monthly essential spending", { exact: true }).blur();
+  await panel.getByLabel("Basic monthly spending", { exact: true }).blur();
   await expect(panel.locator(".emergency-target")).toHaveText(/24\s000 DH/);
-  await panel.getByLabel("Cash already saved", { exact: true }).fill("30000");
-  await panel.getByLabel("Cash already saved", { exact: true }).blur();
+  await panel
+    .getByLabel("Emergency savings so far", { exact: true })
+    .fill("30000");
+  await panel.getByLabel("Emergency savings so far", { exact: true }).blur();
   await expect(panel.locator(".emergency-coverage")).toContainText(
     "Target covered",
   );
@@ -89,13 +91,13 @@ test("results expose every input and recompute without repeating the questions",
     panel.getByRole("progressbar", { name: "Emergency fund saved" }),
   ).toHaveAttribute("value", "1");
   await panel
-    .getByLabel("Unemployment support", { exact: true })
+    .getByLabel("Job-loss payments", { exact: true })
     .selectOption("none");
   await panel
-    .getByLabel("People depending on you", { exact: true })
+    .getByLabel("People you support", { exact: true })
     .selectOption("sole");
   await panel
-    .getByLabel("Home and fixed bills", { exact: true })
+    .getByLabel("Home and regular bills", { exact: true })
     .selectOption("high");
   await expect(
     panel.getByRole("heading", { name: "12 months", exact: true }),
@@ -161,6 +163,11 @@ for (const width of [1440, 768, 390, 320])
     });
     await expect(method).toContainText("Your answers total 0 points");
     await expect(method).toContainText("not a historically validated model");
+    await expect(method.locator(".savings-method-section")).toHaveCount(6);
+    await expect(method.locator(".katex-error")).toHaveCount(0);
+    await expect(
+      method.getByRole("region", { name: "Emergency calculation results" }),
+    ).toContainText(/7\s000 DH/);
     await method.getByRole("button", { name: "Got it" }).click();
     await expect(method).not.toBeVisible();
     expect(errors).toEqual([]);
@@ -170,18 +177,22 @@ test("keyboard can select choices and advance without a pointer", async ({
   page,
 }) => {
   const panel = await openTool(page);
-  const money = panel.getByLabel("Monthly essential spending");
+  const money = panel.getByLabel("Basic monthly spending");
   await money.fill("3000");
   await money.press("Enter");
   await expect(
-    panel.getByRole("heading", { name: "How steady is your income?" }),
+    panel.getByRole("heading", {
+      name: "Is your pay about the same each month?",
+    }),
   ).toBeFocused();
   await page.keyboard.press("Tab");
   await page.keyboard.press("Space");
-  await expect(panel.getByRole("radio", { name: /^Steady pay/ })).toBeChecked();
+  await expect(
+    panel.getByRole("radio", { name: /^About the same each month/ }),
+  ).toBeChecked();
   await page.keyboard.press("ArrowRight");
   await expect(
-    panel.getByRole("radio", { name: /^Variable or interrupted/ }),
+    panel.getByRole("radio", { name: /^My pay changes or sometimes stops/ }),
   ).toBeChecked();
   await page.keyboard.press("Tab");
   await page.keyboard.press("Tab");

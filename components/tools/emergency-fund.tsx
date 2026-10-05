@@ -11,6 +11,8 @@ import {
   ListChecks,
   PencilLine,
 } from "lucide-react";
+import { EmergencyMethod } from "./emergency-method";
+import { ParameterHelp } from "@/components/ui/parameter-help";
 import { Dialog } from "@/components/ui/dialog";
 import { NumberStepper } from "@/components/ui/number-stepper";
 import {
@@ -75,9 +77,9 @@ export default function EmergencyFund() {
         </h1>
         <div className="savings-heading-bottom">
           <p>
-            A little certainty when life changes.
+            Money ready for the unexpected.
             <br />
-            Find the cash cushion that fits your situation.
+            See how much to set aside if your pay stops.
           </p>
           <button className="savings-info" onClick={() => setPopup("intro")}>
             <Info size={18} strokeWidth={1.5} /> What is this?
@@ -109,24 +111,24 @@ export default function EmergencyFund() {
           />
           <h2 ref={heading} tabIndex={-1} id="emergency-question-title">
             {step === 0
-              ? "What would you need each month in a crisis?"
+              ? "How much would you need each month if your pay stopped?"
               : step === totalSteps - 1
-                ? "How much cash have you already set aside?"
+                ? "How much have you already saved for emergencies?"
                 : question.title}
           </h2>
           <p className="emergency-question-help" id="emergency-question-help">
             {step === 0
-              ? "Include essential housing, food, transport, healthcare and minimum debt payments. Count each expense once, and leave out spending you could pause."
+              ? "Add rent or home-loan payments, food, transport, healthcare and other bills you must keep paying. Count each bill once. Leave out things you could stop buying."
               : step === totalSteps - 1
-                ? "Count accessible cash reserved for emergencies. Exclude investments and money already earmarked for bills or other goals. Enter 0 if you are starting from scratch."
+                ? "Count money you could use right away for an emergency. Leave out investments and money already needed for other bills. Enter 0 if you have not started saving yet."
                 : question.help}
           </p>
           {isMoney ? (
             <div className="emergency-money-field">
               <label htmlFor="emergency-money">
                 {step === 0
-                  ? "Monthly essential spending"
-                  : "Cash already saved"}
+                  ? "Basic monthly spending"
+                  : "Emergency savings so far"}
               </label>
               <div>
                 <span>{currency}</span>
@@ -208,7 +210,7 @@ export default function EmergencyFund() {
             className="emergency-result"
             aria-labelledby="emergency-result-title"
           >
-            <p className="eyebrow">YOUR CASH CUSHION</p>
+            <p className="eyebrow">YOUR EMERGENCY SAVINGS</p>
             <div
               className="emergency-result-summary"
               aria-live="polite"
@@ -224,10 +226,10 @@ export default function EmergencyFund() {
                 <p>
                   {result.reasons.length
                     ? result.reasons.join(" ")
-                    : "Your answers indicate relatively steady income and fewer commitments. The starting cushion is three months of essentials."}
+                    : "Your pay looks steady and you have fewer bills or people to support. This guide starts with three months of basic spending."}
                 </p>
                 {result.selfEmployedFloor && (
-                  <p>Self-employment sets a minimum of six months.</p>
+                  <p>Working for yourself sets a minimum of six months.</p>
                 )}
               </div>
             </div>
@@ -256,7 +258,7 @@ export default function EmergencyFund() {
                   {new Intl.NumberFormat("en", {
                     maximumFractionDigits: 1,
                   }).format(result.coveredMonths)}{" "}
-                  months of essentials
+                  months of basic bills
                 </small>
               </div>
               <div>
@@ -269,7 +271,7 @@ export default function EmergencyFund() {
                     ? "Build toward it at your own pace."
                     : result.surplus > 0
                       ? `${money(result.surplus)} above this target.`
-                      : "Your cash meets this planning target."}
+                      : "You have saved enough to reach this target."}
                 </small>
               </div>
             </div>
@@ -289,10 +291,16 @@ export default function EmergencyFund() {
               <h2 id="emergency-edit-title">Your answers, easy to adjust</h2>
               <PencilLine size={19} aria-hidden="true" />
             </div>
-            <p>Change any value below. Your cash target updates immediately.</p>
+            <p>Change any answer below to see your new savings target.</p>
             <div className="emergency-amounts">
               <NumberStepper
-                label="Monthly essential spending"
+                label="Basic monthly spending"
+                help={
+                  <ParameterHelp label="Basic monthly spending">
+                    The bills you would still need to pay if your income
+                    stopped. Count each bill only once.
+                  </ParameterHelp>
+                }
                 value={Number(spending)}
                 onChange={(v) => setSpending(String(v))}
                 min={1}
@@ -301,7 +309,13 @@ export default function EmergencyFund() {
                 prefix={currency}
               />
               <NumberStepper
-                label="Cash already saved"
+                label="Emergency savings so far"
+                help={
+                  <ParameterHelp label="Emergency savings so far">
+                    Money you can use right away for emergencies. Leave out
+                    investments and money already needed for other bills.
+                  </ParameterHelp>
+                }
                 value={Number(saved)}
                 onChange={(v) => setSaved(String(v))}
                 min={0}
@@ -312,10 +326,17 @@ export default function EmergencyFund() {
             </div>
             <div className="emergency-edit-grid">
               {questions.map((item) => (
-                <label className="retirement-select" key={item.id}>
-                  {item.label}
+                <div className="retirement-select" key={item.id}>
+                  <div className="parameter-label">
+                    <label htmlFor={`emergency-answer-${item.id}`}>
+                      {item.label}
+                    </label>
+                    <ParameterHelp label={item.label}>
+                      {item.help}
+                    </ParameterHelp>
+                  </div>
                   <select
-                    aria-label={item.label}
+                    id={`emergency-answer-${item.id}`}
                     value={answers[item.id as EmergencyFactor]}
                     aria-describedby={`emergency-help-${item.id}`}
                     onChange={(event) =>
@@ -328,8 +349,10 @@ export default function EmergencyFund() {
                       </option>
                     ))}
                   </select>
-                  <small id={`emergency-help-${item.id}`}>{item.help}</small>
-                </label>
+                  <small className="sr-only" id={`emergency-help-${item.id}`}>
+                    {item.help}
+                  </small>
+                </div>
               ))}
             </div>
           </section>
@@ -342,10 +365,9 @@ export default function EmergencyFund() {
             <div>
               <h2 id="emergency-storage-title">Keep it within reach</h2>
               <p>
-                Use a separate, easy-access bank savings account for this cash.
-                Check withdrawal limits, fees and the deposit protection that
-                applies where you live. Keep it available without having to sell
-                investments or wait for a lock-up to end.
+                Keep this money in a separate bank account you can withdraw from
+                when you need it. Check fees and withdrawal limits before
+                choosing an account.
               </p>
               <a href={emergencyGuide.url} target="_blank" rel="noreferrer">
                 Read the CFPB emergency savings guide ↗
@@ -373,15 +395,15 @@ export default function EmergencyFund() {
             <div>
               <ListChecks size={21} />
               <p>
-                Answer a few short questions about your income, household and
-                essential spending.
+                Answer a few short questions about your pay, the people you
+                support and your basic bills.
               </p>
             </div>
             <div>
               <CircleCheck size={21} />
               <p>
-                Get a cash target in months and {currency}, how much is left to
-                save and where to keep it.
+                See how many months to cover, the amount in {currency}, how much
+                is left to save and where to keep it.
               </p>
             </div>
             <div>
@@ -392,95 +414,14 @@ export default function EmergencyFund() {
               </p>
             </div>
           </div>
-        ) : (
-          <div className="savings-method">
-            <p>
-              Seven factors set the number of months: income stability,
-              unemployment support, people depending on you, housing and fixed
-              bills, time to replace income, exposure to a downturn and required
-              loan payments.
-            </p>
-            <p>
-              Each answer adds the points listed below. The total maps to a cash
-              cushion: up to 4 points means 3 months; 5–7 means 6; 8 means 9;
-              and 9 or more means 12. Self-employment always means at least 6
-              months.
-            </p>
-            <p>
-              The target is those months multiplied by monthly essential
-              spending. Existing cash reduces what remains to save; it does not
-              change the number of months. There is no assumed return, inflation
-              forecast or deduction for benefits.
-            </p>
-            <h3>The scoring rules</h3>
-            <p>
-              This scoring table is a transparent planning guide. Its thresholds
-              and weights are assumptions, not a historically validated model or
-              a prediction of your next emergency.
-            </p>
-            <div className="emergency-rules">
-              {questions.map((item) => (
-                <section key={item.id}>
-                  <h4>{item.label}</h4>
-                  <ul>
-                    {item.options.map((option) => (
-                      <li key={option.value}>
-                        <span>{option.label}</span>
-                        <strong>
-                          {option.points}{" "}
-                          {option.points === 1 ? "point" : "points"}
-                        </strong>
-                      </li>
-                    ))}
-                  </ul>
-                </section>
-              ))}
-            </div>
-            {result && (
-              <p>
-                Your answers total <strong>{result.score} points</strong>,
-                giving <strong>{result.months} months</strong>
-                {result.selfEmployedFloor
-                  ? " after the self-employment minimum"
-                  : ""}
-                . {money(Number(spending))} × {result.months} ={" "}
-                <strong>{money(result.target)}</strong>.
-              </p>
-            )}
-            <h3>Choices and uncertainty</h3>
-            <p>
-              Every risk factor is answered explicitly. “I’m not sure” about
-              benefits uses the no-support score; uncertainty about finding work
-              uses the longer-search score; uncertainty about downturn exposure
-              adds one point. Mortgage-free ownership only uses the lowest
-              housing score when bills are manageable. Mortgage repayments can
-              affect both housing burden and debt flexibility, but must appear
-              only once in your spending amount.
-            </p>
-            <p>
-              A household needing no emergency spending is outside this tool’s
-              scope: enter at least 1 {currency} per month. Support eligibility,
-              bank protections and product access depend on your situation and
-              location; the calculator does not determine them.
-            </p>
-            <h3>Keeping the money accessible</h3>
-            <p>
-              An emergency reserve needs to be available when an unexpected cost
-              arrives. The{" "}
-              <a href={emergencyGuide.url} target="_blank" rel="noreferrer">
-                CFPB emergency fund guide
-              </a>{" "}
-              discusses keeping savings safe, accessible and separate from
-              everyday spending. It provides general guidance; it is not the
-              source of this scoring table.
-            </p>
-            <p>
-              All calculations happen in your browser. No AI reads your answers.
-              Switching tools keeps them for this visit; reloading the page
-              clears them.
-            </p>
-          </div>
-        )}
+        ) : popup === "method" ? (
+          <EmergencyMethod
+            result={result}
+            spending={Number(spending)}
+            saved={Number(saved)}
+            currency={currency}
+          />
+        ) : null}
       </Dialog>
     </section>
   );

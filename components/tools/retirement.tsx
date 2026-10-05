@@ -151,7 +151,7 @@ export default function Retirement() {
           <p>
             Make work a choice.
             <br />
-            Explore what it takes to fund life on your terms.
+            See how much to save before you stop working.
           </p>
           <button className="savings-info" onClick={() => setPopup("intro")}>
             <Info size={18} strokeWidth={1.5} /> What is this?
@@ -160,7 +160,7 @@ export default function Retirement() {
       </header>
       <div className="savings-controls">
         <div className="savings-section-label">
-          <h2>Your life, your numbers</h2>
+          <h2>Your spending and your plan</h2>
           <span className="mono">PLAN & EXPLORE</span>
         </div>
         <div className="savings-fields retirement-fields">
@@ -294,9 +294,9 @@ export default function Retirement() {
               label="Plan until age"
               help={
                 <ParameterHelp label="Plan until age">
-                  The age your investments should last to. A longer horizon
-                  usually needs more capital; this is a planning choice, not a
-                  life-expectancy prediction.
+                  The age you want your savings to last to. Planning for more
+                  years usually means saving more. Choose an age you want to
+                  plan for.
                 </ParameterHelp>
               }
               value={inputs.untilAge}
@@ -345,8 +345,8 @@ export default function Retirement() {
               </select>
             </div>
             <p>
-              The end age is a planning horizon, not a life-expectancy estimate.
-              Contributions and spending are in today’s money.
+              Choose how long your savings should last. All spending and savings
+              amounts use today’s prices.
             </p>
           </div>
         )}
@@ -356,7 +356,7 @@ export default function Retirement() {
           <div className="savings-results">
             <div className="retirement-outcomes" aria-live="polite">
               <div className="savings-outcome retirement-target">
-                <p>Your FIRE number · retire at {inputs.retireAt}</p>
+                <p>Savings needed · retire at {inputs.retireAt}</p>
                 <h2>{money(plan.target)}</h2>
                 <p>
                   Invested to fund {money(inputs.livingCost * 12)} a year, until
@@ -399,8 +399,9 @@ export default function Retirement() {
             {mode === "average" && (
               <p className="retirement-mode-note" role="status">
                 Average-return mode spends the portfolio down on a smooth path.
-                This target funded {plan.successCount} of {plan.stats.windows}{" "}
-                historical starts; a bad sequence can run out sooner.
+                This amount covered {plan.successCount} of {plan.stats.windows}{" "}
+                past retirement periods. Early market losses could make it run
+                out sooner.
               </p>
             )}
             {monthlyRounded !== null && (
@@ -423,7 +424,7 @@ export default function Retirement() {
                   <span>Age</span>
                   <span>Hover or tap to explore the balance</span>
                 </div>
-                <p className="retirement-chart-note">
+                {/* <p className="retirement-chart-note">
                   Before retirement: an estimate at {percent(growthRate)} real
                   growth (
                   {growthOverride === null
@@ -433,7 +434,7 @@ export default function Retirement() {
                   {mode === "historical"
                     ? `the most demanding recorded ${years}-year period, starting ${monthLabel(plan.stats.worstStart)}.`
                     : "the same constant return, spending down the balance."}
-                </p>
+                </p> */}
               </>
             )}
             <dl className="retirement-evidence">
@@ -452,18 +453,18 @@ export default function Retirement() {
                   </ParameterHelp>
                 </dt>
                 <dd>{percent(plan.withdrawalRate)}</dd>
-                <small>Annual spending ÷ FIRE number</small>
+                <small>Yearly spending ÷ savings target</small>
               </div>
               <div>
-                <dt>Historical starts funded</dt>
+                <dt>Past periods covered</dt>
                 <dd>
                   {plan.successCount}
                   <span> / {plan.stats.windows}</span>
                 </dd>
-                <small>Recorded outcomes, not future odds</small>
+                <small>Past results, not a promise</small>
               </div>
               <div>
-                <dt>Retirement horizon</dt>
+                <dt>Years to cover</dt>
                 <dd>
                   {years}
                   <span> years</span>
@@ -478,7 +479,7 @@ export default function Retirement() {
           >
             <div className="savings-section-label">
               <h2 id="retirement-alternatives-title">
-                Put away more. Open up time.
+                Save more each month. Could you retire sooner?
               </h2>
             </div>
             <table>
@@ -528,8 +529,9 @@ export default function Retirement() {
               </tbody>
             </table>
             <p>
-              Each age uses its own retirement horizon. Accumulation follows the
-              selected real growth rate, which future returns may not match.
+              Each age allows for how long the savings need to last. The
+              estimate uses your chosen growth rate; actual returns can be
+              different.
             </p>
           </section>
         </>
@@ -559,7 +561,7 @@ export default function Retirement() {
               <Landmark size={21} />
               <p>
                 Your FIRE number is the amount invested to fund your living
-                costs through the retirement horizon you choose.
+                costs until the age you choose.
               </p>
             </div>
             <div>

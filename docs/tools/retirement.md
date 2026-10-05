@@ -33,6 +33,8 @@ Alternative contribution rows compare 3,000 per month, the calculated amount and
 
 Every numeric parameter and both advanced selectors have a small question-mark help control: hover or keyboard focus for a short explanation, click or tap for a shared dialog. “How this works” uses six linked sections with LaTeX equations, current inputs, inflation and real-return statistics, a three-month withdrawal example, and a live results table. Dynamic numbers come from the current calculation and data, not a reference screenshot. State survives tool switching.
 
+The main result uses “Savings needed”, “Past periods covered” and “Years to cover”. Technical definitions of the FIRE number, historical-window coverage and withdrawal rate remain in the guide and parameter help. This wording does not change the calculation.
+
 ## Data and calculation
 
 With DH selected, the default uses the same S&P 500 total-return reconstruction and monthly Moroccan CPI as DCA, January 1960–June 2025 (786 observations). The optional US reference uses January 1928–June 2025 (1,170 observations), including the 1929 crash. Both end at the same cutoff; results and sources from the user’s reference screenshot are not hard-coded.
@@ -130,3 +132,5 @@ All retirement assets are S&P 500 equities with reinvested dividends. A DH label
 | Browser tests | `tests/e2e/retirement.spec.ts` |
 
 The engine tests include independent nominal-ledger checks for inflation-adjusted withdrawals and edge cases. Keep historical withdrawal timing, contribution timing and the real/nominal distinction explicit in both UI and docs. See [DCA](dca.md) for the shared market reconstruction and [development](../development.md) for refresh commands.
+
+Growth-control verification: the combined retirement and DCA calculation suites passed 25 tests. Focused browser checks passed for growth overrides/reset, the retirement mobile layout and existing DCA inputs. The growth check covers zero and negative rates, average-mode capital, historical-mode invariance, CPI changes, reset, the withdrawal explanation and formula rendering. TypeScript and scoped lint checks passed.

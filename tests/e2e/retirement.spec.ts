@@ -38,16 +38,24 @@ test("advanced settings change the model and guard unsupported or immediate reti
 }) => {
   const panel = await openPlanner(page);
   await panel.getByRole("button", { name: "Advanced", exact: true }).click();
-  await panel.getByLabel("Inflation reference").selectOption("us");
+  await panel
+    .getByLabel("Inflation reference", { exact: true })
+    .selectOption("us");
   await expect(panel.locator(".retirement-evidence")).toContainText(
     "750 / 750",
   );
-  await panel.getByLabel("Planning approach").selectOption("average");
+  await panel
+    .getByLabel("Planning approach", { exact: true })
+    .selectOption("average");
   await expect(panel.getByRole("status")).toContainText(
-    "a bad sequence can run out sooner",
+    "Early market losses could make it run out sooner",
   );
-  await panel.getByLabel("Planning approach").selectOption("historical");
-  await panel.getByLabel("Inflation reference").selectOption("morocco");
+  await panel
+    .getByLabel("Planning approach", { exact: true })
+    .selectOption("historical");
+  await panel
+    .getByLabel("Inflation reference", { exact: true })
+    .selectOption("morocco");
   await panel.getByLabel("Retire at", { exact: true }).fill("23");
   await panel.getByLabel("Retire at", { exact: true }).blur();
   await expect(panel.locator(".retirement-monthly")).toContainText(
@@ -273,7 +281,9 @@ test("growth overrides affect the right calculations and reset to historical def
   await expect(target).toHaveText(original.target);
   await expect(withdrawal).toHaveText(original.withdrawal);
   await expect(contribution).not.toHaveText(original.contribution);
-  await panel.getByLabel("Planning approach").selectOption("average");
+  await panel
+    .getByLabel("Planning approach", { exact: true })
+    .selectOption("average");
   await expect(target).toHaveText(/2\s100\s000 DH/);
   await growth.fill("-2.5");
   await growth.blur();
@@ -281,14 +291,20 @@ test("growth overrides affect the right calculations and reset to historical def
   await expect(target).not.toHaveText(/2\s100\s000 DH/);
   await reset.click();
   await expect(growth).toHaveValue(defaultRate);
-  await panel.getByLabel("Planning approach").selectOption("historical");
+  await panel
+    .getByLabel("Planning approach", { exact: true })
+    .selectOption("historical");
   await expect(target).toHaveText(original.target);
   await expect(contribution).toHaveText(original.contribution);
-  await panel.getByLabel("Inflation reference").selectOption("us");
+  await panel
+    .getByLabel("Inflation reference", { exact: true })
+    .selectOption("us");
   await expect(growth).not.toHaveValue(defaultRate);
   await growth.fill("3.25");
   await growth.blur();
-  await panel.getByLabel("Inflation reference").selectOption("morocco");
+  await panel
+    .getByLabel("Inflation reference", { exact: true })
+    .selectOption("morocco");
   await expect(growth).toHaveValue(/3[.,]25/);
   await panel
     .getByRole("button", { name: "About initial withdrawal rate", exact: true })

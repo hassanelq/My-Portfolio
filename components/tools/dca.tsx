@@ -84,9 +84,9 @@ export default function DCA() {
         </h1>
         <div className="savings-heading-bottom">
           <p>
-            A regular habit. A longer view.
+            What if you invested every month?
             <br />
-            See what monthly investing became through history.
+            See how regular saving worked out in the past.
           </p>
           <button className="savings-info" onClick={() => setPopup("intro")}>
             <Info size={18} strokeWidth={1.5} /> What is this?
@@ -146,8 +146,8 @@ export default function DCA() {
             label="Until age"
             help={
               <ParameterHelp label="Until age">
-                The age when you stop this comparison. Longer horizons use fewer
-                complete historical periods.
+                The age when you stop this comparison. Longer periods leave
+                fewer past examples long enough to compare.
               </ParameterHelp>
             }
             value={inputs.targetAge}
@@ -166,7 +166,7 @@ export default function DCA() {
                 fixed rate. This does not convert currencies.
               </ParameterHelp>
             </div>
-            <p>Adjust purchasing power using recorded consumer prices.</p>
+            <p>Account for how everyday prices changed over time.</p>
           </div>
           <select
             id="dca-inflation"
@@ -175,8 +175,8 @@ export default function DCA() {
               setInflationRegion(event.target.value as "morocco" | "us")
             }
           >
-            <option value="morocco">Morocco CPI</option>
-            <option value="us">US CPI</option>
+            <option value="morocco">Morocco</option>
+            <option value="us">United States</option>
           </select>
         </div>
         <fieldset className="savings-comparisons">
@@ -184,9 +184,9 @@ export default function DCA() {
             <span className="parameter-label">
               Compare with
               <ParameterHelp label="Compare with">
-                Select the investments you want to compare. The bank baseline
-                stays visible. Each investment uses its own available history;
-                hover an option for its details.
+                Choose the investments you want to compare. Money left in the
+                bank stays visible. Each investment uses its own available
+                history; hover an option for its details.
               </ParameterHelp>
             </span>
           </legend>
@@ -227,7 +227,7 @@ export default function DCA() {
                 `${asset.label} has up to ${Math.floor(((asset.id === "portfolio" ? portfolioHistory(history) : history.assets[asset.id]).levels.length - 1) / 12)} complete years of history`,
             )
             .join("; ")}
-          . Shorten the horizon to draw{" "}
+          . Choose fewer years to show{" "}
           {unavailable.length === 1 ? "this line" : "these lines"}.
         </p>
       )}
@@ -236,7 +236,7 @@ export default function DCA() {
           <div className="savings-result-heading">
             <div className="savings-outcome" aria-live="polite">
               <p>
-                Historical median ·{" "}
+                Middle past result ·{" "}
                 {main.id === "cash" ? "leaving it in the bank" : main.label}
               </p>
               <h2>{money(main.median)}</h2>
@@ -274,18 +274,18 @@ export default function DCA() {
               <thead>
                 <tr>
                   <th scope="col">At age {inputs.targetAge}</th>
-                  <th scope="col">Median</th>
+                  <th scope="col">Middle result</th>
                   <th
                     scope="col"
-                    title="10th percentile of historical outcomes"
+                    title="About 1 in 10 past periods ended below this amount."
                   >
-                    Lower outcome<span>10th percentile</span>
+                    Lower result<span>1 in 10 below</span>
                   </th>
                   <th
                     scope="col"
-                    title="90th percentile of historical outcomes"
+                    title="About 1 in 10 past periods ended above this amount."
                   >
-                    Upper outcome<span>90th percentile</span>
+                    Higher result<span>1 in 10 above</span>
                   </th>
                 </tr>
               </thead>
@@ -313,11 +313,11 @@ export default function DCA() {
       ) : (
         <p className="savings-unavailable" role="status">
           There is not enough recorded history for a {years}-year comparison.
-          Choose a shorter horizon.
+          Choose fewer years.
         </p>
       )}
       <div className="savings-bottom">
-        <p>Historical results, adjusted for inflation.</p>
+        <p>Past results, after changes in everyday prices.</p>
         <button className="savings-info" onClick={() => setPopup("method")}>
           <BookOpen size={18} strokeWidth={1.5} /> How this works
         </button>

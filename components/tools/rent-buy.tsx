@@ -9,15 +9,13 @@ import {
   Info,
   SlidersHorizontal,
 } from "lucide-react";
+import { RentBuyMethod } from "./rent-buy-method";
+import { ParameterHelp } from "@/components/ui/parameter-help";
 import { NumberStepper } from "@/components/ui/number-stepper";
 import { NumberInput } from "@/components/ui/number-input";
 import { Dialog } from "@/components/ui/dialog";
 import { AgeChart, type AgeSeries } from "@/components/ui/age-chart";
-import {
-  rentBuyAssumptions,
-  rentBuyDefaults,
-  rentBuySources,
-} from "@/content/rent-buy";
+import { rentBuyAssumptions, rentBuyDefaults } from "@/content/rent-buy";
 import { compareRentBuy, type RentBuyInputs } from "@/lib/math/rent-buy";
 import { useToolCurrency } from "./tools-settings";
 
@@ -49,7 +47,7 @@ export default function RentBuy() {
       label: "Rent + invest",
       color: "var(--color-chalk)",
       dash: "",
-      basis: "Investments plus the returned rental deposit",
+      basis: "Invested savings plus the rental deposit you get back",
       points: result.annual.map((p) => ({
         age: p.month / 12,
         value: p.renterReal,
@@ -60,7 +58,8 @@ export default function RentBuy() {
       label: "Buy + invest",
       color: "var(--color-smoke)",
       dash: "7 4",
-      basis: "Home sale proceeds after costs and debt, plus investments",
+      basis:
+        "Money left after selling and repaying the loan, plus invested savings",
       points: result.annual.map((p) => ({
         age: p.month / 12,
         value: p.buyerReal,
@@ -83,9 +82,9 @@ export default function RentBuy() {
         </h1>
         <div className="savings-heading-bottom">
           <p>
-            Buying isn’t automatically the win.
+            Which choice could leave you with more?
             <br />
-            Compare the same home, with the difference invested.
+            Compare a similar home, and invest the money you save.
           </p>
           <button className="savings-info" onClick={() => setPopup("intro")}>
             <Info size={18} strokeWidth={1.5} /> What is this?
@@ -100,7 +99,12 @@ export default function RentBuy() {
         </div>
         <div className="rent-buy-fields">
           <NumberStepper
-            label="Purchase price"
+            label="Home price"
+            help={
+              <ParameterHelp label="Home price">
+                The price you would pay for the home, before buying fees.
+              </ParameterHelp>
+            }
             prefix={currency}
             value={inputs.homePrice}
             onChange={(v) => field("homePrice", v)}
@@ -109,7 +113,13 @@ export default function RentBuy() {
             step={50000}
           />
           <NumberStepper
-            label="Equivalent rent / month"
+            label="Rent for a similar home / month"
+            help={
+              <ParameterHelp label="Rent for a similar home / month">
+                What it would cost each month to rent a similar home in the same
+                area. Include regular charges paid only by the renter.
+              </ParameterHelp>
+            }
             prefix={currency}
             value={inputs.monthlyRent}
             onChange={(v) => field("monthlyRent", v)}
@@ -119,13 +129,21 @@ export default function RentBuy() {
           />
           <NumberStepper
             label="Years in the home"
+            help={
+              <ParameterHelp label="Years in the home">
+                How long you expect to stay before leaving. For buying, the
+                result assumes you sell at that point.
+              </ParameterHelp>
+            }
             value={inputs.horizonYears}
             onChange={(v) => field("horizonYears", v)}
             min={1}
             max={50}
           />
           <NumberInput
-            label="Down payment (%)"
+            label="Paid from your savings (%)"
+            help="The share of the home price you pay yourself, often called a down payment. For example, 20% of 1,000,000 is 200,000. The rest is borrowed. Buying fees are added separately."
+            helpPopover
             value={inputs.downPercent}
             onChange={(v) => field("downPercent", v)}
             min={0}
@@ -133,7 +151,9 @@ export default function RentBuy() {
             step={0.1}
           />
           <NumberInput
-            label="Mortgage rate (% / year)"
+            label="Home-loan interest (% / year)"
+            help="The bank’s yearly interest rate on the home loan, before fees and insurance. This calculator keeps the rate fixed for the whole loan."
+            helpPopover
             value={inputs.mortgageRate}
             onChange={(v) => field("mortgageRate", v)}
             min={0}
@@ -141,7 +161,13 @@ export default function RentBuy() {
             step={0.01}
           />
           <NumberStepper
-            label="Mortgage term / years"
+            label="Years to repay the loan"
+            help={
+              <ParameterHelp label="Years to repay the loan">
+                How many years the bank gives you to repay the home loan. This
+                can be longer than the time you plan to stay.
+              </ParameterHelp>
+            }
             value={inputs.mortgageYears}
             onChange={(v) => field("mortgageYears", v)}
             min={1}
@@ -149,9 +175,9 @@ export default function RentBuy() {
           />
         </div>
         <p className="rent-buy-input-note">
-          Use the rent for an equivalent home, including renter-only recurring
-          charges. Rate: fixed, before fees and insurance. A 100% down payment
-          models a cash purchase.
+          Compare homes of a similar size and location. You pay{" "}
+          {money(result.down)} of the price yourself and borrow{" "}
+          {money(result.loan)}. Enter 100% if you would buy without a loan.
         </p>
         <button
           className="retirement-advanced-toggle"
@@ -160,16 +186,15 @@ export default function RentBuy() {
           onClick={() => setAdvanced(!advanced)}
         >
           <span>
-            <SlidersHorizontal size={16} /> Costs & assumptions
+            <SlidersHorizontal size={16} /> More settings
           </span>
           <ChevronDown size={17} className={advanced ? "rotated" : ""} />
         </button>
         {advanced && (
           <div id="rent-buy-advanced" className="rent-buy-advanced">
             <p>
-              Starting values are examples. Use your property, bank and notary
-              quotes; the dated benchmarks in the source notes are not live
-              prices.
+              These are example numbers. Replace them with the fees and rates
+              for your home and loan. Use the ? buttons for help.
             </p>
             {rentBuyAssumptions.map((group) => (
               <fieldset key={group.title}>
@@ -181,6 +206,7 @@ export default function RentBuy() {
                       {...item}
                       label={item.label.replace(/DH/g, currency)}
                       help={item.help.replace(/DH/g, currency)}
+                      helpPopover
                       value={inputs[key]}
                       onChange={(v) => field(key, v)}
                     />
@@ -193,14 +219,14 @@ export default function RentBuy() {
       </div>
 
       <div className="rent-buy-assumption-summary">
-        <span>Home {inputs.homeGrowth}% / yr</span>
-        <span>Investments {inputs.investmentReturn}% / yr</span>
-        <span>Inflation {inputs.inflation}% / yr</span>
+        <span>Home value: {inputs.homeGrowth}% / year</span>
+        <span>Savings growth: {inputs.investmentReturn}% / year</span>
+        <span>Everyday prices: {inputs.inflation}% / year</span>
         <span>
-          Sale-gain tax:{" "}
+          Tax on sale profit:{" "}
           {inputs.saleGainTaxPercent === 0
-            ? "excluded"
-            : `${inputs.saleGainTaxPercent}% allowance`}
+            ? "not included"
+            : `${inputs.saleGainTaxPercent}% estimate`}
         </span>
       </div>
       <div className="savings-results">
@@ -211,8 +237,7 @@ export default function RentBuy() {
         >
           <p>
             After {inputs.horizonYears}{" "}
-            {inputs.horizonYears === 1 ? "year" : "years"}, under these
-            assumptions
+            {inputs.horizonYears === 1 ? "year" : "years"}, with these numbers
           </p>
           <h2>
             {result.winner === "tie"
@@ -222,20 +247,21 @@ export default function RentBuy() {
           <p>
             {result.winner === "tie"
               ? `The two paths finish within 1 ${currency} of each other.`
-              : `${result.winner === "buy" ? "Buying" : "Renting"} leaves more net wealth in today’s money.`}{" "}
-            Includes a hypothetical sale, mortgage payoff and invested savings.
+              : `${result.winner === "buy" ? "Buying" : "Renting"} leaves you with more money at today’s prices.`}{" "}
+            This assumes you sell the home, repay the loan and keep any invested
+            savings.
           </p>
         </div>
         <div className="rent-buy-balances">
           <div>
             <span>Rent + invest</span>
             <strong>{money(final.renterReal)}</strong>
-            <small>Investments + returned deposit</small>
+            <small>Savings + deposit you get back</small>
           </div>
           <div>
             <span>Buy + invest</span>
             <strong>{money(final.buyerReal)}</strong>
-            <small>Net sale proceeds + investments</small>
+            <small>Money left from selling + savings</small>
           </div>
         </div>
         <AgeChart
@@ -247,30 +273,32 @@ export default function RentBuy() {
           axisLabel="Year"
           tickInterval={Math.max(1, Math.ceil(inputs.horizonYears / 5))}
           endLabels={false}
-          sliderLabel="Explore rent and buy wealth by year"
-          chartLabel={`Renting and buying net wealth in today’s ${currency}`}
+          sliderLabel="Explore money left from renting or buying by year"
+          chartLabel={`Money left from renting and buying in today’s ${currency}`}
         />
         <div className="savings-chart-caption">
           <span>Years in the home</span>
           <span>Hover or tap to compare both paths</span>
         </div>
         <p className="rent-buy-chart-note">
-          A scenario, not a historical replay. Each point compares wealth after
-          leaving the home at that time. Negative values mean the sale and
-          investments would not cover the debt.
+          Each point shows what you could have left if you moved out then. A
+          minus sign means selling and using your savings would still leave some
+          debt. All amounts use today’s prices.
         </p>
         <dl className="retirement-evidence rent-buy-evidence">
           <div>
             <dt>Buying / first month</dt>
             <dd>{money(first.ownerCost)}</dd>
-            <small>Mortgage {money(result.payment)} + recurring costs</small>
+            <small>
+              Loan payment {money(result.payment)} + other home bills
+            </small>
           </div>
           <div>
             <dt>Renting / first month</dt>
             <dd>{money(first.rentCost)}</dd>
             <small>
               {money(Math.abs(first.ownerCost - first.rentCost))} invested by
-              the cheaper path
+              whoever pays less for housing
             </small>
           </div>
           <div>
@@ -281,8 +309,7 @@ export default function RentBuy() {
                 : duration(result.sustainedBreakEvenMonth)}
             </dd>
             <small>
-              Through the selected {inputs.horizonYears}-year horizon;
-              recalculated monthly
+              And stays ahead through the {inputs.horizonYears} years you chose
             </small>
           </div>
         </dl>
@@ -293,7 +320,7 @@ export default function RentBuy() {
         aria-labelledby="rent-buy-horizons-title"
       >
         <h2 id="rent-buy-horizons-title">What if you stay longer?</h2>
-        <div role="group" aria-label="Compare holding periods">
+        <div role="group" aria-label="Compare time in the home">
           {[5, 10, 20, 30].map((years) => (
             <button
               key={years}
@@ -305,8 +332,8 @@ export default function RentBuy() {
           ))}
         </div>
         <p>
-          All other assumptions stay the same. You can change growth and returns
-          under Costs & assumptions.
+          Try a different number of years. Adjust future prices and savings
+          growth under More settings.
         </p>
       </section>
 
@@ -321,7 +348,7 @@ export default function RentBuy() {
         <div className="rent-buy-table-wrap">
           <table>
             <caption className="sr-only">
-              Net wealth at year {inputs.horizonYears}, adjusted for inflation
+              Money left at year {inputs.horizonYears}, adjusted for inflation
             </caption>
             <thead>
               <tr>
@@ -337,12 +364,12 @@ export default function RentBuy() {
                 <td>{money(final.homeValue / deflator)}</td>
               </tr>
               <tr>
-                <th scope="row">Mortgage to repay</th>
+                <th scope="row">Loan left to repay</th>
                 <td>—</td>
                 <td>{negative(final.loanBalance / deflator)}</td>
               </tr>
               <tr>
-                <th scope="row">Selling costs & tax allowance</th>
+                <th scope="row">Selling fees and estimated tax</th>
                 <td>—</td>
                 <td>
                   {negative((final.saleCosts + final.gainTax) / deflator)}
@@ -354,14 +381,14 @@ export default function RentBuy() {
                 <td>{money(final.buyerPortfolio / deflator)}</td>
               </tr>
               <tr>
-                <th scope="row">Deposit returned</th>
+                <th scope="row">Deposit you get back</th>
                 <td>{money(result.deposit / deflator)}</td>
                 <td>—</td>
               </tr>
             </tbody>
             <tfoot>
               <tr>
-                <th scope="row">Net wealth</th>
+                <th scope="row">Total money left</th>
                 <td>{money(final.renterReal)}</td>
                 <td>{money(final.buyerReal)}</td>
               </tr>
@@ -369,14 +396,15 @@ export default function RentBuy() {
           </table>
         </div>
         <p>
-          Buying needs {money(result.buyerUpfront)} upfront:{" "}
-          {money(result.down)} down + {money(result.buyingFees)} in costs. Both
-          paths start with {money(result.startingCash)}. The rental deposit and
-          setup costs are {money(result.renterUpfront)}.
+          To buy, you need {money(result.buyerUpfront)} at the start:{" "}
+          {money(result.down)} toward the home and {money(result.buyingFees)} in
+          fees. Renting starts with {money(result.renterUpfront)} in deposit and
+          fees. Both choices are given {money(result.startingCash)}, and invest
+          what is left.
         </p>
       </section>
       <div className="savings-bottom">
-        <p>Editable assumptions. Not a forecast or financial advice.</p>
+        <p>An estimate using your numbers. Not financial advice.</p>
         <button className="savings-info" onClick={() => setPopup("method")}>
           <BookOpen size={18} strokeWidth={1.5} /> How this works
         </button>
@@ -394,8 +422,8 @@ export default function RentBuy() {
             <div>
               <House size={21} />
               <p>
-                Compare buying a home with renting an equivalent place for the
-                same number of years.
+                Compare buying a home with renting a similar place for the same
+                number of years.
               </p>
             </div>
             <div>
@@ -408,119 +436,14 @@ export default function RentBuy() {
             <div>
               <SlidersHorizontal size={21} />
               <p>
-                Change the mortgage, costs and growth assumptions. See what
-                remains after selling, repaying the loan and accounting for
-                inflation.
+                Change the loan, fees and future prices. See what could be left
+                after selling and repaying the loan, shown at today’s prices.
               </p>
             </div>
           </div>
-        ) : (
-          <div className="savings-method">
-            <p>
-              Rent pays for housing. Mortgage interest, maintenance and
-              transaction fees also pay for housing; mortgage principal builds
-              equity. This tool compares the wealth left under each choice over
-              the same period, rather than treating every payment as a loss or
-              every home purchase as a win.
-            </p>
-            <h3>Equal starting cash, equal monthly resources</h3>
-            <p>
-              Both households start with the larger of the two upfront
-              requirements: down payment plus buying costs, or rental deposit
-              plus setup fees. Unused cash is invested immediately. The rental
-              deposit earns no return and is refunded in full at exit.
-            </p>
-            <p>
-              Each month, both households can afford the higher housing bill.
-              The lower-cost household invests the difference at month-end.
-              Existing investments grow first. The same nominal return, after
-              investment fees and taxes, applies to both portfolios. This
-              assumes you actually invest the savings; it does not test
-              affordability against a salary.
-            </p>
-            <h3>The mortgage and recurring costs</h3>
-            <p>
-              The fixed monthly payment uses the loan amount, annual nominal
-              interest divided by 12, and the term in months. Each payment first
-              covers interest, then reduces the balance. A zero-interest loan
-              divides principal evenly; a cash purchase has no loan. Payments
-              and loan insurance stop at payoff.
-            </p>
-            <p>
-              Maintenance is a percentage of modeled home value, charged
-              monthly. Other ownership costs include home insurance, property
-              taxes and syndic; they rise annually with the inflation
-              assumption. Loan insurance is a separate allowance on the original
-              loan. Rent includes renter-only recurring charges and changes on
-              each anniversary at the chosen rent-growth rate. Shared living
-              costs cancel out.
-            </p>
-            <h3>Compare what you could leave with</h3>
-            <p>
-              At each month we value a hypothetical sale, deduct selling costs,
-              the outstanding mortgage and any selected gain-tax allowance, then
-              add the buyer’s investments. The renter has their investments and
-              deposit. Both totals are divided by the assumed rise in consumer
-              prices, so the chart and final table are in today’s {currency}.
-              This inflation adjustment is different from discounting at an
-              investment return.
-            </p>
-            <p>
-              The gain-tax setting is a simplified effective rate on positive
-              proceeds after selling costs, minus purchase price and buying
-              costs. It defaults to zero. It does not calculate local
-              exemptions, minimum levies, deductions or eligibility. Account for
-              applicable taxes and early-payoff charges in your assumptions; no
-              statutory tax savings are assumed.
-            </p>
-            <p>
-              “Buying stays ahead from” is the first modeled month after which
-              its net wealth stays at least level with renting through your
-              selected horizon, provided buying finishes ahead. A temporary
-              crossing is not reported as a lasting lead. A negative balance is
-              preserved: selling can leave a shortfall.
-            </p>
-            <h3>Data versus assumptions</h3>
-            <p>
-              The example mortgage rate of 5.18% is a broad Bank Al-Maghrib
-              real-estate lending observation from Q1 2025. Home growth starts
-              at the 1.5% residential year-on-year change in the BAM / ANCFCC Q3
-              2025 bulletin. These are dated reference points, not current
-              quotes or long-term forecasts. No individual property history is
-              replayed.
-            </p>
-            <p>
-              The other initial values—1,000,000 {currency} price, 5,000{" "}
-              {currency} rent, 20% down, 20-year loan, 7% buying costs, 3%
-              selling costs, 1% maintenance, 500 {currency} other monthly costs,
-              0.3% loan insurance, 2% rent growth, 5% investment return and 2%
-              inflation—are editable examples originally expressed in DH. The
-              currency selector changes units, not local mortgage rates, taxes
-              or market assumptions; replace the amounts for your situation. The
-              rental deposit starts at one month, rental setup fees and gain tax
-              at zero. Replace these with your own quotes and test less
-              favorable growth as well.
-            </p>
-            <p>
-              Returns and home prices follow smooth rates. There are no market
-              crashes, refinancing, missed payments, major one-off repairs,
-              moving cycles or currency conversion. Lifestyle, flexibility and
-              the security of owning your home matter too, but are not priced
-              here.
-            </p>
-            <h3>Research & source notes</h3>
-            <ul>
-              {rentBuySources.map((source) => (
-                <li key={source.title}>
-                  <a href={source.url} target="_blank" rel="noreferrer">
-                    {source.title} ↗
-                  </a>
-                  <p>{source.description}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+        ) : popup === "method" ? (
+          <RentBuyMethod inputs={inputs} result={result} currency={currency} />
+        ) : null}
       </Dialog>
     </section>
   );

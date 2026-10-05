@@ -11,9 +11,17 @@ The shared sidebar selects DH (default) or USD for inputs, wealth, tables and ch
 
 Six main inputs: purchase price, equivalent monthly rent, time in the home, down payment percentage, mortgage rate and mortgage term. Changes update the result immediately. Use the same home quality/location on both sides; rent includes renter-only recurring charges.
 
-“Costs & assumptions” exposes growth, inflation, investment return, buying/selling costs, maintenance, other ownership costs, loan insurance, refundable rental deposit, rental setup fees and a simplified sale-gain tax allowance. All are editable. Choosing 100% down models a cash purchase; zero-interest mortgages are supported.
+“More settings” exposes growth, inflation, investment return, buying/selling costs, maintenance, other ownership costs, loan insurance, refundable rental deposit, rental setup fees and a simplified sale-gain tax allowance. All are editable. Choosing 100% down models a cash purchase; zero-interest mortgages are supported.
 
 The headline compares final wealth in today’s selected currency. Two balances, a hover/touch/keyboard chart, initial monthly costs, a sustained break-even and a final component table explain the result. Buttons explore 5, 10, 20 and 30 years. The chart uses Year rather than Age and includes negative values. Keep the standard obsidian canvas, neutral lines, gold icons and shared dialogs. Inputs survive switching tools; reload restores the example.
+
+## Plain-language interface and methodology
+
+Main labels are “Home price”, “Rent for a similar home / month”, “Years in the home”, “Paid from your savings (%)”, “Home-loan interest (% / year)” and “Years to repay the loan”. A live sentence translates the upfront percentage into the amount paid and the amount borrowed. Each field has hover/focus help and a click/tap explanation. Advanced fields use terms such as “Buying fees”, “Repairs and upkeep”, “Other home bills” and “Tax on profit when selling”. The final table calls net wealth “Total money left”. Existing inputs, units, defaults and calculations are preserved.
+
+`components/tools/rent-buy-method.tsx` provides seven linked sections: current inputs; equal starting cash; loan payments and bills; investing differences; sale and inflation; interpreting results; sources and limits. It renders LaTeX equations and live tables for every input, starting money, the first three housing months and final outcomes before/after inflation. Values are derived from `compareRentBuy`, including its actual monthly records.
+
+The guide distinguishes nominal yearly loan interest divided by 12 from effective compound monthly investment/home-price growth. It documents monthly timing, yearly rent/bill increases, the simplified tax basis, fees counted once per hypothetical sale, negative outcomes, the sustained lead calculation and the fixed inflation assumption. Technical descriptions and source notes remain available here rather than crowding the main form.
 
 ## Research and dated benchmarks
 
@@ -119,7 +127,8 @@ This is a transparent scenario calculator, not backtested property performance. 
 
 - `content/rent-buy.ts`: defaults, field descriptions, limits and dated source notes.
 - `lib/math/rent-buy.ts`: pure calculation engine; `rent-buy.test.ts` checks independent loan/FV benchmarks, fee accounting, payoff, both investing directions, inflation, tax allowances, negative equity, ties and invalid inputs.
-- `components/tools/rent-buy.tsx`: tool UI and methodology dialogs.
+- `components/tools/rent-buy.tsx`: tool UI and shared dialogs.
+- `components/tools/rent-buy-method.tsx`: structured technical guide and current calculation tables.
 - `components/ui/number-input.tsx`: decimal inputs with guarded intermediate typing.
 - `components/ui/age-chart.tsx`: shared year/age chart with negative-value support.
 - `tests/e2e/rent-buy.spec.ts`: live controls, negative balances, holding periods, input persistence, chart pointer/touch/keyboard, dialogs and four responsive sizes.
