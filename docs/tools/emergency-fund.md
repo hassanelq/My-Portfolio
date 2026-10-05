@@ -91,3 +91,5 @@ Every risk factor must map to a known option. The engine rejects missing or inva
 `content/emergency.ts` owns the question IDs, option values, wording, points, reasons, month bands and guidance link. The wizard, result dropdowns and methodology table all read it. Preserve stable IDs when editing text. The six-month self-employment minimum is implemented in `lib/math/emergency.ts`.
 
 `lib/math/emergency.test.ts` checks score boundaries, invalid answers, arithmetic and every choice combination. `tests/e2e/emergency.spec.ts` covers the wizard, direct result editing, retained state, keyboard use, popups and responsive layouts. Update the combination count and examples if choices or weights change. Test exhaustiveness verifies rule implementation, not financial calibration.
+
+The wording and methodology update was checked with TypeScript, scoped ESLint, the emergency and rent-or-buy calculation suites (15 passing tests), and eight focused browser scenarios across both tools. Browser checks covered editable results, keyboard controls, rendered formulas, and desktop and 320 px layouts.
