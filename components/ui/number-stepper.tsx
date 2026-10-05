@@ -11,6 +11,8 @@ export function NumberStepper({
   max,
   step = 1,
   prefix,
+  suffix,
+  precision = 0,
   help,
 }: {
   label: string;
@@ -20,10 +22,16 @@ export function NumberStepper({
   max: number;
   step?: number;
   prefix?: string;
+  suffix?: string;
+  precision?: number;
   help?: React.ReactNode;
 }) {
   const id = useId();
   const [draft, setDraft] = useState<string | null>(null);
+  const formatted = new Intl.NumberFormat("fr-FR", {
+    maximumFractionDigits: precision,
+  }).format(value);
+  const rounded = (n: number) => Number(n.toFixed(precision));
   return (
     <div className="number-stepper">
       <div className="number-stepper-label">
@@ -37,33 +45,49 @@ export function NumberStepper({
             id={id}
             type="text"
             style={{
-              width: `${Math.max(1, (draft ?? new Intl.NumberFormat("fr-FR").format(value)).length)}ch`,
+              width: `${Math.max(1, (draft ?? formatted).length)}ch`,
               fontSize: value >= 1000000 ? 18 : undefined,
             }}
-            inputMode="numeric"
-            value={draft ?? new Intl.NumberFormat("fr-FR").format(value)}
+            inputMode={precision > 0 ? "decimal" : "numeric"}
+            value={draft ?? formatted}
             onChange={(event) => {
-              const raw = event.target.value.replace(/[\s\u202f,]/g, "");
-              if (!/^\d*$/.test(raw)) return;
+              const raw =
+                precision > 0
+                  ? event.target.value
+                      .replace(/[\s\u202f]/g, "")
+                      .replace(",", ".")
+                  : event.target.value.replace(/[\s\u202f,]/g, "");
+              const pattern =
+                precision > 0
+                  ? new RegExp(
+                      `^${min < 0 ? "-?" : ""}\\d*(\\.\\d{0,${precision}})?$`,
+                    )
+                  : /^\d*$/;
+              if (!pattern.test(raw)) return;
               setDraft(raw);
               const parsed = Number(raw);
               if (
                 raw &&
-                Number.isSafeInteger(parsed) &&
+                Number.isFinite(parsed) &&
                 parsed >= min &&
                 parsed <= max
               )
                 onChange(parsed);
             }}
             onBlur={() => {
-              if (draft !== null && draft !== "")
-                onChange(Math.max(min, Math.min(max, Number(draft))));
+              if (
+                draft !== null &&
+                draft !== "" &&
+                Number.isFinite(Number(draft))
+              )
+                onChange(rounded(Math.max(min, Math.min(max, Number(draft)))));
               setDraft(null);
             }}
             onKeyDown={(event) => {
               if (event.key === "Enter") event.currentTarget.blur();
             }}
           />
+          {suffix && <span>{suffix}</span>}
         </div>
         <button
           type="button"
@@ -71,7 +95,7 @@ export function NumberStepper({
           disabled={value <= min}
           onClick={() => {
             setDraft(null);
-            onChange(Math.max(min, value - step));
+            onChange(rounded(Math.max(min, value - step)));
           }}
         >
           <Minus size={17} />
@@ -82,7 +106,7 @@ export function NumberStepper({
           disabled={value >= max}
           onClick={() => {
             setDraft(null);
-            onChange(Math.min(max, value + step));
+            onChange(rounded(Math.min(max, value + step)));
           }}
         >
           <Plus size={17} />

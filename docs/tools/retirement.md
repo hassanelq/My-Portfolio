@@ -13,11 +13,13 @@ Estimate the invested capital needed to fund a chosen retirement duration, then 
 
 | Input | Default | UI bounds / meaning |
 | --- | --- | --- |
-| Living cost / month | 8,000 DH | 0–1,000,000; spending in today's purchasing power |
-| Your age | 25 | 18–99, whole years |
+| Living cost / month | 5,000 DH | 0–1,000,000; spending in today's purchasing power |
+| Your age | 23 | 18–99, whole years |
 | Retire at | 45 | Current age through 109 |
+| Your salary / month | 0 (not given) | Advanced; 0–100,000,000; monthly take-home pay in today’s money |
 | Already invested | 0 DH | Advanced; 0–100,000,000 |
-| Plan until age | 75 | Advanced; retirement age + 1 through 110 |
+| Plan until age | 80 | Advanced; retirement age + 1 through 110 |
+| Growth rate / year | Historical compound real return for the selected CPI record | Advanced; −10%–20%, editable to 0.01 percentage points, buttons step by 0.1; reset restores historical default |
 | Planning method | Historical stress test | Advanced; historical or average-return spend-down |
 | Inflation reference | Morocco | Advanced; Morocco or longer US reference |
 
@@ -29,7 +31,7 @@ The tool shows required capital, monthly investment, initial withdrawal rate, hi
 
 Alternative contribution rows compare 3,000 per month, the calculated amount and 12,000 per month in the selected currency. Candidate ages are whole years. Every age gets a newly calculated withdrawal target because the retirement duration changes. Selecting an available alternative applies its age to the plan.
 
-Dialogs explain “How much to invest?”, living costs, the horizon and the full method. Dynamic numbers come from the current calculation and data, not a reference screenshot. State survives tool switching.
+Every numeric parameter and both advanced selectors have a small question-mark help control: hover or keyboard focus for a short explanation, click or tap for a shared dialog. “How this works” uses six linked sections with LaTeX equations, current inputs, inflation and real-return statistics, a three-month withdrawal example, and a live results table. Dynamic numbers come from the current calculation and data, not a reference screenshot. State survives tool switching.
 
 ## Data and calculation
 
@@ -54,19 +56,50 @@ historicalTarget = max(capital(s)) across complete windows
 initialAnnualWithdrawalRate = 12 × W / historicalTarget
 ```
 
-Withdrawals occur at the **beginning** of each month, followed by market growth and CPI adjustment. Spending stays fixed in purchasing power, rather than being a fixed percentage of the remaining account. A complete window requires `H+1` monthly levels, giving `N−H` windows. For 30 years the current snapshot supplies 426 Moroccan-inflation windows and 810 US-inflation windows. This is the minimum capital that funds the prescribed withdrawals in every available period; the most demanding window finishes at approximately zero. Excess existing investments can leave a surplus. Other windows may also tie the minimum.
+Withdrawals occur at the **beginning** of each month, followed by market growth and CPI adjustment. Spending stays fixed in purchasing power, rather than being a fixed percentage of the remaining account. A complete window requires `H+1` monthly levels, giving `N−H` windows. The default 35-year retirement (45–80) has 366 Moroccan-inflation windows and 750 US-inflation windows. A 30-year horizon has 426 and 810 respectively. This is the minimum capital that funds the prescribed withdrawals in every available period; the most demanding window finishes at approximately zero. Excess existing investments can leave a surplus. Other windows may also tie the minimum.
 
 The chart’s retirement segment replays the most demanding start, sampled annually. Passing every recorded period is not a forecast or guarantee. The alternative ages are whole-year estimates: each candidate has a new retirement duration and therefore a separately calculated target. An insufficient history produces a coverage message.
 
 ### Accumulation and average-return mode
 
-Accumulation uses a **constant estimated real monthly growth factor** `g = (R[last]/R[first])^(1/(N−1))`. Existing savings are invested immediately; contributions arrive at month-end. For `M` months and contribution `C`, the final balance is `starting × g^M + C × sum(g^k, k=0…M−1)`. Solve this for `C`, floored at zero. Round the displayed contribution upward to the next whole currency unit; use the precise amount for the chart. A shortfall with zero saving months is shown as an immediate investment requirement.
+Accumulation uses a **constant estimated real monthly growth factor**. By default, `g = (R[last]/R[first])^(1/(N−1))`. With a custom annual real growth rate `r`, use `g = (1+r)^(1/12)`. The historical default uses full precision internally; the control displays two decimal places. Existing savings are invested immediately; contributions arrive at month-end. For `M` months and contribution `C`, the final balance is `starting × g^M + C × sum(g^k, k=0…M−1)`. Solve this for `C`, floored at zero. Round the displayed contribution upward to the next whole currency unit; use the precise amount for the chart. A shortfall with zero saving months is shown as an immediate investment requirement.
 
-Unlike DCA, retirement contributions are **constant real amounts**, so their nominal value must rise with inflation. The smooth accumulation line is an estimate from a historical compound return, not a historical replay or predicted return path.
+Unlike DCA, retirement contributions are **constant real amounts**, so their nominal value must rise with inflation. The smooth accumulation line uses the selected constant real growth rate, historical by default; it is an estimate rather than a historical replay or predicted return path.
 
 Optional average-return mode uses `W × sum(g^(−k), k=0…H−1)` as its target and the same constant factor during retirement. It spends that target down by the end age, but ignores the actual order of returns in its plotted path. Its target is still tested against every real historical retirement window; the UI shows how many it funds and warns that other sequences can fail. The success count is a count of recorded outcomes, not future odds.
 
 Zero spending needs zero capital. Flat and negative real returns are supported. Existing investments above the target require no further monthly contribution. The planning end age is adjustable and is not a life-expectancy estimate.
+
+### Growth control and calculated withdrawal rate
+
+The advanced growth field supports negative, zero and positive annual **real** returns. It updates required monthly saving, the salary percentage, alternative retirement ages and the accumulation chart. In average-return mode it also updates the FIRE target, calculated withdrawal rate, retirement path and historical funded count. In historical mode the target, withdrawal rate and retirement return sequence remain derived from recorded observations.
+
+The field is labeled “Historical default” or “Custom assumption”. With no override, changing CPI reference or its currency-driven default updates the historical growth rate. A custom rate persists across reference and tool changes until “Reset to historical” is clicked. Reset uses the currently selected CPI record. No inflation is subtracted a second time from this already-real rate.
+
+The withdrawal rate remains a read-only result with hover/click help. It is annual spending divided by required capital; with zero spending, display the model’s implied rate for that horizon. It is not an editable percentage of the remaining balance. The engine accepts an optional annual growth override in both `calculateRetirementPlan` and `earliestRetirementAge`; it never modifies the underlying historical model.
+
+### Salary comparison
+
+Salary defaults to 0, meaning not supplied. For a positive monthly take-home salary `Y`, display `100 × ceil(C) / Y` rounded to the nearest whole percent beneath the monthly contribution. Use the displayed, rounded-up contribution for consistency. A value above 100% is shown with an explanation; it is not capped. With zero salary or an immediate-investment shortfall rather than a monthly contribution, hide the percentage. Zero contribution with a supplied salary displays 0%.
+
+Salary is separate presentation state: it never changes the FIRE target, accumulation estimate or alternative retirement ages. It follows the shared currency and remains unchanged numerically on currency switches. The ratio compares today’s contribution with today’s salary, not a forecast of salary growth or an assessment of other household spending.
+
+### Methodology equations
+
+The on-screen guide renders the engine formulas with KaTeX. Here `r` is the selected annual real growth rate (historical by default):
+
+$$
+R_t=\frac{P_t/P_0}{I_t/I_0},\quad
+K_s=W\sum_{k=0}^{H-1}\frac{R_s}{R_{s+k}},\quad F=\max_s K_s.
+$$
+
+$$
+g=(1+r)^{1/12},\quad
+A_M=\sum_{k=0}^{M-1}g^k,\quad
+C=\max\left(0,\frac{F-Sg^M}{A_M}\right).
+$$
+
+The worked table starts at the most demanding historical window with exactly its required capital, even in average-return mode. It shows opening capital, actual nominal return, actual monthly CPI change and closing real capital after the beginning-of-month withdrawal. The result table uses the currently selected mode and shows the other CPI reference’s historical target separately.
 
 ### Scope
 
@@ -91,6 +124,8 @@ All retirement assets are S&P 500 equities with reinvested dividends. A DH label
 | Longer US market/CPI reference | `content/retirement-us-history.json` |
 | US import and manifest | `scripts/import-retirement-data.py`, `data/retirement/manifest.json` |
 | Historical withdrawals, saving and age search | `lib/math/retirement.ts` |
+| Structured methodology | `components/tools/retirement-method.tsx` |
+| Shared parameter explanations | `components/ui/parameter-help.tsx` |
 | Unit tests | `lib/math/retirement.test.ts` |
 | Browser tests | `tests/e2e/retirement.spec.ts` |
 

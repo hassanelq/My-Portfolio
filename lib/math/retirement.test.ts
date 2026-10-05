@@ -245,8 +245,8 @@ describe("pinned retirement history", () => {
   });
   it("funds every recorded default window, while smooth average returns do not", () => {
     for (const [model, expectedWindows] of [
-      [morocco, 426],
-      [us, 810],
+      [morocco, 366],
+      [us, 750],
     ] as const) {
       const plan = calculateRetirementPlan(
         retirementDefaults,
@@ -274,7 +274,7 @@ describe("pinned retirement history", () => {
             model.series.levels,
             model.series.cpi,
             start,
-            360,
+            (retirementDefaults.untilAge - retirementDefaults.retireAt) * 12,
           ).minimum,
         ).toBeGreaterThan(-0.001);
       const average = calculateRetirementPlan(
@@ -285,6 +285,59 @@ describe("pinned retirement history", () => {
       expect(average.target).toBeLessThan(plan.target);
       expect(average.successCount).toBeLessThan(expectedWindows);
       expect(average.terminalBalance).toBeCloseTo(0, 3);
+    }
+  });
+});
+
+describe("custom real growth", () => {
+  const model = fixture(Array.from({ length: 61 }, (_, i) => 100 * 1.004 ** i));
+  const inputs = {
+    livingCost: 100,
+    starting: 0,
+    age: 23,
+    retireAt: 25,
+    untilAge: 28,
+  };
+  it("changes accumulation without changing the historical withdrawal test", () => {
+    const base = calculateRetirementPlan(inputs, model, "historical")!;
+    const flat = calculateRetirementPlan(inputs, model, "historical", 0)!;
+    const negative = calculateRetirementPlan(
+      inputs,
+      model,
+      "historical",
+      -0.05,
+    )!;
+    expect(flat.target).toBe(base.target);
+    expect(flat.withdrawalRate).toBe(base.withdrawalRate);
+    expect(flat.successCount).toBe(base.successCount);
+    expect(flat.monthlyContribution).toBeCloseTo(flat.target / 24, 8);
+    expect(negative.monthlyContribution!).toBeGreaterThan(
+      flat.monthlyContribution!,
+    );
+    expect(flat.monthlyContribution!).toBeGreaterThan(
+      base.monthlyContribution!,
+    );
+    expect(negative.terminalBalance).toBeCloseTo(0, 5);
+  });
+  it("uses the same custom growth for average retirement and alternative ages", () => {
+    const flat = calculateRetirementPlan(inputs, model, "average", 0)!;
+    expect(flat.target).toBe(3600);
+    expect(flat.monthlyContribution).toBe(150);
+    expect(flat.withdrawalRate).toBeCloseTo(1 / 3);
+    expect(flat.terminalBalance).toBeCloseTo(0, 8);
+    expect(earliestRetirementAge(inputs, 150, model, "average", 0)).toBe(25);
+    const growing = calculateRetirementPlan(inputs, model, "average", 0.08)!;
+    expect(growing.target).toBeLessThan(flat.target);
+    expect(growing.withdrawalRate).toBeGreaterThan(flat.withdrawalRate);
+  });
+  it("rejects invalid growth overrides", () => {
+    for (const rate of [-1, -2, NaN, Infinity]) {
+      expect(() =>
+        calculateRetirementPlan(inputs, model, "average", rate),
+      ).toThrow(RangeError);
+      expect(() =>
+        earliestRetirementAge(inputs, 150, model, "historical", rate),
+      ).toThrow(RangeError);
     }
   });
 });

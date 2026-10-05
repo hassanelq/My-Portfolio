@@ -1,10 +1,10 @@
 import { dcaSources } from "./tools";
 
 export const retirementDefaults = {
-  livingCost: 8000,
-  age: 25,
+  livingCost: 5000,
+  age: 23,
   retireAt: 45,
-  untilAge: 75,
+  untilAge: 80,
   starting: 0,
 };
 export const retirementContributions = [3000, 12000];

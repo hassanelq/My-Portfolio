@@ -14,7 +14,7 @@ test("retirement controls update capital and contributions, with state kept acro
     panel.getByRole("heading", { name: "Retirement planner." }),
   ).toBeVisible();
   await expect(panel.locator(".retirement-evidence")).toContainText(
-    "426 / 426",
+    "366 / 366",
   );
   const original = await panel.locator(".retirement-target h2").innerText();
   await panel
@@ -25,7 +25,7 @@ test("retirement controls update capital and contributions, with state kept acro
   await page.getByRole("tab", { name: /Retirement planner/ }).click();
   await expect(
     panel.getByLabel("Living cost / month", { exact: true }),
-  ).toHaveValue(/8\s500/);
+  ).toHaveValue(/5\s500/);
   await panel.getByLabel("Living cost / month", { exact: true }).fill("0");
   await panel.getByLabel("Living cost / month", { exact: true }).blur();
   await expect(panel.locator(".retirement-target h2")).toHaveText("0 DH");
@@ -40,7 +40,7 @@ test("advanced settings change the model and guard unsupported or immediate reti
   await panel.getByRole("button", { name: "Advanced", exact: true }).click();
   await panel.getByLabel("Inflation reference").selectOption("us");
   await expect(panel.locator(".retirement-evidence")).toContainText(
-    "810 / 810",
+    "750 / 750",
   );
   await panel.getByLabel("Planning approach").selectOption("average");
   await expect(panel.getByRole("status")).toContainText(
@@ -48,7 +48,7 @@ test("advanced settings change the model and guard unsupported or immediate reti
   );
   await panel.getByLabel("Planning approach").selectOption("historical");
   await panel.getByLabel("Inflation reference").selectOption("morocco");
-  await panel.getByLabel("Retire at", { exact: true }).fill("25");
+  await panel.getByLabel("Retire at", { exact: true }).fill("23");
   await panel.getByLabel("Retire at", { exact: true }).blur();
   await expect(panel.locator(".retirement-monthly")).toContainText(
     "Additional investment needed now",
@@ -63,7 +63,7 @@ test("advanced settings change the model and guard unsupported or immediate reti
   await panel.getByLabel("Plan until age", { exact: true }).fill("110");
   await panel.getByLabel("Plan until age", { exact: true }).blur();
   await expect(panel.getByRole("status")).toContainText(
-    "not enough history to test 85 years",
+    "not enough history to test 87 years",
   );
   await expect(panel.locator(".retirement-target")).toHaveCount(0);
 });
@@ -81,19 +81,19 @@ test("chart explores both phases and alternative contributions apply a new targe
     "Building your savings",
   );
   await page.keyboard.press("End");
-  await expect(chart).toHaveAttribute("aria-valuenow", "75");
+  await expect(chart).toHaveAttribute("aria-valuenow", "80");
   await expect(panel.getByRole("tooltip")).toContainText(
     "Historical retirement",
   );
   await expect(panel.getByRole("tooltip")).toContainText("0 DH");
   await page.keyboard.press("ArrowLeft");
-  await expect(chart).toHaveAttribute("aria-valuenow", "74");
+  await expect(chart).toHaveAttribute("aria-valuenow", "79");
   const bounds = (await chart.boundingBox())!;
   await page.mouse.move(
     bounds.x + bounds.width / 2,
     bounds.y + bounds.height / 2,
   );
-  await expect(chart).toHaveAttribute("aria-valuenow", "50");
+  await expect(chart).toHaveAttribute("aria-valuenow", "52");
   const alternative = panel
     .locator(".retirement-alternatives tbody tr")
     .filter({ hasText: /12\s000/ })
@@ -147,7 +147,7 @@ for (const width of [1440, 768, 390, 320])
       name: "How this works",
       exact: true,
     });
-    await expect(method).toContainText("426 complete retirement periods");
+    await expect(method).toContainText("366 complete retirement periods");
     await expect(method).toContainText("June 2025");
     await expect(method.getByRole("link", { name: /Bengen/ })).toBeAttached();
     await method.getByRole("button", { name: "Got it" }).click();
@@ -182,9 +182,129 @@ test("touch chart keeps the selected retirement age visible", async ({
     bounds.x + bounds.width / 2,
     bounds.y + bounds.height / 2,
   );
-  await expect(chart).toHaveAttribute("aria-valuenow", "50");
+  await expect(chart).toHaveAttribute("aria-valuenow", "52");
   await expect(panel.getByRole("tooltip")).toContainText(
     "Historical retirement",
   );
   await context.close();
+});
+
+test("salary is optional and parameter help and structured formulas are available", async ({
+  page,
+}) => {
+  const panel = await openPlanner(page);
+  await expect(panel.getByLabel("Your age", { exact: true })).toHaveValue("23");
+  await expect(
+    panel.getByLabel("Living cost / month", { exact: true }),
+  ).toHaveValue(/5\s000/);
+  await panel.getByRole("button", { name: "Advanced", exact: true }).click();
+  await expect(panel.getByLabel("Plan until age", { exact: true })).toHaveValue(
+    "80",
+  );
+  const salary = panel.getByLabel("Your salary / month", { exact: true });
+  await expect(salary).toHaveValue("0");
+  await expect(panel.locator(".retirement-salary-share")).toHaveCount(0);
+  const target = await panel.locator(".retirement-target h2").innerText();
+  const monthly = Number(
+    (await panel.locator(".retirement-monthly strong").innerText()).replace(
+      /[^0-9]/g,
+      "",
+    ),
+  );
+  await salary.fill("12000");
+  await salary.blur();
+  await expect(panel.locator(".retirement-salary-share")).toContainText(
+    `${Math.round((monthly / 12000) * 100)}% of what you earn.`,
+  );
+  await expect(panel.locator(".retirement-target h2")).toHaveText(target);
+  const help = panel.getByRole("button", {
+    name: "About your salary / month",
+    exact: true,
+  });
+  await help.hover();
+  await expect(panel.getByRole("tooltip")).toContainText("take-home pay");
+  await help.click();
+  await expect(
+    page.getByRole("dialog", { name: "Your salary / month" }),
+  ).toBeVisible();
+  await page.keyboard.press("Escape");
+  await salary.fill("0");
+  await salary.blur();
+  await expect(panel.locator(".retirement-salary-share")).toHaveCount(0);
+  await panel
+    .getByRole("button", { name: "How this works", exact: true })
+    .click();
+  const method = page.getByRole("dialog", {
+    name: "How this works",
+    exact: true,
+  });
+  await expect(method.locator(".savings-method-section")).toHaveCount(6);
+  await expect(method.locator(".katex-error")).toHaveCount(0);
+  await expect(
+    method.getByRole("region", { name: "Worked retirement months" }),
+  ).toBeAttached();
+});
+
+test("growth overrides affect the right calculations and reset to historical defaults", async ({
+  page,
+}) => {
+  const panel = await openPlanner(page);
+  await panel.getByRole("button", { name: "Advanced", exact: true }).click();
+  const growth = panel.getByLabel("Growth rate / year", { exact: true });
+  const reset = panel.getByRole("button", {
+    name: "Reset to historical",
+    exact: true,
+  });
+  const target = panel.locator(".retirement-target h2");
+  const contribution = panel.locator(".retirement-monthly strong");
+  const withdrawal = panel.locator(".retirement-evidence dd").first();
+  const defaultRate = await growth.inputValue();
+  const original = {
+    target: await target.innerText(),
+    contribution: await contribution.innerText(),
+    withdrawal: await withdrawal.innerText(),
+  };
+  await expect(reset).toBeDisabled();
+  await growth.fill("0");
+  await growth.blur();
+  await expect(panel.locator(".retirement-growth-status")).toContainText(
+    "Custom assumption",
+  );
+  await expect(target).toHaveText(original.target);
+  await expect(withdrawal).toHaveText(original.withdrawal);
+  await expect(contribution).not.toHaveText(original.contribution);
+  await panel.getByLabel("Planning approach").selectOption("average");
+  await expect(target).toHaveText(/2\s100\s000 DH/);
+  await growth.fill("-2.5");
+  await growth.blur();
+  await expect(growth).toHaveValue(/-2[.,]5/);
+  await expect(target).not.toHaveText(/2\s100\s000 DH/);
+  await reset.click();
+  await expect(growth).toHaveValue(defaultRate);
+  await panel.getByLabel("Planning approach").selectOption("historical");
+  await expect(target).toHaveText(original.target);
+  await expect(contribution).toHaveText(original.contribution);
+  await panel.getByLabel("Inflation reference").selectOption("us");
+  await expect(growth).not.toHaveValue(defaultRate);
+  await growth.fill("3.25");
+  await growth.blur();
+  await panel.getByLabel("Inflation reference").selectOption("morocco");
+  await expect(growth).toHaveValue(/3[.,]25/);
+  await panel
+    .getByRole("button", { name: "About initial withdrawal rate", exact: true })
+    .click();
+  await expect(
+    page.getByRole("dialog", { name: "Initial withdrawal rate", exact: true }),
+  ).toContainText("calculated");
+  await page.keyboard.press("Escape");
+  await panel
+    .getByRole("button", { name: "How this works", exact: true })
+    .click();
+  const method = page.getByRole("dialog", {
+    name: "How this works",
+    exact: true,
+  });
+  await expect(method).toContainText("3.25%");
+  await expect(method).toContainText("custom assumption");
+  await expect(method.locator(".katex-error")).toHaveCount(0);
 });

@@ -2722,6 +2722,30 @@ svg {
   font-size: 15px;
   min-width: 0;
 }
+.retirement-growth {
+  min-width: 0;
+}
+.retirement-growth-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  justify-content: space-between;
+  margin-top: 10px;
+  color: var(--color-smoke);
+  font-size: 13px;
+}
+.retirement-growth-status button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-chalk);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.retirement-growth-status button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
 .retirement-select select {
   width: 100%;
   height: 54px;
@@ -3859,6 +3883,26 @@ svg {
 .ui-tooltip[data-open="true"] .ui-tooltip-content {
   display: block;
 }
+.ui-tooltip[data-side="above"] .ui-tooltip-content {
+  top: auto;
+  bottom: calc(100% + 8px);
+}
+.ui-tooltip[data-open="true"][data-side="above"]::after {
+  top: auto;
+  bottom: 100%;
+}
 .ui-tooltip-content[hidden] {
   display: none;
+}
+
+.parameter-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.parameter-label .savings-help {
+  flex-shrink: 0;
+}
+.retirement-salary-share {
+  color: var(--color-chalk);
 }

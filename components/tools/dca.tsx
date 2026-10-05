@@ -4,11 +4,11 @@ import {
   BookOpen,
   CalendarDays,
   Check,
-  CircleHelp,
   History,
   Info,
   Layers,
 } from "lucide-react";
+import { ParameterHelp } from "@/components/ui/parameter-help";
 import { Dialog } from "@/components/ui/dialog";
 import { Tooltip } from "@/components/ui/tooltip";
 import { NumberStepper } from "@/components/ui/number-stepper";
@@ -25,7 +25,7 @@ import { DCAMethod, getInflationSummary } from "./dca-method";
 import { SeriesSwatch } from "./series-swatch";
 import { useToolCurrency, useInflationReference } from "./tools-settings";
 
-type Popup = "intro" | "method" | "starting" | "monthly" | null;
+type Popup = "intro" | "method" | null;
 export default function DCA() {
   const { currency, money } = useToolCurrency();
   const [inflationRegion, setInflationRegion] = useInflationReference();
@@ -66,8 +66,6 @@ export default function DCA() {
   const popupTitles = {
     intro: "Monthly investing?",
     method: "How this works",
-    starting: "Current savings",
-    monthly: "Your monthly contribution",
   };
   function field(key: keyof SavingsInputs, value: number) {
     setInputs((current) => {
@@ -110,13 +108,10 @@ export default function DCA() {
             step={1000}
             prefix={currency}
             help={
-              <button
-                className="savings-help"
-                aria-label="About current savings"
-                onClick={() => setPopup("starting")}
-              >
-                <CircleHelp size={16} />
-              </button>
+              <ParameterHelp label="Current savings">
+                Money you can invest right now. It is invested at the start of
+                each historical replay.
+              </ParameterHelp>
             }
           />
           <NumberStepper
@@ -128,17 +123,20 @@ export default function DCA() {
             step={100}
             prefix={currency}
             help={
-              <button
-                className="savings-help"
-                aria-label="About monthly contributions"
-                onClick={() => setPopup("monthly")}
-              >
-                <CircleHelp size={16} />
-              </button>
+              <ParameterHelp label="Per month">
+                The amount you invest at the end of every month. It stays the
+                same in currency terms; it does not increase with inflation.
+              </ParameterHelp>
             }
           />
           <NumberStepper
             label="Your age"
+            help={
+              <ParameterHelp label="Your age">
+                Your age today. Together with the end age, it sets how long the
+                monthly investing lasts.
+              </ParameterHelp>
+            }
             value={inputs.age}
             onChange={(value) => field("age", value)}
             min={18}
@@ -146,6 +144,12 @@ export default function DCA() {
           />
           <NumberStepper
             label="Until age"
+            help={
+              <ParameterHelp label="Until age">
+                The age when you stop this comparison. Longer horizons use fewer
+                complete historical periods.
+              </ParameterHelp>
+            }
             value={inputs.targetAge}
             onChange={(value) => field("targetAge", value)}
             min={inputs.age + 1}
@@ -154,7 +158,14 @@ export default function DCA() {
         </div>
         <div className="savings-inflation-control">
           <div>
-            <label htmlFor="dca-inflation">Inflation reference</label>
+            <div className="parameter-label">
+              <label htmlFor="dca-inflation">Inflation reference</label>
+              <ParameterHelp label="Inflation reference">
+                Choose Moroccan or US consumer prices to show what your money
+                could buy after inflation. Actual monthly CPI is used, not a
+                fixed rate. This does not convert currencies.
+              </ParameterHelp>
+            </div>
             <p>Adjust purchasing power using recorded consumer prices.</p>
           </div>
           <select
@@ -169,7 +180,16 @@ export default function DCA() {
           </select>
         </div>
         <fieldset className="savings-comparisons">
-          <legend>Compare with</legend>
+          <legend>
+            <span className="parameter-label">
+              Compare with
+              <ParameterHelp label="Compare with">
+                Select the investments you want to compare. The bank baseline
+                stays visible. Each investment uses its own available history;
+                hover an option for its details.
+              </ParameterHelp>
+            </span>
+          </legend>
           <div className="savings-comparison-options">
             {dcaAssets.map((asset) => (
               <Tooltip key={asset.id} content={asset.details}>
@@ -332,20 +352,6 @@ export default function DCA() {
               </p>
             </div>
           </div>
-        )}
-        {popup === "starting" && (
-          <p>
-            The amount you already have available to invest. It goes in at the
-            start of each historical period. Start at zero if you’re building
-            your savings from scratch.
-          </p>
-        )}
-        {popup === "monthly" && (
-          <p>
-            The same amount is added at the end of every month. Contributions
-            stay fixed in nominal {currency}; the chart adjusts the resulting
-            balance for the inflation experienced during each historical period.
-          </p>
         )}
         {popup === "method" && (
           <DCAMethod

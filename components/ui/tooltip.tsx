@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 
 /** Pointer hover, keyboard focus and touch have separate dismissal behavior. */
 export function Tooltip({
@@ -11,9 +11,11 @@ export function Tooltip({
 }) {
   const id = useId();
   const anchor = useRef<HTMLDivElement>(null);
+  const popup = useRef<HTMLDivElement>(null);
   const pointerFocus = useRef(false);
   const [mode, setMode] = useState<"hover" | "keyboard" | "touch" | null>(null);
   const [position, setPosition] = useState({ left: 0, width: 340 });
+  const [above, setAbove] = useState(false);
   function reveal(next: NonNullable<typeof mode>) {
     const bounds = anchor.current?.getBoundingClientRect();
     if (!bounds) return;
@@ -28,6 +30,15 @@ export function Tooltip({
     setPosition({ left: left - bounds.left, width });
     setMode(next);
   }
+  useLayoutEffect(() => {
+    if (!mode || !anchor.current || !popup.current) return;
+    const bounds = anchor.current.getBoundingClientRect();
+    const height = popup.current.offsetHeight;
+    setAbove(
+      bounds.bottom + height + 24 > window.innerHeight &&
+        bounds.top >= height + 24,
+    );
+  }, [mode, position]);
   useEffect(() => {
     if (!mode) return;
     function outside(event: PointerEvent) {
@@ -36,7 +47,9 @@ export function Tooltip({
     const dismiss = () => setMode(null);
     document.addEventListener("pointerdown", outside);
     window.addEventListener("resize", dismiss);
-    window.addEventListener("scroll", dismiss, true);
+    // Mouse exit already handles scrolling past the anchor. Closing on every
+    // scroll races with the browser scrolling a hovered/focused control into view.
+    if (mode === "touch") window.addEventListener("scroll", dismiss, true);
     return () => {
       document.removeEventListener("pointerdown", outside);
       window.removeEventListener("resize", dismiss);
@@ -48,6 +61,7 @@ export function Tooltip({
       className="ui-tooltip"
       ref={anchor}
       data-open={mode !== null}
+      data-side={above ? "above" : "below"}
       onPointerEnter={(event) => {
         if (event.pointerType !== "touch") reveal("hover");
       }}
@@ -80,6 +94,7 @@ export function Tooltip({
       {children(id)}
       <div
         className="ui-tooltip-content"
+        ref={popup}
         id={id}
         role="tooltip"
         hidden={mode === null}

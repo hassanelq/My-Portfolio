@@ -245,6 +245,11 @@ test("comparison details dismiss after pointer clicks and support keyboard focus
   await expect(hint).toBeVisible();
   await expect(hint).toContainText("0.10%");
   await expect(hint).toContainText("20%");
+  const hintBounds = (await hint.boundingBox())!;
+  expect(hintBounds.y).toBeGreaterThanOrEqual(0);
+  expect(hintBounds.y + hintBounds.height).toBeLessThanOrEqual(
+    page.viewportSize()!.height,
+  );
   await hint.hover();
   await expect(hint).toBeVisible();
   await checkbox.click();

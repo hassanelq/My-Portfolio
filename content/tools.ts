@@ -1,4 +1,4 @@
-import { portfolioCosts } from "@/lib/math/dca";
+import { portfolioCosts } from "../lib/math/dca";
 
 // Add tools here and their matching panels in ToolsWorkspace.
 export const toolCatalog = [

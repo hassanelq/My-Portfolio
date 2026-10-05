@@ -84,6 +84,16 @@ export function createRetirementHistory(series: RetirementSeries) {
 }
 export type RetirementHistory = ReturnType<typeof createRetirementHistory>;
 
+/** Overrides affect smooth estimates; the historical withdrawal windows stay intact. */
+function growthFactor(history: RetirementHistory, annualGrowthRate?: number) {
+  if (annualGrowthRate === undefined) return history.monthlyFactor;
+  if (!Number.isFinite(annualGrowthRate) || annualGrowthRate <= -1)
+    throw new RangeError(
+      "Annual real growth must be finite and greater than -100%.",
+    );
+  return (1 + annualGrowthRate) ** (1 / 12);
+}
+
 /** Equal beginning-of-month withdrawals at one constant real growth factor. */
 export function averageCapitalPerMonth(months: number, factor: number) {
   let capital = 0;
@@ -144,24 +154,23 @@ export function calculateRetirementPlan(
   inputs: RetirementInputs,
   history: RetirementHistory,
   mode: RetirementMode,
+  annualGrowthRate?: number,
 ) {
   validate(inputs);
+  const monthlyFactor = growthFactor(history, annualGrowthRate);
   const { livingCost, starting, age, retireAt, untilAge } = inputs;
   const stats = history.getWindows(untilAge - retireAt);
   if (!stats) return null;
   const capitalPerMonth =
     mode === "historical"
       ? stats.capitalPerMonth
-      : averageCapitalPerMonth(
-          (untilAge - retireAt) * 12,
-          history.monthlyFactor,
-        );
+      : averageCapitalPerMonth((untilAge - retireAt) * 12, monthlyFactor);
   const target = livingCost * capitalPerMonth;
   const monthlyContribution = requiredMonthlyContribution(
     target,
     starting,
     (retireAt - age) * 12,
-    history.monthlyFactor,
+    monthlyFactor,
   );
   const successCount = stats.windowCapital.filter(
     (capital) =>
@@ -171,7 +180,7 @@ export function calculateRetirementPlan(
   let balance = starting;
   if (monthlyContribution !== null) {
     for (let month = 1; month <= (retireAt - age) * 12; month++) {
-      balance = balance * history.monthlyFactor + monthlyContribution;
+      balance = balance * monthlyFactor + monthlyContribution;
       if (month % 12 === 0)
         points.push({ age: age + month / 12, value: balance });
     }
@@ -180,7 +189,7 @@ export function calculateRetirementPlan(
       const factor =
         mode === "historical"
           ? history.real[i] / history.real[i - 1]
-          : history.monthlyFactor;
+          : monthlyFactor;
       balance = (balance - livingCost) * factor;
       // Remove round-off at the exact solvency boundary, never hide a material deficit.
       if (Math.abs(balance) < Math.max(1e-7, target * 1e-10)) balance = 0;
@@ -209,8 +218,10 @@ export function earliestRetirementAge(
   monthly: number,
   history: RetirementHistory,
   mode: RetirementMode,
+  annualGrowthRate?: number,
 ) {
   validate(inputs);
+  const monthlyFactor = growthFactor(history, annualGrowthRate);
   if (!Number.isFinite(monthly) || monthly < 0)
     throw new RangeError("Monthly investment must be nonnegative.");
   for (let age = inputs.age; age < inputs.untilAge; age++) {
@@ -219,16 +230,13 @@ export function earliestRetirementAge(
     const capital =
       mode === "historical"
         ? stats.capitalPerMonth
-        : averageCapitalPerMonth(
-            (inputs.untilAge - age) * 12,
-            history.monthlyFactor,
-          );
+        : averageCapitalPerMonth((inputs.untilAge - age) * 12, monthlyFactor);
     const target = inputs.livingCost * capital;
     const balance = futureSavings(
       inputs.starting,
       monthly,
       (age - inputs.age) * 12,
-      history.monthlyFactor,
+      monthlyFactor,
     );
     if (balance + Math.max(1e-7, target * 1e-10) >= target) return age;
   }

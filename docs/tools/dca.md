@@ -29,10 +29,10 @@ Both DCA CPI series are aligned to January 1960–June 2025, so changing inflati
 
 - Headline median balance for the selected horizon and a full-width age chart. The DCA plot is 560 px tall at desktop chart widths and 430 px below 520 px, increasing vertical separation without cropping the value scale. Other tools retain their standard height.
 - Annual pointwise median values available by hover, touch or keyboard.
-- Final P10, median and P90 balances for each available comparison, with coverage and window counts.
+- Final P10, median and P90 balances for each available comparison, with coverage and window counts. The summary uses a full-width table on desktop and labeled grid rows on narrow screens, keeping amounts readable without horizontal page overflow.
 - Distinct muted line colors and patterns, repeated in controls and legends: blue S&P 500, gold Gold, teal MSCI World, violet bonds, coral portfolio and gray cash.
-- “What is this?”, field explanations and “How this works” use shared dialogs.
-- Inflation summaries and the complete allocation explanation live in “How this works”; the main page keeps controls, comparisons, the chart and results. Comparison-option tooltips show brief source/basis details. The portfolio tooltip shows the 60/30/10 weights, monthly rebalancing, reinvested bond distributions, embedded fund expenses and modeled fee/tax assumptions. Tooltips support hover and focus, remain hoverable, fit within the viewport and dismiss with Escape.
+- Every numeric parameter, the CPI selector and the comparison group have a question-mark help icon: hover or focus for a short explanation, click or tap for a shared dialog. “What is this?” and “How this works” also use shared dialogs.
+- Inflation summaries and the complete allocation explanation live in “How this works”; the main page keeps controls, comparisons, the chart and results. Comparison-option tooltips show brief source/basis details. The portfolio tooltip shows the 60/30/10 weights, monthly rebalancing, reinvested bond distributions, embedded fund expenses and modeled fee/tax assumptions. Mouse tooltips close on pointer exit even when the checkbox retains focus after a click; moving into the tooltip keeps it open. Keyboard focus opens the details, with blur or Escape dismissing them. Touch toggles the details. Outside presses and resizing also dismiss them; touch details close when scrolling, and their width stays within the viewport. Details open above the option when there is insufficient room below and enough space above.
 - “How this works” is a sectioned guide with LaTeX equations, a live input summary, data coverage and window counts, a 12-month worked example from the selected headline series, and the current outcome table.
 - Selection and inputs persist when switching tools, then reset on reload.
 
@@ -131,7 +131,7 @@ Each window’s annualized summary is `(CPI[end]/CPI[start])^(1/27) − 1`. Thes
 
 ## Edge cases and validation
 
-The engine requires finite nonnegative starting savings and deposits, a positive whole-year horizon, equal-length market/CPI arrays and strictly positive finite levels. It returns no result for a series with fewer than `H+1` observations. Zero savings and deposits yield zero balances; the bank can lose purchasing power without losing nominal cash.
+The engine requires finite nonnegative starting savings and deposits, a positive whole-year horizon, equal-length market/CPI arrays and strictly positive finite levels. It returns no result for a series with fewer than `H+1` observations. Zero savings and deposits yield zero balances; chart endpoint labels stay within the plot even when all six lines coincide at zero. The bank can lose purchasing power without losing nominal cash.
 
 Selecting or hiding an asset changes presentation, not another asset's cohort or calculation. Do not describe the pointwise median as one investor's path, P10/P90 as minimum/maximum, or historical frequencies as future probabilities.
 
@@ -151,4 +151,10 @@ Selecting or hiding an asset changes presentation, not another asset's cohort or
 | Calculation tests | `lib/math/dca.test.ts` |
 | Browser tests | `tests/e2e/dca.spec.ts` |
 
-Tests cover replay timing, independently calculated outcomes, percentiles, inflation, coverage and invalid data, plus UI controls and chart interaction. When refreshing data, update this coverage description and the [source index](../data-sources.md), then regenerate retirement's dependent snapshot. See [development](../development.md) for commands.
+Calculation tests cover replay timing, independently calculated outcomes, percentiles, inflation, coverage and invalid data. Portfolio checks include flat-market cash conservation after fees, an analytically calculated taxable rebalance, zero balances and CPI deflation after deductions.
+
+Browser checks cover controls, currency/CPI overrides, agreement between the headline and summary, formula rendering, tooltip dismissal after clicking, keyboard and touch chart exploration, zero/unsupported histories, dialogs and tool navigation. Layout checks cover 1440, 768, 390 and 320 px widths, including summary-table alignment and mobile grid rows.
+
+Verified 5 October 2026: 10 calculation tests passed. All 12 DCA browser scenarios passed across the full run and the targeted rerun after correcting tooltip placement and automatic-scroll dismissal. Desktop and mobile screenshots were also inspected. The production Webpack build, TypeScript check, scoped ESLint checks and diff whitespace check passed.
+
+When refreshing data, update this coverage description and the [source index](../data-sources.md), then regenerate retirement's dependent snapshot. See [development](../development.md) for commands.

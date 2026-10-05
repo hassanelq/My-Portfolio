@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { toolCatalog } from "@/content/tools";
+import { ParameterHelp } from "@/components/ui/parameter-help";
 import { ToolsSettingsProvider, useToolCurrency } from "./tools-settings";
 
 export function ToolsWorkspace({
@@ -48,7 +49,15 @@ function WorkspacePanels({
     <div className="tools-workspace">
       <aside className="tools-sidebar">
         <div className="tools-settings">
-          <span className="eyebrow">CURRENCY / ALL TOOLS</span>
+          <div className="parameter-label">
+            <span className="eyebrow">CURRENCY / ALL TOOLS</span>
+            <ParameterHelp label="Currency">
+              Choose DH (Moroccan dirhams) or USD for all tools. Existing
+              numbers stay the same; this is not an exchange-rate conversion.
+              DCA and FIRE default to the matching inflation reference, which
+              you can then change.
+            </ParameterHelp>
+          </div>
           <div className="tools-currency" role="group" aria-label="Currency">
             {(["DH", "USD"] as const).map((unit) => (
               <button

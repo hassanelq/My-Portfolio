@@ -4,12 +4,13 @@ import {
   ArrowUpRight,
   BookOpen,
   ChevronDown,
-  CircleHelp,
   History,
   Info,
   Landmark,
   SlidersHorizontal,
 } from "lucide-react";
+import { ParameterHelp } from "@/components/ui/parameter-help";
+import { RetirementMethod } from "./retirement-method";
 import { Dialog } from "@/components/ui/dialog";
 import { NumberStepper } from "@/components/ui/number-stepper";
 import { AgeChart, type AgeSeries } from "@/components/ui/age-chart";
@@ -18,7 +19,6 @@ import usHistory from "@/content/retirement-us-history.json";
 import {
   retirementContributions,
   retirementDefaults,
-  retirementSources,
 } from "@/content/retirement";
 import {
   calculateRetirementPlan,
@@ -48,25 +48,27 @@ const percent = (n: number) =>
     style: "percent",
     maximumFractionDigits: 2,
   }).format(n);
-type Popup = "intro" | "method" | "spending" | "retire" | null;
+type Popup = "intro" | "method" | null;
 const popupTitles = {
   intro: "How much to invest?",
   method: "How this works",
-  spending: "Your living cost",
-  retire: "Your retirement horizon",
 };
 
 export default function Retirement() {
   const { currency, money } = useToolCurrency();
   const [inputs, setInputs] = useState<RetirementInputs>(retirementDefaults);
+  const [salary, setSalary] = useState(0);
   const [advanced, setAdvanced] = useState(false);
   const [country, setCountry] = useInflationReference();
   const [mode, setMode] = useState<RetirementMode>("historical");
   const [popup, setPopup] = useState<Popup>(null);
   const model = models[country];
+  const [growthOverride, setGrowthOverride] = useState<number | null>(null);
+  const growthRate = growthOverride ?? model.realAnnualReturn;
   const plan = useMemo(
-    () => calculateRetirementPlan(inputs, model, mode),
-    [inputs, model, mode],
+    () =>
+      calculateRetirementPlan(inputs, model, mode, growthOverride ?? undefined),
+    [inputs, model, mode, growthOverride],
   );
   const otherCountry = country === "morocco" ? "us" : "morocco";
   const comparison = useMemo(
@@ -89,9 +91,15 @@ export default function Retirement() {
         .sort((a, b) => a - b)
         .map((amount) => ({
           amount,
-          age: earliestRetirementAge(inputs, amount, model, mode),
+          age: earliestRetirementAge(
+            inputs,
+            amount,
+            model,
+            mode,
+            growthOverride ?? undefined,
+          ),
         })),
-    [inputs, model, mode, monthlyRounded],
+    [inputs, model, mode, monthlyRounded, growthOverride],
   );
   const chartSeries: AgeSeries[] = plan
     ? [
@@ -100,7 +108,7 @@ export default function Retirement() {
           label: "Building your savings",
           color: "var(--color-smoke)",
           dash: "6 4",
-          basis: "Smooth estimate using the historical compound real return",
+          basis: `Smooth estimate at ${percent(growthRate)} annual real growth · ${growthOverride === null ? "historical default" : "custom assumption"}`,
           points: plan.points.filter((point) => point.age <= inputs.retireAt),
         },
         {
@@ -165,17 +173,21 @@ export default function Retirement() {
             step={500}
             prefix={currency}
             help={
-              <button
-                className="savings-help"
-                aria-label="About living costs"
-                onClick={() => setPopup("spending")}
-              >
-                <CircleHelp size={16} />
-              </button>
+              <ParameterHelp label="Living cost / month">
+                What you expect to spend each month in retirement, at today’s
+                prices. Include the bills and everyday costs your investments
+                must cover.
+              </ParameterHelp>
             }
           />
           <NumberStepper
             label="Your age"
+            help={
+              <ParameterHelp label="Your age">
+                Your age today. This sets how many years you have to build your
+                investments.
+              </ParameterHelp>
+            }
             value={inputs.age}
             onChange={(v) => field("age", v)}
             min={18}
@@ -188,13 +200,10 @@ export default function Retirement() {
             min={inputs.age}
             max={109}
             help={
-              <button
-                className="savings-help"
-                aria-label="About retirement age"
-                onClick={() => setPopup("retire")}
-              >
-                <CircleHelp size={16} />
-              </button>
+              <ParameterHelp label="Retire at">
+                The age when you stop adding money and start paying living costs
+                from your investments.
+              </ParameterHelp>
             }
           />
         </div>
@@ -211,8 +220,69 @@ export default function Retirement() {
         </button>
         {advanced && (
           <div id="retirement-advanced" className="retirement-advanced">
+            <div className="retirement-growth">
+              <NumberStepper
+                label="Growth rate / year"
+                value={growthRate * 100}
+                onChange={(value) => setGrowthOverride(value / 100)}
+                min={-10}
+                max={20}
+                step={0.1}
+                precision={2}
+                suffix="%"
+                help={
+                  <ParameterHelp label="Growth rate / year">
+                    Annual growth after inflation. The default is{" "}
+                    {percent(model.realAnnualReturn)}, the S&amp;P 500 compound
+                    real return with {countryLabels[country]} inflation from{" "}
+                    {monthLabel(model.series.start)} to{" "}
+                    {monthLabel(model.series.end)}. Change it to explore your
+                    monthly investment and alternative retirement ages. In
+                    average-return mode it also changes the FIRE number and
+                    withdrawal rate. The historical stress-test target still
+                    comes from recorded market returns.
+                  </ParameterHelp>
+                }
+              />
+              <div className="retirement-growth-status">
+                <span>
+                  {growthOverride === null
+                    ? "Historical default"
+                    : "Custom assumption"}
+                </span>
+                <button
+                  type="button"
+                  disabled={growthOverride === null}
+                  onClick={() => setGrowthOverride(null)}
+                >
+                  Reset to historical
+                </button>
+              </div>
+            </div>
+            <NumberStepper
+              label="Your salary / month"
+              value={salary}
+              onChange={setSalary}
+              min={0}
+              max={100000000}
+              step={500}
+              prefix={currency}
+              help={
+                <ParameterHelp label="Your salary / month">
+                  Your monthly take-home pay, in today’s money. Leave 0 if you
+                  prefer not to give it. Used only to show the share of pay
+                  needed for investing; it does not change your FIRE number.
+                </ParameterHelp>
+              }
+            />
             <NumberStepper
               label="Already invested"
+              help={
+                <ParameterHelp label="Already invested">
+                  Money already invested for retirement today. This reduces the
+                  new monthly investment you need.
+                </ParameterHelp>
+              }
               value={inputs.starting}
               onChange={(v) => field("starting", v)}
               min={0}
@@ -222,24 +292,49 @@ export default function Retirement() {
             />
             <NumberStepper
               label="Plan until age"
+              help={
+                <ParameterHelp label="Plan until age">
+                  The age your investments should last to. A longer horizon
+                  usually needs more capital; this is a planning choice, not a
+                  life-expectancy prediction.
+                </ParameterHelp>
+              }
               value={inputs.untilAge}
               onChange={(v) => field("untilAge", v)}
               min={inputs.retireAt + 1}
               max={110}
             />
-            <label className="retirement-select">
-              Planning approach
+            <div className="retirement-select">
+              <div className="parameter-label">
+                <label htmlFor="retirement-approach">Planning approach</label>
+                <ParameterHelp label="Planning approach">
+                  Historical stress test uses the largest starting amount needed
+                  across past retirement periods. Average return uses smooth
+                  growth and can fail during bad market sequences.
+                </ParameterHelp>
+              </div>
               <select
+                id="retirement-approach"
                 value={mode}
                 onChange={(e) => setMode(e.target.value as RetirementMode)}
               >
                 <option value="historical">Historical stress test</option>
                 <option value="average">Average return · spend down</option>
               </select>
-            </label>
-            <label className="retirement-select">
-              Inflation reference
+            </div>
+            <div className="retirement-select">
+              <div className="parameter-label">
+                <label htmlFor="retirement-inflation">
+                  Inflation reference
+                </label>
+                <ParameterHelp label="Inflation reference">
+                  Choose the consumer prices used to measure purchasing power.
+                  Morocco uses history since 1960; the US uses a longer record
+                  since 1928. This does not convert currencies.
+                </ParameterHelp>
+              </div>
               <select
+                id="retirement-inflation"
                 value={country}
                 onChange={(e) =>
                   setCountry(e.target.value as keyof typeof models)
@@ -248,7 +343,7 @@ export default function Retirement() {
                 <option value="morocco">Morocco · since 1960</option>
                 <option value="us">United States · since 1928</option>
               </select>
-            </label>
+            </div>
             <p>
               The end age is a planning horizon, not a life-expectancy estimate.
               Contributions and spending are in today’s money.
@@ -289,6 +384,16 @@ export default function Retirement() {
                         : "Your existing investments cover this estimate."
                       : `For ${savingYears} years, increasing with inflation.`}
                 </p>
+                {salary > 0 && monthlyRounded !== null && (
+                  <p className="retirement-salary-share">
+                    {new Intl.NumberFormat("en-GB", {
+                      maximumFractionDigits: 0,
+                    }).format((monthlyRounded / salary) * 100)}
+                    % of what you earn.
+                    {monthlyRounded > salary &&
+                      " This exceeds your current monthly salary."}
+                  </p>
+                )}
               </div>
             </div>
             {mode === "average" && (
@@ -319,9 +424,12 @@ export default function Retirement() {
                   <span>Hover or tap to explore the balance</span>
                 </div>
                 <p className="retirement-chart-note">
-                  Before retirement: an estimate at{" "}
-                  {percent(model.realAnnualReturn)} real growth. After
-                  retirement:{" "}
+                  Before retirement: an estimate at {percent(growthRate)} real
+                  growth (
+                  {growthOverride === null
+                    ? "historical default"
+                    : "custom assumption"}
+                  ). After retirement:{" "}
                   {mode === "historical"
                     ? `the most demanding recorded ${years}-year period, starting ${monthLabel(plan.stats.worstStart)}.`
                     : "the same constant return, spending down the balance."}
@@ -330,7 +438,19 @@ export default function Retirement() {
             )}
             <dl className="retirement-evidence">
               <div>
-                <dt>Initial withdrawal rate</dt>
+                <dt className="parameter-label">
+                  Initial withdrawal rate
+                  <ParameterHelp label="Initial withdrawal rate">
+                    Annual living costs divided by your FIRE number. It is
+                    calculated from your planning approach and retirement
+                    horizon. Historical mode uses the rate that funded every
+                    recorded period; average-return mode uses the selected
+                    growth assumption. Withdrawals keep a fixed purchasing
+                    power, rather than taking this percentage of the remaining
+                    balance each year. With zero spending, this shows the
+                    model’s implied rate for the chosen horizon.
+                  </ParameterHelp>
+                </dt>
                 <dd>{percent(plan.withdrawalRate)}</dd>
                 <small>Annual spending ÷ FIRE number</small>
               </div>
@@ -409,7 +529,7 @@ export default function Retirement() {
             </table>
             <p>
               Each age uses its own retirement horizon. Accumulation follows the
-              historical compound return, which future returns may not match.
+              selected real growth rate, which future returns may not match.
             </p>
           </section>
         </>
@@ -458,138 +578,20 @@ export default function Retirement() {
             </div>
           </div>
         )}
-        {popup === "spending" && (
-          <p>
-            Your monthly living costs in today’s money. Include the expenses you
-            expect retirement investments to cover. Withdrawals rise or fall
-            with the selected country’s recorded consumer prices to maintain
-            that purchasing power.
-          </p>
-        )}
-        {popup === "retire" && (
-          <p>
-            The age when contributions stop and withdrawals begin. Advanced
-            settings let you choose the end age, currently {inputs.untilAge}.
-            That is a planning horizon, not a prediction of how long you will
-            live.
-          </p>
-        )}
         {popup === "method" && (
-          <div className="savings-method">
-            <p>
-              FIRE means financial independence, retire early. The idea is to
-              build investments that can support your spending, so paid work
-              becomes a choice. This calculator estimates that capital and the
-              monthly investment needed to reach it.
-            </p>
-            <p>
-              You are planning to withdraw {money(inputs.livingCost * 12)} a
-              year in today’s purchasing power, from age {inputs.retireAt} to{" "}
-              {inputs.untilAge}. The FIRE number is annual spending divided by
-              an initial withdrawal rate. Withdrawals are a fixed
-              purchasing-power amount, not a fixed percentage of the remaining
-              portfolio.
-            </p>
-            <h3>Retirement: replay the difficult periods</h3>
-            <p>
-              Markets do not deliver their average return every year. Losses
-              early in retirement can be especially damaging when you are taking
-              money out. We invest entirely in the S&P 500, reinvest dividends,
-              and test every complete {years}-year stretch, shifting the
-              starting month forward one month at a time. Spending is taken out
-              at the beginning of each month, then that month’s market return
-              and inflation are applied.
-            </p>
-            {plan && (
-              <p>
-                This gives {plan.stats.windows} complete retirement periods in
-                data covering {monthLabel(model.series.start)} and{" "}
-                {monthLabel(model.series.end)}. The largest starting balance any
-                of those periods required sets the historical target. Its
-                initial annual withdrawal rate is{" "}
-                {percent(plan.stats.withdrawalRate)}; the most demanding start
-                is {monthLabel(plan.stats.worstStart)}. It reaches approximately
-                zero at age {inputs.untilAge}, unless your existing investments
-                already exceed the target. Other recorded periods can leave
-                more. Passing every past window does not guarantee future
-                success.
-              </p>
-            )}
-            <p>
-              The 4% rule is a research reference, not a rate hard-coded here.
-              Bengen’s study examined US inflation and stock/bond portfolios.
-              This calculator uses monthly observations, a 100% equity
-              portfolio, and your selected inflation series, so its results
-              differ. The displayed success count is the number of recorded
-              starts that the selected target funded, not a probability
-              forecast.
-            </p>
-            <h3>Before retirement: an accumulation estimate</h3>
-            <p>
-              The savings phase uses the compound real return across the
-              selected record: {percent(model.realAnnualReturn)} a year after{" "}
-              {countryLabels[country]} inflation. That is a smooth estimate, not
-              a replay of one historical savings journey. Contributions are made
-              at month-end and must increase with inflation to keep their value
-              in today’s money. The monthly figure is rounded up for display.
-              The alternative ages recalculate both the savings time and the
-              remaining retirement horizon, using the same assumptions.
-            </p>
-            <h3>Average return · spend down</h3>
-            <p>
-              This optional approach, selected under Advanced, uses that same
-              constant real return during retirement and solves for a balance
-              that is spent down by the end age. It can require less capital,
-              but the smooth path hides the order of market returns. We still
-              test its target against every historical period and show how many
-              it funded.
-            </p>
-            <h3>Inflation and the longer record</h3>
-            <p>
-              Balances and spending are expressed in today’s purchasing power.
-              We divide market growth by the actual change in consumer prices;
-              no fixed inflation rate is assumed. {countryLabels[country]}{" "}
-              inflation compounded at {percent(model.inflationAnnualRate)} a
-              year over this snapshot.
-            </p>
-            {comparison && (
-              <p>
-                Using {countryLabels[otherCountry]} consumer prices and market
-                history from {monthLabel(models[otherCountry].series.start)},
-                the same {years}-year historical test requires{" "}
-                {money(comparison.target)}, at{" "}
-                {percent(comparison.withdrawalRate)}. The US reference includes
-                the 1929 crash. It is a different inflation and market-period
-                comparison, not a Moroccan cost-of-living forecast.
-              </p>
-            )}
-            <p>
-              All figures stop at {monthLabel(history.end)}. Moroccan CPI is
-              available monthly throughout the period used here. The US
-              reference starts in 1928 and uses Shiller’s US CPI, extended with
-              BLS observations. No missing month is replaced with an assumed
-              value.
-            </p>
-            <h3>Where the data comes from</h3>
-            <ul>
-              {retirementSources.map((source) => (
-                <li key={source.title}>
-                  <a href={source.url} target="_blank" rel="noreferrer">
-                    {source.title} ↗
-                  </a>
-                  <p>{source.description}</p>
-                </li>
-              ))}
-            </ul>
-            <p>
-              The market data are in US dollars. DH labels assume unchanged
-              exchange rates; historical USD/MAD conversion is not modeled.
-              Taxes, fees, pensions, changing spending needs, investment access,
-              and an inheritance target are excluded. All-equity investing can
-              lose substantial value. This is a way to explore the scale of a
-              plan, not investment advice or a promise that the money will last.
-            </p>
-          </div>
+          <RetirementMethod
+            growthRate={growthRate}
+            customGrowth={growthOverride !== null}
+            inputs={inputs}
+            salary={salary}
+            model={model}
+            plan={plan}
+            mode={mode}
+            country={country}
+            comparison={comparison}
+            otherModel={models[otherCountry]}
+            currency={currency}
+          />
         )}
       </Dialog>
     </section>
