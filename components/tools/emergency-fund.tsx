@@ -21,12 +21,13 @@ import {
   type EmergencyQuestion,
 } from "@/content/emergency";
 import { calculateEmergencyFund } from "@/lib/math/emergency";
-import { dirhams } from "@/lib/format";
+import { useToolCurrency } from "./tools-settings";
 
 const questions: readonly EmergencyQuestion[] = emergencyQuestions;
 const totalSteps = questions.length + 2;
 
 export default function EmergencyFund() {
+  const { currency, money } = useToolCurrency();
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Partial<EmergencyAnswers>>({});
   const [spending, setSpending] = useState("");
@@ -128,7 +129,7 @@ export default function EmergencyFund() {
                   : "Cash already saved"}
               </label>
               <div>
-                <span>DH</span>
+                <span>{currency}</span>
                 <input
                   id="emergency-money"
                   type="text"
@@ -217,7 +218,7 @@ export default function EmergencyFund() {
                 <h2 ref={heading} tabIndex={-1} id="emergency-result-title">
                   {result.months} <span>months</span>
                 </h2>
-                <p className="emergency-target">{dirhams(result.target)}</p>
+                <p className="emergency-target">{money(result.target)}</p>
               </div>
               <div className="emergency-reasons">
                 <p>
@@ -250,7 +251,7 @@ export default function EmergencyFund() {
             <div className="emergency-coverage">
               <div>
                 <span>Already set aside</span>
-                <strong>{dirhams(Number(saved))}</strong>
+                <strong>{money(Number(saved))}</strong>
                 <small>
                   {new Intl.NumberFormat("en", {
                     maximumFractionDigits: 1,
@@ -262,12 +263,12 @@ export default function EmergencyFund() {
                 <span>
                   {result.remaining > 0 ? "Still to save" : "Target covered"}
                 </span>
-                <strong>{dirhams(result.remaining)}</strong>
+                <strong>{money(result.remaining)}</strong>
                 <small>
                   {result.remaining > 0
                     ? "Build toward it at your own pace."
                     : result.surplus > 0
-                      ? `${dirhams(result.surplus)} above this target.`
+                      ? `${money(result.surplus)} above this target.`
                       : "Your cash meets this planning target."}
                 </small>
               </div>
@@ -297,7 +298,7 @@ export default function EmergencyFund() {
                 min={1}
                 max={999999999}
                 step={500}
-                prefix="DH"
+                prefix={currency}
               />
               <NumberStepper
                 label="Cash already saved"
@@ -306,7 +307,7 @@ export default function EmergencyFund() {
                 min={0}
                 max={999999999}
                 step={500}
-                prefix="DH"
+                prefix={currency}
               />
             </div>
             <div className="emergency-edit-grid">
@@ -379,7 +380,7 @@ export default function EmergencyFund() {
             <div>
               <CircleCheck size={21} />
               <p>
-                Get a cash target in months and dirhams, how much is left to
+                Get a cash target in months and {currency}, how much is left to
                 save and where to keep it.
               </p>
             </div>
@@ -442,8 +443,8 @@ export default function EmergencyFund() {
                 {result.selfEmployedFloor
                   ? " after the self-employment minimum"
                   : ""}
-                . {dirhams(Number(spending))} × {result.months} ={" "}
-                <strong>{dirhams(result.target)}</strong>.
+                . {money(Number(spending))} × {result.months} ={" "}
+                <strong>{money(result.target)}</strong>.
               </p>
             )}
             <h3>Choices and uncertainty</h3>
@@ -458,8 +459,8 @@ export default function EmergencyFund() {
             </p>
             <p>
               A household needing no emergency spending is outside this tool’s
-              scope: enter at least 1 DH per month. Support eligibility, bank
-              protections and product access depend on your situation and
+              scope: enter at least 1 {currency} per month. Support eligibility,
+              bank protections and product access depend on your situation and
               location; the calculator does not determine them.
             </p>
             <h3>Keeping the money accessible</h3>

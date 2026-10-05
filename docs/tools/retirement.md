@@ -2,6 +2,9 @@
 
 **Workspace ID:** `retirement` · **UI:** `components/tools/retirement.tsx` · **Engine:** `lib/math/retirement.ts`.
 
+
+Currency follows the shared sidebar (DH by default or USD) for all inputs, balances, contribution examples and chart labels. Switching currency preserves numeric amounts and does not convert exchange rates. Its inflation reference remains inside the planner’s advanced controls: a currency change defaults to Moroccan CPI for DH or US CPI for USD, and either combination can then be selected. The choice is independent of DCA’s CPI setting.
+
 ## Purpose
 
 Estimate the invested capital needed to fund a chosen retirement duration, then calculate a monthly saving amount to reach it. The default target is tested against every complete historical retirement window in the selected dataset. The accumulation phase is a constant-return estimate, clearly distinguished from the historical withdrawal replay.
@@ -24,13 +27,13 @@ Age controls maintain their ordering. The end age is a planning horizon, not a l
 
 The tool shows required capital, monthly investment, initial withdrawal rate, historical periods funded and the most demanding start. A shared interactive age chart separates accumulation from retirement and marks the retirement age.
 
-Alternative contribution rows compare 3,000 DH/month, the calculated amount and 12,000 DH/month. Candidate ages are whole years. Every age gets a newly calculated withdrawal target because the retirement duration changes. Selecting an available alternative applies its age to the plan.
+Alternative contribution rows compare 3,000 per month, the calculated amount and 12,000 per month in the selected currency. Candidate ages are whole years. Every age gets a newly calculated withdrawal target because the retirement duration changes. Selecting an available alternative applies its age to the plan.
 
 Dialogs explain “How much to invest?”, living costs, the horizon and the full method. Dynamic numbers come from the current calculation and data, not a reference screenshot. State survives tool switching.
 
 ## Data and calculation
 
-The default uses the same S&P 500 total-return reconstruction and monthly Moroccan CPI as DCA, January 1960–June 2025 (786 observations). The optional US reference uses January 1928–June 2025 (1,170 observations), including the 1929 crash. Both end at the same cutoff; results and sources from the user’s reference screenshot are not hard-coded.
+With DH selected, the default uses the same S&P 500 total-return reconstruction and monthly Moroccan CPI as DCA, January 1960–June 2025 (786 observations). The optional US reference uses January 1928–June 2025 (1,170 observations), including the 1929 crash. Both end at the same cutoff; results and sources from the user’s reference screenshot are not hard-coded.
 
 ### US reference and reproducibility
 
@@ -57,7 +60,7 @@ The chart’s retirement segment replays the most demanding start, sampled annua
 
 ### Accumulation and average-return mode
 
-Accumulation uses a **constant estimated real monthly growth factor** `g = (R[last]/R[first])^(1/(N−1))`. Existing savings are invested immediately; contributions arrive at month-end. For `M` months and contribution `C`, the final balance is `starting × g^M + C × sum(g^k, k=0…M−1)`. Solve this for `C`, floored at zero. Round the displayed contribution upward to the next dirham; use the precise amount for the chart. A shortfall with zero saving months is shown as an immediate investment requirement.
+Accumulation uses a **constant estimated real monthly growth factor** `g = (R[last]/R[first])^(1/(N−1))`. Existing savings are invested immediately; contributions arrive at month-end. For `M` months and contribution `C`, the final balance is `starting × g^M + C × sum(g^k, k=0…M−1)`. Solve this for `C`, floored at zero. Round the displayed contribution upward to the next whole currency unit; use the precise amount for the chart. A shortfall with zero saving months is shown as an immediate investment requirement.
 
 Unlike DCA, retirement contributions are **constant real amounts**, so their nominal value must rise with inflation. The smooth accumulation line is an estimate from a historical compound return, not a historical replay or predicted return path.
 

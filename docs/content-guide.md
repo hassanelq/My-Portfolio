@@ -12,7 +12,7 @@ The site's content lives in `content/`, independently of page layouts. Bare file
 | `retirement.ts`       | FIRE planner defaults, alternative monthly contributions and research references |
 | `emergency.ts`        | Emergency-fund questions, choices, scoring points, month bands and guidance source |
 | `rent-buy.ts`         | Rent/buy defaults, assumption fields, limits, explanations and dated source notes |
-| `dca-history.json` | Generated monthly market and Moroccan CPI snapshot; refresh through the importer |
+| `dca-history.json` | Generated monthly market, bond and Moroccan/US CPI snapshot; refresh through the importer |
 | `retirement-us-history.json` | Generated US retirement reference; refresh through the importer |
 | `market-windows.json` | Sourced S&P 500 observations used by the chart game (see [data sources](data-sources.md))                               |
 
@@ -41,11 +41,11 @@ Run `npm run typecheck` after content edits. Run `npm test` when changing calcul
 
 ## Refresh historical DCA data
 
-The versioned observations are in `dca-history.json`; provenance and SHA-256 hashes are in `data/dca/manifest.json`. Run `python3 scripts/import-dca-data.py` to reproduce the normalized file from pinned raw data, or add `--download` to refresh the public sources. Review coverage, upstream schemas and the configured Yahoo end-date before refreshing. No missing observations are filled with assumed returns. The current snapshot ends in June 2025. `lib/math/dca.ts` contains the rolling-window calculation.
+The versioned observations are in `dca-history.json`; provenance and SHA-256 hashes are in `data/dca/manifest.json`. Run `python3 scripts/import-dca-data.py` to reproduce the normalized file from pinned raw data, or add `--download` to refresh the public sources. Review coverage, upstream schemas and the configured Yahoo end-date before refreshing. No missing observations are filled with assumed returns. The current snapshot ends in June 2025. `lib/math/dca.ts` contains the rolling-window calculation and the 60/30/10 `portfolioWeights`. The allocation tooltip documents these weights; when changing them, update the label/basis/details in `content/tools.ts` and the equations and descriptions in `dca-method.tsx` and `docs/tools/dca.md`. The same math module defines `portfolioCosts` (illustrative trade fee and modeled realized-gains tax), and `portfolioWindow` tracks basis and settles monthly fees/taxes. Update the methodology and recorded result examples when these assumptions change. Bonds use VBMFX adjusted closes. US CPI reads the shared raw BLS file; see the refresh order in [development](development.md).
 
 ## Add a tool
 
-Edit `toolCatalog` in `tools.ts` to add or rename a tool, pass its component from `app/tools/page.tsx`, then add its panel to `components/tools/tools-workspace.tsx`, using the entry’s stable ID for the tab/panel relationship. The four tools are DCA, retirement, emergency savings and rent/buy. There are no placeholder panels. Available calculators stay mounted when switching tools, so edits and questionnaire progress are preserved. Series colors reference the shared design tokens; line patterns distinguish the chart comparisons.
+Edit `toolCatalog` in `tools.ts` to add or rename a tool, pass its component from `app/tools/page.tsx`, then add its panel to `components/tools/tools-workspace.tsx`, using the entry’s stable ID for the tab/panel relationship. The four tools are DCA, retirement, emergency savings and rent/buy. There are no placeholder panels. Available calculators stay mounted when switching tools, so edits and questionnaire progress are preserved. Shared currency is provided by `tools-settings.tsx` and `formatMoney` in `lib/format.ts`; use them for all money inputs, outputs and chart labels. CPI controls remain local to relevant tools through `useInflationReference`. DCA uses distinct muted asset colors (gold for gold), with patterns; other tool series use the shared design tokens; line patterns distinguish the chart comparisons.
 
 ## Maintain the rent/buy example
 

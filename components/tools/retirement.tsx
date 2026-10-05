@@ -28,7 +28,8 @@ import {
   type RetirementMode,
 } from "@/lib/math/retirement";
 import { monthIndex } from "@/lib/math/dca";
-import { dirhams, monthLabel } from "@/lib/format";
+import { monthLabel } from "@/lib/format";
+import { useToolCurrency, useInflationReference } from "./tools-settings";
 
 const models = {
   morocco: createRetirementHistory({
@@ -56,9 +57,10 @@ const popupTitles = {
 };
 
 export default function Retirement() {
+  const { currency, money } = useToolCurrency();
   const [inputs, setInputs] = useState<RetirementInputs>(retirementDefaults);
   const [advanced, setAdvanced] = useState(false);
-  const [country, setCountry] = useState<keyof typeof models>("morocco");
+  const [country, setCountry] = useInflationReference();
   const [mode, setMode] = useState<RetirementMode>("historical");
   const [popup, setPopup] = useState<Popup>(null);
   const model = models[country];
@@ -161,7 +163,7 @@ export default function Retirement() {
             min={0}
             max={1000000}
             step={500}
-            prefix="DH"
+            prefix={currency}
             help={
               <button
                 className="savings-help"
@@ -216,7 +218,7 @@ export default function Retirement() {
               min={0}
               max={100000000}
               step={10000}
-              prefix="DH"
+              prefix={currency}
             />
             <NumberStepper
               label="Plan until age"
@@ -260,10 +262,10 @@ export default function Retirement() {
             <div className="retirement-outcomes" aria-live="polite">
               <div className="savings-outcome retirement-target">
                 <p>Your FIRE number · retire at {inputs.retireAt}</p>
-                <h2>{dirhams(plan.target)}</h2>
+                <h2>{money(plan.target)}</h2>
                 <p>
-                  Invested to fund {dirhams(inputs.livingCost * 12)} a year,
-                  until age {inputs.untilAge}.
+                  Invested to fund {money(inputs.livingCost * 12)} a year, until
+                  age {inputs.untilAge}.
                 </p>
               </div>
               <div className="retirement-monthly">
@@ -273,7 +275,7 @@ export default function Retirement() {
                     : "Invest each month"}
                 </p>
                 <strong>
-                  {dirhams(
+                  {money(
                     monthlyRounded ??
                       Math.max(0, plan.target - inputs.starting),
                   )}
@@ -299,6 +301,7 @@ export default function Retirement() {
             {monthlyRounded !== null && (
               <>
                 <AgeChart
+                  currency={currency}
                   key={`${inputs.age}-${inputs.retireAt}-${inputs.untilAge}-${mode}`}
                   series={chartSeries}
                   age={inputs.age}
@@ -380,7 +383,7 @@ export default function Retirement() {
                     }
                   >
                     <th scope="row">
-                      {dirhams(item.amount)}
+                      {money(item.amount)}
                       <span>
                         {item.amount === monthlyRounded
                           ? "Your target contribution"
@@ -480,7 +483,7 @@ export default function Retirement() {
               monthly investment needed to reach it.
             </p>
             <p>
-              You are planning to withdraw {dirhams(inputs.livingCost * 12)} a
+              You are planning to withdraw {money(inputs.livingCost * 12)} a
               year in today’s purchasing power, from age {inputs.retireAt} to{" "}
               {inputs.untilAge}. The FIRE number is annual spending divided by
               an initial withdrawal rate. Withdrawals are a fixed
@@ -554,7 +557,7 @@ export default function Retirement() {
                 Using {countryLabels[otherCountry]} consumer prices and market
                 history from {monthLabel(models[otherCountry].series.start)},
                 the same {years}-year historical test requires{" "}
-                {dirhams(comparison.target)}, at{" "}
+                {money(comparison.target)}, at{" "}
                 {percent(comparison.withdrawalRate)}. The US reference includes
                 the 1929 crash. It is a different inflation and market-period
                 comparison, not a Moroccan cost-of-living forecast.

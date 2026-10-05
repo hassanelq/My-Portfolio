@@ -30,7 +30,13 @@ test("DCA keeps comparison controls simple and recalculates instantly", async ({
   await expect(page.locator("#tool-panel-dca .savings-legend")).toContainText(
     "MSCI World",
   );
-  for (const name of ["S&P 500", "Gold", "MSCI World"])
+  for (const name of [
+    "S&P 500",
+    "Gold",
+    "MSCI World",
+    "US bonds",
+    "Diversified portfolio",
+  ])
     await page.getByRole("checkbox", { name, exact: true }).uncheck();
   await expect(page.locator("#tool-panel-dca .savings-outcome")).toContainText(
     "leaving it in the bank",
@@ -61,10 +67,13 @@ test("shared popups support Escape, backdrop, focus restoration and scroll", asy
     name: "How this works",
     exact: true,
   });
-  await expect(method).toContainText("462 complete windows");
-  await expect(method).toContainText("MSCI World here is a price-only index");
   await expect(
-    method.getByRole("heading", { name: "Where the data comes from" }),
+    method.getByRole("region", { name: "Historical data coverage" }),
+  ).toContainText("462");
+  await expect(method).toContainText("MSCI World is price only");
+  await expect(method.locator(".katex-error")).toHaveCount(0);
+  await expect(
+    method.getByRole("heading", { name: "06 / Sources and limits" }),
   ).toBeAttached();
   await method.getByRole("button", { name: "Got it" }).click();
   await expect(method).not.toBeVisible();
@@ -120,6 +129,29 @@ for (const width of [1440, 768, 390, 320])
         () => document.documentElement.scrollWidth <= innerWidth + 1,
       ),
     ).toBe(true);
+    const summary = page.locator("#tool-panel-dca .savings-breakdown");
+    const dimensions = await summary.evaluate((element) => ({
+      width: element.clientWidth,
+      table: element.querySelector("table")!.getBoundingClientRect().width,
+    }));
+    expect(dimensions.table).toBeGreaterThanOrEqual(dimensions.width - 2);
+    const cell = summary.locator("tbody td").first();
+    await expect(cell).toHaveCSS("font-variant-numeric", "tabular-nums");
+    if (width > 600) await expect(cell).toHaveCSS("text-align", "right");
+    else
+      await expect(summary.locator("tbody tr").first()).toHaveCSS(
+        "display",
+        "grid",
+      );
+    await expect(
+      page.locator("#tool-panel-dca .savings-chart-svg"),
+    ).toHaveAttribute(
+      "viewBox",
+      new RegExp(width <= 768 ? "(430|560)$" : "560$"),
+    );
+    await expect(
+      page.locator(".savings-inflation-note, .savings-portfolio"),
+    ).toHaveCount(0);
     await page.screenshot({
       path: `test-results/dca-${width}.png`,
       fullPage: true,
@@ -196,4 +228,110 @@ test("tool navigation shows four working tools and preserves DCA inputs", async 
   await expect(
     page.getByRole("slider", { name: "Explore savings by age" }),
   ).toBeVisible();
+});
+
+test("comparison details dismiss after pointer clicks and support keyboard focus", async ({
+  page,
+}) => {
+  await page.goto("/tools");
+  const checkbox = page.getByRole("checkbox", {
+    name: "Diversified portfolio",
+    exact: true,
+  });
+  const hint = page
+    .locator(".ui-tooltip-content")
+    .filter({ hasText: "60% S&P 500" });
+  await checkbox.hover();
+  await expect(hint).toBeVisible();
+  await expect(hint).toContainText("0.10%");
+  await expect(hint).toContainText("20%");
+  await hint.hover();
+  await expect(hint).toBeVisible();
+  await checkbox.click();
+  await page.mouse.move(5, 5);
+  await expect(hint).toBeHidden();
+  await expect(checkbox).toBeFocused();
+  await checkbox.blur();
+  await checkbox.focus();
+  await expect(hint).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(hint).toBeHidden();
+  await page.keyboard.press("Tab");
+  await expect(hint).toBeHidden();
+  await checkbox.hover();
+  await expect(hint).toBeVisible();
+  await page.mouse.move(5, 5);
+  await expect(hint).toBeHidden();
+});
+
+test("currency and CPI overrides update chart, summary and method together", async ({
+  page,
+}) => {
+  await page.goto("/tools");
+  const outcome = page.locator("#tool-panel-dca .savings-outcome h2");
+  const inflation = page.getByLabel("Inflation reference", { exact: true });
+  await expect(outcome).toHaveText(/879\s360 DH/);
+  await page.getByRole("button", { name: "USD", exact: true }).click();
+  await expect(inflation).toHaveValue("us");
+  await expect(outcome).toHaveText(/991\s156 USD/);
+  await inflation.selectOption("morocco");
+  await expect(outcome).toHaveText(/879\s360 USD/);
+  await page.getByRole("button", { name: "DH", exact: true }).click();
+  await inflation.selectOption("us");
+  await expect(outcome).toHaveText(/991\s156 DH/);
+  for (const name of ["S&P 500", "Gold", "MSCI World"])
+    await page.getByRole("checkbox", { name, exact: true }).uncheck();
+  await expect(outcome).toHaveText(/744\s070 DH/);
+  const portfolioRow = page
+    .locator("#tool-panel-dca .savings-breakdown tbody tr")
+    .filter({ hasText: "Diversified portfolio" });
+  await expect(portfolioRow.locator(".savings-median")).toHaveText(
+    await outcome.innerText(),
+  );
+  await page
+    .getByRole("button", { name: "How this works", exact: true })
+    .click();
+  const method = page.getByRole("dialog", {
+    name: "How this works",
+    exact: true,
+  });
+  await expect(
+    method.getByRole("heading", { name: "04 / US inflation", exact: true }),
+  ).toBeAttached();
+  await expect(method).toContainText("0.10%");
+  await expect(method).toContainText("20%");
+  await expect(
+    method.getByRole("region", { name: "Worked historical year" }),
+  ).toContainText("Fees paid");
+  await expect(method.locator(".katex-error")).toHaveCount(0);
+});
+
+test("empty and unsupported histories remain finite and fit the chart", async ({
+  page,
+}) => {
+  await page.goto("/tools");
+  await page.getByLabel("Per month", { exact: true }).fill("0");
+  await page.getByLabel("Per month", { exact: true }).blur();
+  await page.getByRole("checkbox", { name: "US bonds", exact: true }).check();
+  await expect(page.locator("#tool-panel-dca .savings-outcome h2")).toHaveText(
+    "0 DH",
+  );
+  const svg = page.locator("#tool-panel-dca .savings-chart-svg");
+  expect(
+    await svg
+      .locator("text")
+      .evaluateAll((nodes) =>
+        nodes.every(
+          (n) =>
+            Number(n.getAttribute("y")) <
+            Number((n as SVGTextElement).ownerSVGElement!.viewBox.baseVal.height),
+        ),
+      ),
+  ).toBe(true);
+  await page.getByLabel("Until age", { exact: true }).fill("100");
+  await page.getByLabel("Until age", { exact: true }).blur();
+  await expect(page.locator("#tool-panel-dca .savings-chart")).toHaveCount(0);
+  await expect(page.locator("#tool-panel-dca")).toContainText(
+    "There is not enough recorded history",
+  );
 });

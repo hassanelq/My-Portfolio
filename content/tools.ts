@@ -1,3 +1,5 @@
+import { portfolioCosts } from "@/lib/math/dca";
+
 // Add tools here and their matching panels in ToolsWorkspace.
 export const toolCatalog = [
   {
@@ -39,23 +41,46 @@ export const dcaAssets = [
   {
     id: "sp500",
     label: "S&P 500",
-    color: "var(--color-chalk)",
+    color: "#8bb6f1",
     dash: "",
     basis: "Dividends reinvested",
+    details:
+      "US large-company equities. Dividends reinvested; history from January 1960. No personal taxes or trading fees on this benchmark.",
   },
   {
     id: "gold",
     label: "Gold",
-    color: "var(--color-ash)",
+    color: "#d6b56e",
     dash: "8 5",
     basis: "Gold price in USD",
+    details:
+      "Gold price in USD, from January 1968. No dividends; storage costs and personal taxes are excluded.",
   },
   {
     id: "world",
     label: "MSCI World",
-    color: "var(--color-smoke)",
+    color: "#94c7b7",
     dash: "2 5",
     basis: "Price only · excludes dividends",
+    details:
+      "Developed-market equities in USD, from January 1985. Price only: dividends are excluded, unlike the S&P 500 total-return line.",
+  },
+  {
+    id: "bonds",
+    label: "US bonds",
+    color: "#bf9bd9",
+    dash: "12 4 2 4",
+    basis: "VBMFX · distributions reinvested · fund expenses embedded",
+    details:
+      "Vanguard Total Bond Market (VBMFX), from December 1986. Distributions reinvested; fund expenses already embedded. Bonds can lose value.",
+  },
+  {
+    id: "portfolio",
+    label: "Diversified portfolio",
+    color: "#ed9b83",
+    dash: "5 3",
+    basis: "60/30/10 · net of modeled trading costs and rebalancing gains tax",
+    details: `60% S&P 500 · 30% US bonds · 10% gold. Restored to these weights every month. Bond distributions are reinvested; fund expenses are embedded. Includes ${(portfolioCosts.tradingFee * 100).toFixed(2)}% on traded amounts and ${(portfolioCosts.realizedGainTax * 100).toFixed(0)}% tax on modeled positive gains realized by rebalancing. Illustrative assumptions.`,
   },
 ] as const;
 export const dcaCash = {
@@ -66,6 +91,30 @@ export const dcaCash = {
   basis: "No interest",
 } as const;
 export const dcaSources = [
+  {
+    title: "Investor.gov · rebalancing, fees and tax consequences",
+    url: "https://www.investor.gov/additional-resources/general-resources/publications-research/info-sheets/beginners-guide-asset",
+    description:
+      "SEC investor guidance notes that selling to rebalance can trigger transaction costs and tax consequences, and that new contributions can help restore weights. Our 0.10% trade fee and 20% modeled realized-gains tax are illustrative inputs, not statutory rates or broker quotes.",
+  },
+  {
+    title: "US bonds · Vanguard Total Bond Market (VBMFX)",
+    url: "https://finance.yahoo.com/quote/VBMFX/history/",
+    description:
+      "Monthly adjusted closes from December 1986. Yahoo’s adjusted-close series accounts for dividends and capital-gain distributions. This is a fund proxy for US bonds, not a pure index: fund expenses are already embedded. Retrieved 4 October 2026.",
+  },
+  {
+    title: "Vanguard · fund description",
+    url: "https://investor.vanguard.com/investment-products/mutual-funds/profile/vbmfx",
+    description:
+      "Vanguard Total Bond Market Index Fund Investor Shares. Used here to add a broad US bond comparison alongside equity indices and gold.",
+  },
+  {
+    title: "US consumer prices · BLS CPI-U",
+    url: "https://www.bls.gov/cpi/",
+    description:
+      "US CPI from Shiller’s monthly dataset through June 2023, then BLS CPI-U (CUUR0000SA0, not seasonally adjusted), chained at the overlap. DCA aligns both countries to January 1960–June 2025; no fixed inflation rate or missing-month interpolation.",
+  },
   {
     title: "S&P 500 · dividends reinvested",
     url: "https://datahub.io/core/s-and-p-500",

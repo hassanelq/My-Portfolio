@@ -4,13 +4,16 @@
 
 Compare buying a home with renting an equivalent home and investing the difference. This is the fourth active tool, using the shared portfolio design and [workspace behavior](README.md).
 
+
+The shared sidebar selects DH (default) or USD for inputs, wealth, tables and chart tooltips. Numeric values are preserved, with no FX conversion. Changing currency does not replace the example’s Moroccan mortgage/property references with US market data; adjust prices, rents and assumptions for the intended scenario. Inflation remains an editable annual scenario rate within this tool and does not follow a historical CPI selector.
+
 ## Experience
 
 Six main inputs: purchase price, equivalent monthly rent, time in the home, down payment percentage, mortgage rate and mortgage term. Changes update the result immediately. Use the same home quality/location on both sides; rent includes renter-only recurring charges.
 
 “Costs & assumptions” exposes growth, inflation, investment return, buying/selling costs, maintenance, other ownership costs, loan insurance, refundable rental deposit, rental setup fees and a simplified sale-gain tax allowance. All are editable. Choosing 100% down models a cash purchase; zero-interest mortgages are supported.
 
-The headline compares final wealth in today’s DH. Two balances, a hover/touch/keyboard chart, initial monthly costs, a sustained break-even and a final component table explain the result. Buttons explore 5, 10, 20 and 30 years. The chart uses Year rather than Age and includes negative values. Keep the standard obsidian canvas, neutral lines, gold icons and shared dialogs. Inputs survive switching tools; reload restores the example.
+The headline compares final wealth in today’s selected currency. Two balances, a hover/touch/keyboard chart, initial monthly costs, a sustained break-even and a final component table explain the result. Buttons explore 5, 10, 20 and 30 years. The chart uses Year rather than Age and includes negative values. Keep the standard obsidian canvas, neutral lines, gold icons and shared dialogs. Inputs survive switching tools; reload restores the example.
 
 ## Research and dated benchmarks
 
@@ -44,7 +47,7 @@ The rates above are not claimed to be the newest available observations. Current
 
 ## Calculation specification
 
-All calculations are monthly in nominal DH. Only reported wealth and the final breakdown are deflated. The first-month cost figures and initial cash requirements are current DH.
+All calculations are monthly in nominal selected-currency units. Only reported wealth and the final breakdown are deflated. The first-month cost figures and initial cash requirements are current amounts in that currency.
 
 ### 1. Equal upfront resources
 
@@ -108,7 +111,7 @@ The gain-tax option is an approximation, not Moroccan tax computation: exemption
 
 ### 5. Winner and break-even
 
-The headline is the difference between real final wealth; differences below 1 DH are called approximately level. When buying finishes ahead, the break-even is the first month from which buying stays at least level for all remaining months in the selected horizon. A transient crossing that reverses is not reported as a lasting lead. If renting finishes ahead or the paths tie, report no sustained buying lead in this period. Annual chart checkpoints do not limit the monthly break-even calculation.
+The headline is the difference between real final wealth; differences below one currency unit are called approximately level. When buying finishes ahead, the break-even is the first month from which buying stays at least level for all remaining months in the selected horizon. A transient crossing that reverses is not reported as a lasting lead. If renting finishes ahead or the paths tie, report no sustained buying lead in this period. Annual chart checkpoints do not limit the monthly break-even calculation.
 
 ## Scope and maintenance
 
@@ -128,7 +131,7 @@ No live API is required. Review each dated source and its scope before changing 
 
 All inputs must be finite. Cash costs, loan rates and cost percentages cannot be negative. The down payment is between 0% and 100%; mortgage term and holding horizon are whole years from 1 to 50. Growth/return/inflation factors must stay above −100% annually. The UI uses tighter ranges, recorded alongside advanced fields in `content/rent-buy.ts`.
 
-Decimal inputs allow intermediate typing without sending invalid values to the engine. Zero interest, a cash purchase, negative investment returns, declining home values and negative exit wealth are supported. A result within 1 DH is approximately level. No salary or borrowing-eligibility test is inferred from a valid scenario.
+Decimal inputs allow intermediate typing without sending invalid values to the engine. Zero interest, a cash purchase, negative investment returns, declining home values and negative exit wealth are supported. A result within one currency unit is approximately level. No salary or borrowing-eligibility test is inferred from a valid scenario.
 
 ## Documentation maintenance
 

@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useId, useRef, useState } from "react";
 import { SeriesSwatch } from "@/components/tools/series-swatch";
-import { dirhams } from "@/lib/format";
+import { formatMoney, type Currency } from "@/lib/format";
 
 export type AgeSeries = {
   id: string;
@@ -24,9 +24,11 @@ export function AgeChart({
   marker,
   endLabels = true,
   sliderLabel = "Explore savings by age",
-  chartLabel = "Historical savings in today’s dirhams",
+  chartLabel = "Historical savings adjusted for inflation",
   axisLabel = "Age",
   tickInterval = 10,
+  currency = "DH",
+  chartHeight,
 }: {
   series: AgeSeries[];
   age: number;
@@ -37,7 +39,10 @@ export function AgeChart({
   chartLabel?: string;
   axisLabel?: string;
   tickInterval?: number;
+  currency?: Currency;
+  chartHeight?: { desktop: number; mobile: number };
 }) {
+  const money = (value: number) => formatMoney(value, currency);
   const container = useRef<HTMLDivElement>(null),
     [width, setWidth] = useState(720),
     [active, setActive] = useState<number | null>(null),
@@ -51,7 +56,10 @@ export function AgeChart({
     observer.observe(element);
     return () => observer.disconnect();
   }, []);
-  const height = width < 520 ? 310 : 350,
+  const height =
+      width < 520
+        ? (chartHeight?.mobile ?? 310)
+        : (chartHeight?.desktop ?? 350),
     left = 12,
     right = width < 620 || !endLabels ? 16 : 150,
     top = 32,
@@ -91,6 +99,12 @@ export function AgeChart({
     .sort((a, b) => a.y - b.y);
   for (let i = 1; i < endings.length; i++)
     endings[i].y = Math.max(endings[i].y, endings[i - 1].y + 19);
+  // Keep clustered endpoints inside the plot, including an all-zero scenario.
+  if (endings.length && endings.at(-1)!.y > bottom) {
+    endings[endings.length - 1].y = bottom;
+    for (let i = endings.length - 2; i >= 0; i--)
+      endings[i].y = Math.min(endings[i].y, endings[i + 1].y - 19);
+  }
   const endPositions = Object.fromEntries(
     endings.map((item) => [item.id, item.y]),
   );
@@ -137,7 +151,7 @@ export function AgeChart({
               fill="var(--color-smoke)"
               fontSize={13}
             >
-              {short(value)} DH
+              {short(value)} {currency}
             </text>
           </g>
         ))}
@@ -252,7 +266,7 @@ export function AgeChart({
           aria-valuemin={age}
           aria-valuemax={targetAge}
           aria-valuenow={age + (index ?? 0)}
-          aria-valuetext={`${axisLabel} ${age + (index ?? 0)}. ${activeValues.map((s) => `${s.label}: ${dirhams(s.value)}`).join(". ")}`}
+          aria-valuetext={`${axisLabel} ${age + (index ?? 0)}. ${activeValues.map((s) => `${s.label}: ${money(s.value)}`).join(". ")}`}
           onPointerMove={locate}
           onPointerDown={locate}
           onPointerLeave={(event) => {
@@ -307,7 +321,7 @@ export function AgeChart({
                 <SeriesSwatch {...s} />
                 {s.label}
               </span>
-              <b>{dirhams(s.value)}</b>
+              <b>{money(s.value)}</b>
             </div>
           ))}
         </div>

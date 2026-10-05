@@ -3,31 +3,61 @@
   "cutoff": "2025-06",
   "sources": [
     {
+      "file": "us-bonds-vbmfx.json",
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/VBMFX?period1=0&period2=1767225600&interval=1mo",
+      "sha256": "73dad40d063e8eac719adb9467f9251218eb58c6f3fb071368d1777977daba22",
+      "retrievedOn": "2026-10-04"
+    },
+    {
       "file": "sp500.csv",
       "url": "https://datahub.io/core/s-and-p-500/_r/-/data/data.csv",
-      "sha256": "3a45dffabc414afc298c12159abc84c2875f88175ff3d4473ef7417e725ecac6"
+      "sha256": "3a45dffabc414afc298c12159abc84c2875f88175ff3d4473ef7417e725ecac6",
+      "retrievedOn": "2026-10-02"
     },
     {
       "file": "gold.csv",
       "url": "https://datahub.io/core/gold-prices/_r/-/data/monthly.csv",
-      "sha256": "6821c07f866d91cddc8beacd942d9548912216f816183565e47cef2c7add0b47"
+      "sha256": "6821c07f866d91cddc8beacd942d9548912216f816183565e47cef2c7add0b47",
+      "retrievedOn": "2026-10-02"
     },
     {
       "file": "msci-world.json",
       "url": "https://query1.finance.yahoo.com/v8/finance/chart/%5E990100-USD-STRD?period1=0&period2=1767225600&interval=1mo",
-      "sha256": "e21c552486409a7a9753c5cfc625cba78b196624b4ded4ee647c8f23fecbe2af"
+      "sha256": "e21c552486409a7a9753c5cfc625cba78b196624b4ded4ee647c8f23fecbe2af",
+      "retrievedOn": "2026-10-02"
     },
     {
       "file": "sp500-total-return.json",
       "url": "https://query1.finance.yahoo.com/v8/finance/chart/%5ESP500TR?period1=1640995200&period2=1767225600&interval=1mo",
-      "sha256": "72cb3639261b3a52509f844b6f4eeb31f65cd7c8baa49e08da3553b41f7f6d96"
+      "sha256": "72cb3639261b3a52509f844b6f4eeb31f65cd7c8baa49e08da3553b41f7f6d96",
+      "retrievedOn": "2026-10-02"
     },
     {
       "file": "morocco-cpi.json",
       "url": "https://api.db.nomics.world/v22/series/IMF/IFS/M.MA.PCPI_IX?observations=1",
-      "sha256": "0202b7578e9b4284060909144941f73216f970f3fb78303abe071c9829a3b846"
+      "sha256": "0202b7578e9b4284060909144941f73216f970f3fb78303abe071c9829a3b846",
+      "retrievedOn": "2026-10-02"
     }
   ],
+  "dependencies": [
+    {
+      "file": "data/retirement/raw/us-cpi.json",
+      "sha256": "3cb50221cc77a0d55fa3e4e0cd29aa4191f3a2dd6bc5eaa9b37d0f03dc3a2f93",
+      "url": "https://api.bls.gov/publicAPI/v2/timeseries/data/CUUR0000SA0?startyear=2023&endyear=2025",
+      "refresh": "python3 scripts/import-retirement-data.py --download"
+    }
+  ],
+  "usCpi": {
+    "start": "1960-01",
+    "end": "2025-06",
+    "observations": 786,
+    "method": "Shiller CPI through June 2023, then chained BLS CPI-U (not seasonally adjusted). No interpolation."
+  },
+  "bonds": {
+    "symbol": "VBMFX",
+    "field": "adjclose",
+    "basis": "Distribution-adjusted fund closes; fund expenses are embedded."
+  },
   "series": {
     "sp500": {
       "start": "1960-01",
@@ -43,6 +73,11 @@
       "start": "1985-01",
       "end": "2025-06",
       "observations": 486
+    },
+    "bonds": {
+      "start": "1986-12",
+      "end": "2025-06",
+      "observations": 463
     }
   },
   "cpi": {

@@ -59,7 +59,7 @@ python3 scripts/import-dca-data.py
 python3 scripts/import-retirement-data.py
 ```
 
-Add `--download` only for an intentional source refresh. Review importer date bounds, source schemas, raw-file diffs, hashes and coverage. Update DCA first because retirement reuses its market inputs and cutoff. Then run the affected math tests and review the UI's generated counts, source notes and coverage messages.
+Add `--download` only for an intentional source refresh. Review importer date bounds, source schemas, raw-file diffs, hashes and coverage. DCA now also reads the shared raw BLS file. For a full download refresh, run `python3 scripts/import-retirement-data.py --download` first to refresh BLS, then `python3 scripts/import-dca-data.py --download`, and finally `python3 scripts/import-retirement-data.py` to align retirement with the rebuilt DCA cutoff. Offline reproduction uses the two-command order above. Then run the affected math tests and review the UI's generated counts, source notes and coverage messages.
 
 See [data sources](data-sources.md), [DCA](tools/dca.md) and [retirement](tools/retirement.md). Refreshing a file alone does not make its manifest current; keep raw data, normalized output and manifest together. Do not fill missing observations with invented returns.
 

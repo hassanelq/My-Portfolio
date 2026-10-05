@@ -2,6 +2,9 @@
 
 **Workspace ID:** `emergency` · **UI:** `components/tools/emergency-fund.tsx` · **Engine:** `lib/math/emergency.ts`.
 
+
+The shared DH/USD selector changes monetary input and result units without converting the entered numbers. Currency does not affect risk points or the number of months. This tool has no inflation selector: it sizes a cash cushion from current essential spending.
+
 ## Purpose and flow
 
 Find a cash cushion from essential spending and seven explicit risk factors. Users answer choices and numeric fields; there is no AI or free-text interpretation.
@@ -18,14 +21,14 @@ The first pass has nine steps:
 8. Required loan payments.
 9. Cash already saved.
 
-The wizard shows progress, Back and Continue. Choices must be explicit; earlier answers are retained. Spending begins blank and must be positive. Saved cash starts at a visible, editable zero. Amounts in the UI are whole DH: spending 1–999,999,999; saved cash 0–999,999,999.
+The wizard shows progress, Back and Continue. Choices must be explicit; earlier answers are retained. Spending begins blank and must be positive. Saved cash starts at a visible, editable zero. Amounts use whole units of the shared sidebar currency (DH by default or USD): spending 1–999,999,999; saved cash 0–999,999,999.
 
 After completion, all nine answers are editable together beneath the result. Changing any field recalculates immediately without rerunning the wizard. Tool switching preserves incomplete progress and completed results; reload clears the in-memory answers.
 
 ## Results
 
 - Target duration: 3, 6, 9 or 12 months.
-- Target amount in DH, with up to two highest-scoring reasons.
+- Target amount in the selected currency, with up to two highest-scoring reasons.
 - Current coverage in months, amount remaining, progress and any surplus.
 - An indicative month scale that cannot override the rules.
 - General guidance on keeping cash accessible and separate.
@@ -47,7 +50,7 @@ This tool uses a deterministic planning heuristic, not a dataset or historical b
 
 Scores 0–4 map to 3 months, 5–7 to 6 months, 8 to 9 months and 9+ to 12 months. Apply a minimum of 6 months for self-employment. These weights are editorial planning assumptions, not empirically calibrated loss probabilities. All seven answers are required; uncertainty is an explicit choice with the stated score.
 
-`target = months × monthlyEssentialSpending`; `remaining = max(0, target − currentCash)`. Coverage is current cash divided by monthly spending. Progress is capped at 100%; surplus cash is reported separately. Amount inputs are whole DH, spending is at least 1 DH and cash is nonnegative. No interest, future inflation, benefit income or investment return is added. Housing and debt can both add risk points, but actual repayments are included only once in essential spending.
+`target = months × monthlyEssentialSpending`; `remaining = max(0, target − currentCash)`. Coverage is current cash divided by monthly spending. Progress is capped at 100%; surplus cash is reported separately. Amount inputs are whole currency units, spending is at least 1 unit and cash is nonnegative. No interest, future inflation, benefit income or investment return is added. Housing and debt can both add risk points, but actual repayments are included only once in essential spending.
 
 The current choice counts are `3 × 4 × 3 × 4 × 4 × 3 × 3 = 5,184`, all exercised by the unit tests. The reference’s 9,072-combination claim is not used. Tests establish deterministic behavior, not financial validation of the heuristic.
 

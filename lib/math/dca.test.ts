@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { monthIndex, replayAsset, replayHistory } from "./dca";
+import {
+  monthIndex,
+  replayAsset,
+  replayHistory,
+  portfolioWindow,
+  type HistoricalData,
+} from "./dca";
 import history from "../../content/dca-history.json";
 const metadata = { id: "sp500" as const, start: "2000-01", end: "2001-02" };
 const inputs = { starting: 100, monthly: 10, age: 23, targetAge: 24 };
@@ -83,7 +89,9 @@ describe("pinned market data", () => {
       { ...inputs, starting: 0, monthly: 1500, targetAge: 50 },
       history,
     );
-    expect(result.assets.map((item) => item?.windows)).toEqual([462, 366, 162]);
+    expect(result.assets.map((item) => item?.windows)).toEqual([
+      462, 366, 162, 139, 139,
+    ]);
     for (const item of [...result.assets, result.cash]) {
       expect(item!.points).toHaveLength(28);
       expect(item!.low).toBeLessThanOrEqual(item!.median);
@@ -95,5 +103,80 @@ describe("pinned market data", () => {
     expect(result.assets[0]).not.toBeNull();
     expect(result.assets[1]).not.toBeNull();
     expect(result.assets[2]).toBeNull();
+  });
+});
+
+describe("portfolio cash accounting", () => {
+  function fixture(
+    sp = Array(13).fill(100),
+    gold = Array(13).fill(100),
+  ): HistoricalData {
+    const series = (levels: number[]) => ({ start: "2000-01", levels });
+    return {
+      start: "2000-01",
+      end: "2001-01",
+      cpi: Array(13).fill(100),
+      usCpi: Array(13).fill(200),
+      assets: {
+        sp500: series(sp),
+        gold: series(gold),
+        bonds: series(Array(13).fill(100)),
+        world: series(Array(13).fill(100)),
+      },
+    };
+  }
+  it("conserves flat-market deposits after purchase costs, with no gains tax", () => {
+    const rows = portfolioWindow(
+      { ...inputs, starting: 1000, monthly: 100 },
+      fixture(),
+      0,
+      12,
+    );
+    expect(rows.at(-1)!.nominal).toBeCloseTo(2200 / 1.001, 5);
+    expect(
+      rows.reduce((s, r) => s + r.fees, 0) + rows.at(-1)!.nominal,
+    ).toBeCloseTo(2200, 5);
+    expect(rows.reduce((s, r) => s + r.tax, 0)).toBeLessThan(1e-7);
+  });
+  it("matches an independently solved taxable sale and fees equation", () => {
+    // Stocks double, gold halves: only stocks are sold to restore 60/30/10.
+    const data = fixture(
+      [100, ...Array(12).fill(200)],
+      [100, ...Array(12).fill(50)],
+    );
+    const rows = portfolioWindow(
+      { ...inputs, starting: 1001, monthly: 0 },
+      data,
+      0,
+      1,
+    );
+    // Initial investment = 1000; post-return holdings = 1200, 300, 50.
+    // F=.001*(850-.2*N), T=.20*.5*(1200-.6*N).
+    const expected = (1550 - 0.85 - 120) / (1 - 0.0002 - 0.06);
+    const sold = 1200 - 0.6 * expected;
+    expect(rows[0].fees).toBeCloseTo(1, 9);
+    expect(rows[1].nominal).toBeCloseTo(expected, 6);
+    expect(rows[1].tax).toBeCloseTo(0.2 * 0.5 * sold, 6);
+    expect(rows[1].nominal + rows[1].fees + rows[1].tax).toBeCloseTo(1550, 6);
+  });
+  it("preserves zero balances and uses the chosen CPI after portfolio deductions", () => {
+    const data = fixture();
+    data.usCpi = Array.from({ length: 13 }, (_, i) => 100 * 1.01 ** i);
+    const zero = replayHistory(
+      { ...inputs, starting: 0, monthly: 0 },
+      data,
+      "us",
+    );
+    expect([...zero.assets, zero.cash].every((r) => r!.median === 0)).toBe(
+      true,
+    );
+    const ma = replayHistory(inputs, data, "morocco").assets.find(
+      (r) => r?.id === "portfolio",
+    )!;
+    const us = replayHistory(inputs, data, "us").assets.find(
+      (r) => r?.id === "portfolio",
+    )!;
+    expect(us.median).toBeCloseTo(ma.median / 1.01 ** 12, 7);
+    expect(us.windows).toBe(ma.windows);
   });
 });

@@ -10,36 +10,47 @@ import {
   Layers,
 } from "lucide-react";
 import { Dialog } from "@/components/ui/dialog";
+import { Tooltip } from "@/components/ui/tooltip";
 import { NumberStepper } from "@/components/ui/number-stepper";
-import { dcaAssets, dcaCash, dcaDefaults, dcaSources } from "@/content/tools";
+import { dcaAssets, dcaCash, dcaDefaults } from "@/content/tools";
 import history from "@/content/dca-history.json";
 import {
   replayHistory,
+  portfolioHistory,
   type HistoricalAssetId,
   type SavingsInputs,
 } from "@/lib/math/dca";
-import { DCAChart, dirhams, type SavingsSeries } from "./dca-chart";
+import { DCAChart, type SavingsSeries } from "./dca-chart";
+import { DCAMethod, getInflationSummary } from "./dca-method";
 import { SeriesSwatch } from "./series-swatch";
+import { useToolCurrency, useInflationReference } from "./tools-settings";
 
 type Popup = "intro" | "method" | "starting" | "monthly" | null;
-const dateLabel = (date: string) =>
-  new Intl.DateTimeFormat("en-GB", {
-    month: "long",
-    year: "numeric",
-    timeZone: "UTC",
-  }).format(new Date(`${date}-01T00:00:00Z`));
 export default function DCA() {
+  const { currency, money } = useToolCurrency();
+  const [inflationRegion, setInflationRegion] = useInflationReference();
+  const inflationLabel = inflationRegion === "us" ? "US" : "Moroccan";
   const [inputs, setInputs] = useState<SavingsInputs>(dcaDefaults);
   const [selected, setSelected] = useState<HistoricalAssetId[]>([
     "sp500",
     "gold",
     "world",
+    "portfolio",
   ]);
   const [popup, setPopup] = useState<Popup>(null);
-  const result = useMemo(() => replayHistory(inputs, history), [inputs]);
+  const result = useMemo(
+    () => replayHistory(inputs, history, inflationRegion),
+    [inputs, inflationRegion],
+  );
   const years = inputs.targetAge - inputs.age;
-  const allSeries: SavingsSeries[] = result.assets.flatMap((data, index) =>
-    data ? [{ ...data, ...dcaAssets[index] }] : [],
+  const inflation = useMemo(
+    () => getInflationSummary(years, inflationRegion),
+    [years, inflationRegion],
+  );
+  const allSeries: SavingsSeries[] = result.assets.flatMap((data) =>
+    data
+      ? [{ ...data, ...dcaAssets.find((asset) => asset.id === data.id)! }]
+      : [],
   );
   const visible = allSeries.filter((item) =>
     selected.includes(item.id as HistoricalAssetId),
@@ -48,7 +59,9 @@ export default function DCA() {
   const series = [...visible, ...(cash ? [cash] : [])];
   const main = visible[0] ?? cash;
   const unavailable = dcaAssets.filter(
-    (asset, index) => selected.includes(asset.id) && !result.assets[index],
+    (asset) =>
+      selected.includes(asset.id) &&
+      !result.assets.some((item) => item?.id === asset.id),
   );
   const popupTitles = {
     intro: "Monthly investing?",
@@ -95,7 +108,7 @@ export default function DCA() {
             min={0}
             max={100000000}
             step={1000}
-            prefix="DH"
+            prefix={currency}
             help={
               <button
                 className="savings-help"
@@ -113,7 +126,7 @@ export default function DCA() {
             min={0}
             max={1000000}
             step={100}
-            prefix="DH"
+            prefix={currency}
             help={
               <button
                 className="savings-help"
@@ -139,28 +152,49 @@ export default function DCA() {
             max={100}
           />
         </div>
+        <div className="savings-inflation-control">
+          <div>
+            <label htmlFor="dca-inflation">Inflation reference</label>
+            <p>Adjust purchasing power using recorded consumer prices.</p>
+          </div>
+          <select
+            id="dca-inflation"
+            value={inflationRegion}
+            onChange={(event) =>
+              setInflationRegion(event.target.value as "morocco" | "us")
+            }
+          >
+            <option value="morocco">Morocco CPI</option>
+            <option value="us">US CPI</option>
+          </select>
+        </div>
         <fieldset className="savings-comparisons">
           <legend>Compare with</legend>
           <div className="savings-comparison-options">
             {dcaAssets.map((asset) => (
-              <label key={asset.id}>
-                <input
-                  type="checkbox"
-                  checked={selected.includes(asset.id)}
-                  onChange={(event) =>
-                    setSelected((current) =>
-                      event.target.checked
-                        ? [...current, asset.id]
-                        : current.filter((id) => id !== asset.id),
-                    )
-                  }
-                />
-                <span className="savings-checkbox">
-                  <Check size={13} strokeWidth={2} aria-hidden="true" />
-                </span>
-                <SeriesSwatch {...asset} />
-                <span>{asset.label}</span>
-              </label>
+              <Tooltip key={asset.id} content={asset.details}>
+                {(descriptionId) => (
+                  <label>
+                    <input
+                      type="checkbox"
+                      aria-describedby={descriptionId}
+                      checked={selected.includes(asset.id)}
+                      onChange={(event) =>
+                        setSelected((current) =>
+                          event.target.checked
+                            ? [...current, asset.id]
+                            : current.filter((id) => id !== asset.id),
+                        )
+                      }
+                    />
+                    <span className="savings-checkbox">
+                      <Check size={13} strokeWidth={2} aria-hidden="true" />
+                    </span>
+                    <SeriesSwatch {...asset} />
+                    <span>{asset.label}</span>
+                  </label>
+                )}
+              </Tooltip>
             ))}
           </div>
         </fieldset>
@@ -170,7 +204,7 @@ export default function DCA() {
           {unavailable
             .map(
               (asset) =>
-                `${asset.label} has up to ${Math.floor((history.assets[asset.id].levels.length - 1) / 12)} complete years of history`,
+                `${asset.label} has up to ${Math.floor(((asset.id === "portfolio" ? portfolioHistory(history) : history.assets[asset.id]).levels.length - 1) / 12)} complete years of history`,
             )
             .join("; ")}
           . Shorten the horizon to draw{" "}
@@ -185,8 +219,10 @@ export default function DCA() {
                 Historical median ·{" "}
                 {main.id === "cash" ? "leaving it in the bank" : main.label}
               </p>
-              <h2>{dirhams(main.median)}</h2>
-              <p>At age {inputs.targetAge}, in today’s money.</p>
+              <h2>{money(main.median)}</h2>
+              <p>
+                At age {inputs.targetAge}, after {inflationLabel} inflation.
+              </p>
             </div>
             <div className="savings-horizon">
               <span>
@@ -199,7 +235,8 @@ export default function DCA() {
             </div>
           </div>
           <DCAChart
-            key={`${inputs.age}-${inputs.targetAge}-${selected.join("-")}`}
+            currency={currency}
+            key={`${inputs.age}-${inputs.targetAge}-${selected.join("-")}-${inflationRegion}`}
             series={series}
             age={inputs.age}
             targetAge={inputs.targetAge}
@@ -211,7 +248,8 @@ export default function DCA() {
           <div className="savings-breakdown">
             <table>
               <caption className="sr-only">
-                Historical savings over {years} years, in today’s dirhams
+                Historical savings over {years} years, adjusted to each period’s
+                starting-month purchasing power
               </caption>
               <thead>
                 <tr>
@@ -243,9 +281,9 @@ export default function DCA() {
                         <small>Price only · no dividends</small>
                       )}
                     </th>
-                    <td className="savings-median">{dirhams(item.median)}</td>
-                    <td>{dirhams(item.low)}</td>
-                    <td>{dirhams(item.high)}</td>
+                    <td className="savings-median">{money(item.median)}</td>
+                    <td>{money(item.low)}</td>
+                    <td>{money(item.high)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -282,14 +320,15 @@ export default function DCA() {
             <div>
               <History size={21} />
               <p>
-                Replay recorded market history, adjusted for Moroccan inflation.
+                Replay recorded market history, adjusted for {inflationLabel}{" "}
+                inflation.
               </p>
             </div>
             <div>
               <Layers size={21} />
               <p>
-                Choose S&P 500, gold, and MSCI World. Compare them with leaving
-                your money in the bank.
+                Choose S&P 500, gold, MSCI World, US bonds or the diversified
+                portfolio. Compare them with leaving your money in the bank.
               </p>
             </div>
           </div>
@@ -304,93 +343,20 @@ export default function DCA() {
         {popup === "monthly" && (
           <p>
             The same amount is added at the end of every month. Contributions
-            stay fixed in nominal dirhams; the chart adjusts the resulting
+            stay fixed in nominal {currency}; the chart adjusts the resulting
             balance for the inflation experienced during each historical period.
           </p>
         )}
         {popup === "method" && (
-          <div className="savings-method">
-            <p>
-              Investing the same amount every month is dollar-cost averaging.
-              You buy more units when prices are lower and fewer when prices are
-              higher, without trying to time the market.
-            </p>
-            <p>
-              This calculator replays recorded monthly returns. Your current
-              savings go in at the start, and your monthly contribution is added
-              after each month’s return. There are no fixed growth-rate
-              assumptions.
-            </p>
-            <p>
-              For your {years}-year horizon, we replay every complete {years}
-              -year stretch of each series, moving the starting month forward
-              one month at a time. Each point on a line is the median balance at
-              that age across the same set of complete periods. The median line
-              combines many histories; it is not one actual investment journey.
-            </p>
-            <ul className="savings-window-list">
-              {dcaAssets.map((asset, index) => (
-                <li key={asset.id}>
-                  <strong>{asset.label}</strong>:{" "}
-                  {result.assets[index]?.windows ?? 0} complete windows ·{" "}
-                  {dateLabel(history.assets[asset.id].start)} to{" "}
-                  {dateLabel(history.end)}.
-                </li>
-              ))}
-            </ul>
-            <p>
-              “Lower outcome” and “Upper outcome” are the 10th and 90th
-              percentiles of the final historical balances, not the worst and
-              best possibilities. The available periods differ between
-              investments, so differences also reflect which decades are
-              included.
-            </p>
-            <p>
-              Everything is shown in today’s purchasing power. Each historical
-              balance is divided by the change in Moroccan consumer prices since
-              that period’s starting month. The bank earns no interest, receives
-              the same deposits, and is adjusted for inflation in the same way.
-              It uses all eligible CPI windows from {dateLabel(history.start)}.
-            </p>
-            <p>
-              S&P 500 dividends are reinvested. MSCI World here is a price-only
-              index: its dividends are excluded, which understates a reinvested
-              holding. Gold has no dividends. These differences matter when
-              comparing the lines.
-            </p>
-            <p>
-              The market series are in US dollars. Showing them as DH assumes no
-              change in exchange rates; no historical USD/MAD conversion is
-              applied. Taxes, fees and trading costs are excluded. Past results
-              do not predict future returns.
-            </p>
-            <h3>Where the data comes from</h3>
-            <ul>
-              {dcaSources.map((source) => (
-                <li key={source.title}>
-                  <a href={source.url} target="_blank" rel="noreferrer">
-                    {source.title} ↗
-                  </a>
-                  <p>{source.description}</p>
-                </li>
-              ))}
-            </ul>
-            <p>
-              All lines stop at {dateLabel(history.end)}, the latest shared
-              month in this snapshot. Data retrieved{" "}
-              {new Intl.DateTimeFormat("en-GB", {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-                timeZone: "UTC",
-              }).format(new Date(`${history.retrievedOn}T00:00:00Z`))}
-              . No missing months are filled with assumed returns.
-            </p>
-            <p>
-              Built on past data to help you think it through. Not financial
-              advice.
-            </p>
-          </div>
+          <DCAMethod
+            inputs={inputs}
+            result={result}
+            series={series}
+            main={main}
+            inflation={inflation}
+            inflationRegion={inflationRegion}
+            currency={currency}
+          />
         )}
       </Dialog>
     </section>

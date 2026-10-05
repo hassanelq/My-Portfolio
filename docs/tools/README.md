@@ -13,6 +13,8 @@ All four tools are implemented. There is no Savings Goal or coming-soon panel.
 
 ## Shared behavior
 
+- Currency (DH / USD) is the first sidebar control and is shared by all tools. It updates input units, results, tables and chart tooltips without converting numeric amounts. No other tool-specific assumptions belong in the sidebar.
+- Inflation stays in each relevant tool: DCA and retirement default to Moroccan CPI with DH and US CPI with USD, then allow independent overrides. A currency change restores the default CPI in each. Rent/buy keeps its own editable scenario rate; emergency fund uses current spending without a future-inflation model.
 - Left navigation on desktop; compact scrollable navigation above the panel on mobile.
 - Selection stays on `/tools`; arrows, Home and End support keyboard navigation.
 - Panels remain mounted when hidden. Returning to a tool preserves its inputs, settings and questionnaire progress; reloading resets them.
@@ -20,7 +22,7 @@ All four tools are implemented. There is no Savings Goal or coming-soon panel.
 - Use the portfolio's obsidian/chalk/graphite palette, gold icons and readable type. Inputs precede results, with charts and supporting details below.
 - `components/ui/dialog.tsx` supplies overview, methodology and field-help popups with consistent dismissal and focus behavior.
 - `number-stepper.tsx` supplies integer controls; `number-input.tsx` supports decimal assumptions.
-- DCA, retirement and rent/buy share `age-chart.tsx`, with pointer/touch/keyboard values, textual summaries and neutral patterned lines. Rent/buy uses years and supports negative wealth.
+- DCA, retirement and rent/buy share `age-chart.tsx`, with pointer/touch/keyboard values, textual summaries and patterned lines. DCA additionally uses asset colors and a taller plot, with hover/focus details on its comparison options. Rent/buy uses years and supports negative wealth.
 
 ## Reading the results
 

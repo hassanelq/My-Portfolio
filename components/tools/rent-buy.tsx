@@ -19,7 +19,7 @@ import {
   rentBuySources,
 } from "@/content/rent-buy";
 import { compareRentBuy, type RentBuyInputs } from "@/lib/math/rent-buy";
-import { dirhams } from "@/lib/format";
+import { useToolCurrency } from "./tools-settings";
 
 function duration(months: number) {
   if (months === 0) return "Immediately";
@@ -32,9 +32,11 @@ function duration(months: number) {
     .filter(Boolean)
     .join(" ");
 }
-const negative = (value: number) => (value > 0 ? `−${dirhams(value)}` : "0 DH");
 
 export default function RentBuy() {
+  const { currency, money } = useToolCurrency();
+  const negative = (value: number) =>
+    value > 0 ? `−${money(value)}` : money(0);
   const [inputs, setInputs] = useState<RentBuyInputs>(rentBuyDefaults);
   const [advanced, setAdvanced] = useState(false);
   const [popup, setPopup] = useState<"intro" | "method" | null>(null);
@@ -99,7 +101,7 @@ export default function RentBuy() {
         <div className="rent-buy-fields">
           <NumberStepper
             label="Purchase price"
-            prefix="DH"
+            prefix={currency}
             value={inputs.homePrice}
             onChange={(v) => field("homePrice", v)}
             min={1}
@@ -108,7 +110,7 @@ export default function RentBuy() {
           />
           <NumberStepper
             label="Equivalent rent / month"
-            prefix="DH"
+            prefix={currency}
             value={inputs.monthlyRent}
             onChange={(v) => field("monthlyRent", v)}
             min={0}
@@ -177,6 +179,8 @@ export default function RentBuy() {
                     <NumberInput
                       key={key}
                       {...item}
+                      label={item.label.replace(/DH/g, currency)}
+                      help={item.help.replace(/DH/g, currency)}
                       value={inputs[key]}
                       onChange={(v) => field(key, v)}
                     />
@@ -213,11 +217,11 @@ export default function RentBuy() {
           <h2>
             {result.winner === "tie"
               ? "Almost level."
-              : `${dirhams(Math.abs(result.advantage))} ahead`}
+              : `${money(Math.abs(result.advantage))} ahead`}
           </h2>
           <p>
             {result.winner === "tie"
-              ? "The two paths finish within 1 DH of each other."
+              ? `The two paths finish within 1 ${currency} of each other.`
               : `${result.winner === "buy" ? "Buying" : "Renting"} leaves more net wealth in today’s money.`}{" "}
             Includes a hypothetical sale, mortgage payoff and invested savings.
           </p>
@@ -225,16 +229,17 @@ export default function RentBuy() {
         <div className="rent-buy-balances">
           <div>
             <span>Rent + invest</span>
-            <strong>{dirhams(final.renterReal)}</strong>
+            <strong>{money(final.renterReal)}</strong>
             <small>Investments + returned deposit</small>
           </div>
           <div>
             <span>Buy + invest</span>
-            <strong>{dirhams(final.buyerReal)}</strong>
+            <strong>{money(final.buyerReal)}</strong>
             <small>Net sale proceeds + investments</small>
           </div>
         </div>
         <AgeChart
+          currency={currency}
           key={inputs.horizonYears}
           series={series}
           age={0}
@@ -243,7 +248,7 @@ export default function RentBuy() {
           tickInterval={Math.max(1, Math.ceil(inputs.horizonYears / 5))}
           endLabels={false}
           sliderLabel="Explore rent and buy wealth by year"
-          chartLabel="Renting and buying net wealth in today's dirhams"
+          chartLabel={`Renting and buying net wealth in today’s ${currency}`}
         />
         <div className="savings-chart-caption">
           <span>Years in the home</span>
@@ -257,14 +262,14 @@ export default function RentBuy() {
         <dl className="retirement-evidence rent-buy-evidence">
           <div>
             <dt>Buying / first month</dt>
-            <dd>{dirhams(first.ownerCost)}</dd>
-            <small>Mortgage {dirhams(result.payment)} + recurring costs</small>
+            <dd>{money(first.ownerCost)}</dd>
+            <small>Mortgage {money(result.payment)} + recurring costs</small>
           </div>
           <div>
             <dt>Renting / first month</dt>
-            <dd>{dirhams(first.rentCost)}</dd>
+            <dd>{money(first.rentCost)}</dd>
             <small>
-              {dirhams(Math.abs(first.ownerCost - first.rentCost))} invested by
+              {money(Math.abs(first.ownerCost - first.rentCost))} invested by
               the cheaper path
             </small>
           </div>
@@ -311,7 +316,7 @@ export default function RentBuy() {
       >
         <div className="savings-section-label">
           <h2 id="rent-buy-breakdown-title">Where the money ends up</h2>
-          <span className="mono">TODAY’S DH</span>
+          <span className="mono">TODAY’S {currency}</span>
         </div>
         <div className="rent-buy-table-wrap">
           <table>
@@ -329,7 +334,7 @@ export default function RentBuy() {
               <tr>
                 <th scope="row">Home value</th>
                 <td>—</td>
-                <td>{dirhams(final.homeValue / deflator)}</td>
+                <td>{money(final.homeValue / deflator)}</td>
               </tr>
               <tr>
                 <th scope="row">Mortgage to repay</th>
@@ -345,29 +350,29 @@ export default function RentBuy() {
               </tr>
               <tr>
                 <th scope="row">Investments</th>
-                <td>{dirhams(final.renterPortfolio / deflator)}</td>
-                <td>{dirhams(final.buyerPortfolio / deflator)}</td>
+                <td>{money(final.renterPortfolio / deflator)}</td>
+                <td>{money(final.buyerPortfolio / deflator)}</td>
               </tr>
               <tr>
                 <th scope="row">Deposit returned</th>
-                <td>{dirhams(result.deposit / deflator)}</td>
+                <td>{money(result.deposit / deflator)}</td>
                 <td>—</td>
               </tr>
             </tbody>
             <tfoot>
               <tr>
                 <th scope="row">Net wealth</th>
-                <td>{dirhams(final.renterReal)}</td>
-                <td>{dirhams(final.buyerReal)}</td>
+                <td>{money(final.renterReal)}</td>
+                <td>{money(final.buyerReal)}</td>
               </tr>
             </tfoot>
           </table>
         </div>
         <p>
-          Buying needs {dirhams(result.buyerUpfront)} upfront:{" "}
-          {dirhams(result.down)} down + {dirhams(result.buyingFees)} in costs.
-          Both paths start with {dirhams(result.startingCash)}. The rental
-          deposit and setup costs are {dirhams(result.renterUpfront)}.
+          Buying needs {money(result.buyerUpfront)} upfront:{" "}
+          {money(result.down)} down + {money(result.buyingFees)} in costs. Both
+          paths start with {money(result.startingCash)}. The rental deposit and
+          setup costs are {money(result.renterUpfront)}.
         </p>
       </section>
       <div className="savings-bottom">
@@ -456,8 +461,8 @@ export default function RentBuy() {
               the outstanding mortgage and any selected gain-tax allowance, then
               add the buyer’s investments. The renter has their investments and
               deposit. Both totals are divided by the assumed rise in consumer
-              prices, so the chart and final table are in today’s DH. This
-              inflation adjustment is different from discounting at an
+              prices, so the chart and final table are in today’s {currency}.
+              This inflation adjustment is different from discounting at an
               investment return.
             </p>
             <p>
@@ -485,13 +490,16 @@ export default function RentBuy() {
               replayed.
             </p>
             <p>
-              The other initial values—1,000,000 DH price, 5,000 DH rent, 20%
-              down, 20-year loan, 7% buying costs, 3% selling costs, 1%
-              maintenance, 500 DH other monthly costs, 0.3% loan insurance, 2%
-              rent growth, 5% investment return and 2% inflation—are editable
-              examples. The rental deposit starts at one month, rental setup
-              fees and gain tax at zero. Replace these with your own quotes and
-              test less favorable growth as well.
+              The other initial values—1,000,000 {currency} price, 5,000{" "}
+              {currency} rent, 20% down, 20-year loan, 7% buying costs, 3%
+              selling costs, 1% maintenance, 500 {currency} other monthly costs,
+              0.3% loan insurance, 2% rent growth, 5% investment return and 2%
+              inflation—are editable examples originally expressed in DH. The
+              currency selector changes units, not local mortgage rates, taxes
+              or market assumptions; replace the amounts for your situation. The
+              rental deposit starts at one month, rental setup fees and gain tax
+              at zero. Replace these with your own quotes and test less
+              favorable growth as well.
             </p>
             <p>
               Returns and home prices follow smooth rates. There are no market

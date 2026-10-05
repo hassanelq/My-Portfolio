@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { toolCatalog } from "@/content/tools";
+import { ToolsSettingsProvider, useToolCurrency } from "./tools-settings";
 
 export function ToolsWorkspace({
   children,
@@ -15,12 +16,52 @@ export function ToolsWorkspace({
   emergency: React.ReactNode;
   rentBuy: React.ReactNode;
 }) {
+  return (
+    <ToolsSettingsProvider>
+      <WorkspacePanels
+        retirement={retirement}
+        emergency={emergency}
+        rentBuy={rentBuy}
+      >
+        {children}
+      </WorkspacePanels>
+    </ToolsSettingsProvider>
+  );
+}
+
+function WorkspacePanels({
+  children,
+  retirement,
+  emergency,
+  rentBuy,
+}: {
+  children: React.ReactNode;
+  retirement: React.ReactNode;
+  emergency: React.ReactNode;
+  rentBuy: React.ReactNode;
+}) {
+  const { currency, setCurrency } = useToolCurrency();
   const [active, setActive] = useState<string>("dca");
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
 
   return (
     <div className="tools-workspace">
       <aside className="tools-sidebar">
+        <div className="tools-settings">
+          <span className="eyebrow">CURRENCY / ALL TOOLS</span>
+          <div className="tools-currency" role="group" aria-label="Currency">
+            {(["DH", "USD"] as const).map((unit) => (
+              <button
+                key={unit}
+                type="button"
+                aria-pressed={currency === unit}
+                onClick={() => setCurrency(unit)}
+              >
+                {unit}
+              </button>
+            ))}
+          </div>
+        </div>
         <div className="tools-sidebar-heading">
           <span className="eyebrow">
             <span className="cross">+</span> THE TOOLKIT
