@@ -2,6 +2,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { SeriesSwatch } from "@/components/tools/series-swatch";
 import { formatMoney, type Currency } from "@/lib/format";
+import { currencySymbol } from "@/lib/currency";
 
 export type AgeSeries = {
   id: string;
@@ -151,7 +152,7 @@ export function AgeChart({
               fill="var(--color-smoke)"
               fontSize={13}
             >
-              {short(value)} {currency}
+              {short(value)} {currencySymbol(currency)}
             </text>
           </g>
         ))}

@@ -23,14 +23,22 @@ import {
 import { DCAChart, type SavingsSeries } from "./dca-chart";
 import { DCAMethod, getInflationSummary } from "./dca-method";
 import { SeriesSwatch } from "./series-swatch";
-import { useToolCurrency, useInflationReference } from "./tools-settings";
+import {
+  useToolCurrency,
+  useInflationReference,
+  useCurrencyInputs,
+} from "./tools-settings";
 
 type Popup = "intro" | "method" | null;
+const moneyKeys = ["starting", "monthly"] as const;
 export default function DCA() {
-  const { currency, money } = useToolCurrency();
+  const { currency, symbol, amount, money } = useToolCurrency();
   const [inflationRegion, setInflationRegion] = useInflationReference();
   const inflationLabel = inflationRegion === "us" ? "US" : "Moroccan";
-  const [inputs, setInputs] = useState<SavingsInputs>(dcaDefaults);
+  const [inputs, setInputs] = useCurrencyInputs<SavingsInputs>(
+    dcaDefaults,
+    moneyKeys,
+  );
   const [selected, setSelected] = useState<HistoricalAssetId[]>([
     "sp500",
     "gold",
@@ -100,13 +108,15 @@ export default function DCA() {
         </div>
         <div className="savings-fields">
           <NumberStepper
+            key={`starting-${currency}`}
             label="Current savings"
             value={inputs.starting}
             onChange={(value) => field("starting", value)}
             min={0}
-            max={100000000}
-            step={1000}
-            prefix={currency}
+            max={amount(100000000)}
+            step={amount(1000)}
+            precision={2}
+            prefix={symbol}
             help={
               <ParameterHelp label="Current savings">
                 Money you can invest right now. It is invested at the start of
@@ -115,13 +125,15 @@ export default function DCA() {
             }
           />
           <NumberStepper
+            key={`monthly-${currency}`}
             label="Per month"
             value={inputs.monthly}
             onChange={(value) => field("monthly", value)}
             min={0}
-            max={1000000}
-            step={100}
-            prefix={currency}
+            max={amount(1000000)}
+            step={amount(100)}
+            precision={2}
+            prefix={symbol}
             help={
               <ParameterHelp label="Per month">
                 The amount you invest at the end of every month. It stays the

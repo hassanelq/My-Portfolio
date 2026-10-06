@@ -1,3 +1,6 @@
+import { currencySymbol, fromDirhams } from "../lib/currency";
+import { formatMoney, type Currency } from "../lib/format";
+
 // Percentages are annual unless stated otherwise. Rates are editable scenarios.
 export const rentBuyDefaults = {
   homePrice: 1000000,
@@ -13,12 +16,22 @@ export const rentBuyDefaults = {
   purchaseCostsPercent: 7,
   saleCostsPercent: 3,
   maintenancePercent: 1,
-  ownerMonthlyCosts: 500,
+  ownerMonthlyCosts: 300,
   mortgageInsurancePercent: 0.3,
   rentDepositMonths: 1,
   rentSetupCosts: 0,
   saleGainTaxPercent: 0,
 };
+
+export function rentBuyParameterHelp(
+  key: string,
+  help: string,
+  currency: Currency,
+) {
+  if (key === "maintenancePercent")
+    return `A yearly budget for repairs, spread across the months. At 1%, a ${formatMoney(fromDirhams(1000000, currency), currency)} home costs about ${formatMoney(fromDirhams(10000, currency), currency)} a year to maintain.`;
+  return help.replace(/DH/g, currencySymbol(currency));
+}
 
 export const rentBuySources = [
   {

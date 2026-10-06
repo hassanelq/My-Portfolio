@@ -15,9 +15,20 @@ import { NumberStepper } from "@/components/ui/number-stepper";
 import { NumberInput } from "@/components/ui/number-input";
 import { Dialog } from "@/components/ui/dialog";
 import { AgeChart, type AgeSeries } from "@/components/ui/age-chart";
-import { rentBuyAssumptions, rentBuyDefaults } from "@/content/rent-buy";
+import {
+  rentBuyAssumptions,
+  rentBuyDefaults,
+  rentBuyParameterHelp,
+} from "@/content/rent-buy";
 import { compareRentBuy, type RentBuyInputs } from "@/lib/math/rent-buy";
-import { useToolCurrency } from "./tools-settings";
+import { useToolCurrency, useCurrencyInputs } from "./tools-settings";
+
+const moneyKeys = [
+  "homePrice",
+  "monthlyRent",
+  "ownerMonthlyCosts",
+  "rentSetupCosts",
+] as const;
 
 function duration(months: number) {
   if (months === 0) return "Immediately";
@@ -32,13 +43,19 @@ function duration(months: number) {
 }
 
 export default function RentBuy() {
-  const { currency, money } = useToolCurrency();
+  const { currency, symbol, amount, money } = useToolCurrency();
   const negative = (value: number) =>
     value > 0 ? `−${money(value)}` : money(0);
-  const [inputs, setInputs] = useState<RentBuyInputs>(rentBuyDefaults);
+  const [inputs, setInputs] = useCurrencyInputs<RentBuyInputs>(
+    rentBuyDefaults,
+    moneyKeys,
+  );
   const [advanced, setAdvanced] = useState(false);
   const [popup, setPopup] = useState<"intro" | "method" | null>(null);
-  const result = useMemo(() => compareRentBuy(inputs), [inputs]);
+  const result = useMemo(
+    () => compareRentBuy(inputs, amount(1)),
+    [inputs, amount],
+  );
   const final = result.final;
   const deflator = (1 + inputs.inflation / 100) ** inputs.horizonYears;
   const series: AgeSeries[] = [
@@ -99,20 +116,23 @@ export default function RentBuy() {
         </div>
         <div className="rent-buy-fields">
           <NumberStepper
+            key={`homePrice-${currency}`}
             label="Home price"
             help={
               <ParameterHelp label="Home price">
                 The price you would pay for the home, before buying fees.
               </ParameterHelp>
             }
-            prefix={currency}
+            prefix={symbol}
             value={inputs.homePrice}
             onChange={(v) => field("homePrice", v)}
-            min={1}
-            max={100000000}
-            step={50000}
+            min={amount(1)}
+            max={amount(100000000)}
+            step={amount(50000)}
+            precision={2}
           />
           <NumberStepper
+            key={`monthlyRent-${currency}`}
             label="Rent for a similar home / month"
             help={
               <ParameterHelp label="Rent for a similar home / month">
@@ -120,12 +140,13 @@ export default function RentBuy() {
                 area. Include regular charges paid only by the renter.
               </ParameterHelp>
             }
-            prefix={currency}
+            prefix={symbol}
             value={inputs.monthlyRent}
             onChange={(v) => field("monthlyRent", v)}
             min={0}
-            max={1000000}
-            step={500}
+            max={amount(1000000)}
+            step={amount(500)}
+            precision={2}
           />
           <NumberStepper
             label="Years in the home"
@@ -142,7 +163,7 @@ export default function RentBuy() {
           />
           <NumberInput
             label="Paid from your savings (%)"
-            help="The share of the home price you pay yourself, often called a down payment. For example, 20% of 1,000,000 is 200,000. The rest is borrowed. Buying fees are added separately."
+            help={`The share of the home price you pay yourself, often called a down payment. For example, 20% of ${money(amount(1000000))} is ${money(amount(200000))}. The rest is borrowed. Buying fees are added separately.`}
             helpPopover
             value={inputs.downPercent}
             onChange={(v) => field("downPercent", v)}
@@ -202,10 +223,25 @@ export default function RentBuy() {
                 <div className="rent-buy-assumption-fields">
                   {group.fields.map(({ key, ...item }) => (
                     <NumberInput
-                      key={key}
+                      key={`${key}-${currency}`}
                       {...item}
-                      label={item.label.replace(/DH/g, currency)}
-                      help={item.help.replace(/DH/g, currency)}
+                      label={item.label.replace(/DH/g, symbol)}
+                      help={rentBuyParameterHelp(key, item.help, currency)}
+                      min={
+                        moneyKeys.some((moneyKey) => moneyKey === key)
+                          ? amount(item.min)
+                          : item.min
+                      }
+                      max={
+                        moneyKeys.some((moneyKey) => moneyKey === key)
+                          ? amount(item.max)
+                          : item.max
+                      }
+                      step={
+                        moneyKeys.some((moneyKey) => moneyKey === key)
+                          ? amount(item.step)
+                          : item.step
+                      }
                       helpPopover
                       value={inputs[key]}
                       onChange={(v) => field(key, v)}
@@ -246,7 +282,7 @@ export default function RentBuy() {
           </h2>
           <p>
             {result.winner === "tie"
-              ? `The two paths finish within 1 ${currency} of each other.`
+              ? `The two paths finish within ${currency === "USD" ? "0.10 $" : "1 DH"} of each other.`
               : `${result.winner === "buy" ? "Buying" : "Renting"} leaves you with more money at today’s prices.`}{" "}
             This assumes you sell the home, repay the loan and keep any invested
             savings.
@@ -274,7 +310,7 @@ export default function RentBuy() {
           tickInterval={Math.max(1, Math.ceil(inputs.horizonYears / 5))}
           endLabels={false}
           sliderLabel="Explore money left from renting or buying by year"
-          chartLabel={`Money left from renting and buying in today’s ${currency}`}
+          chartLabel={`Money left from renting and buying in today’s ${symbol}`}
         />
         <div className="savings-chart-caption">
           <span>Years in the home</span>
@@ -343,7 +379,7 @@ export default function RentBuy() {
       >
         <div className="savings-section-label">
           <h2 id="rent-buy-breakdown-title">Where the money ends up</h2>
-          <span className="mono">TODAY’S {currency}</span>
+          <span className="mono">TODAY’S {symbol}</span>
         </div>
         <div className="rent-buy-table-wrap">
           <table>

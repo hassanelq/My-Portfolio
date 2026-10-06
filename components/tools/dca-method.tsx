@@ -13,6 +13,7 @@ import {
 import { quantile } from "@/lib/math/normal";
 import { type SavingsSeries } from "./dca-chart";
 import { formatMoney, type Currency } from "@/lib/format";
+import { currencySymbol } from "@/lib/currency";
 import type { InflationRegion } from "./tools-settings";
 
 const assetHistory = {
@@ -122,6 +123,7 @@ export function DCAMethod({
   currency: Currency;
 }) {
   const money = (value: number) => formatMoney(value, currency);
+  const symbol = currencySymbol(currency);
   const inflationLabel = inflationRegion === "us" ? "US" : "Moroccan";
   const cpi = inflationRegion === "us" ? history.usCpi : history.cpi;
   const years = inputs.targetAge - inputs.age;
@@ -204,9 +206,9 @@ export function DCAMethod({
           </div>
         </dl>
         <p>
-          The last figure adds deposits at their stated {currency} amounts
-          without deflating each one. Starting savings are invested immediately;
-          each monthly deposit arrives after that month’s market return.
+          The last figure adds deposits at their stated {symbol} amounts without
+          deflating each one. Starting savings are invested immediately; each
+          monthly deposit arrives after that month’s market return.
         </p>
       </section>
 
@@ -515,9 +517,10 @@ export function DCAMethod({
           series stop at {monthLabel(history.end)}.
         </p>
         <p>
-          Returns come from USD market series. Amounts are expressed in{" "}
-          {currency}, with {inflationLabel} CPI as the purchasing-power
-          reference. Currency changes do not convert your inputs. DH
+          Returns come from USD market series. Amounts are expressed in {symbol}
+          , with {inflationLabel} CPI as the purchasing-power reference.
+          Switching MAD / USD converts money at a fixed 10 DH = $1. This is a
+          display conversion, not a replay of historical exchange rates. DH
           calculations assume unchanged USD/MAD exchange rates. Choosing a CPI
           country does not model currency exchange. Standalone benchmarks
           exclude personal taxes and trading costs. The portfolio includes

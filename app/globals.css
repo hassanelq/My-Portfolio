@@ -3500,6 +3500,18 @@ svg {
 .savings-method-table td:nth-last-child(-n + 2) {
   white-space: nowrap;
 }
+.rent-buy-settings-table table {
+  table-layout: fixed;
+}
+.rent-buy-settings-table th:first-child {
+  width: 35%;
+}
+.rent-buy-settings-table thead th:nth-child(2) {
+  width: 18%;
+}
+.rent-buy-settings-table td:last-child {
+  white-space: normal;
+}
 .savings-method-sources {
   margin: 18px 0;
 }

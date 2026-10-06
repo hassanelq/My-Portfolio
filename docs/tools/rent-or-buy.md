@@ -5,7 +5,7 @@
 Compare buying a home with renting an equivalent home and investing the difference. This is the fourth active tool, using the shared portfolio design and [workspace behavior](README.md).
 
 
-The shared sidebar selects DH (default) or USD for inputs, wealth, tables and chart tooltips. Numeric values are preserved, with no FX conversion. Changing currency does not replace the example’s Moroccan mortgage/property references with US market data; adjust prices, rents and assumptions for the intended scenario. Inflation remains an editable annual scenario rate within this tool and does not follow a historical CPI selector.
+The shared sidebar selects MAD (default) or USD. Switching converts home price, monthly rent, other home bills and one-time rental fees at a fixed **10 DH = $1**; derived down payments, loans, deposits, costs, wealth and chart values follow the same scale. Inputs and results display DH or $. Monetary bounds and button steps also scale, while percentages and years stay unchanged. Changing currency does not replace the example’s Moroccan mortgage/property references with US market data; adjust prices, rents and assumptions for the intended scenario. Inflation remains an editable annual scenario rate within this tool and does not follow a historical CPI selector.
 
 ## Experience
 
@@ -48,7 +48,7 @@ The rates above are not claimed to be the newest available observations. Current
 | Rent growth / investments / inflation | 2% / 5% / 2% annually | Illustrative; investment return is net of investment fees/taxes |
 | Buying / selling costs | 7% of price / 3% of sale value | Combined example allowances, not official tariffs |
 | Maintenance | 1% of current modeled home value annually | Illustrative monthly reserve |
-| Other ownership costs | 500 DH/month initially | Property tax, home insurance, syndic and costs beyond rental equivalent; excludes maintenance and loan insurance |
+| Other ownership costs | 300 DH/month initially ($30) | Property tax, home insurance, syndic and costs beyond rental equivalent; excludes maintenance and loan insurance |
 | Loan insurance | 0.3% of original loan annually | Illustrative; stops when the loan is repaid |
 | Rental deposit / setup | One month of rent / 0 DH | Deposit refunded in full at exit, no interest |
 | Effective sale-gain tax | 0% | Excluded by default; user may add a simplified allowance |
@@ -119,7 +119,7 @@ The gain-tax option is an approximation, not Moroccan tax computation: exemption
 
 ### 5. Winner and break-even
 
-The headline is the difference between real final wealth; differences below one currency unit are called approximately level. When buying finishes ahead, the break-even is the first month from which buying stays at least level for all remaining months in the selected horizon. A transient crossing that reverses is not reported as a lasting lead. If renting finishes ahead or the paths tie, report no sustained buying lead in this period. Annual chart checkpoints do not limit the monthly break-even calculation.
+The headline is the difference between real final wealth; differences below 1 DH ($0.10) are called approximately level. When buying finishes ahead, the break-even is the first month from which buying stays at least level for all remaining months in the selected horizon. A transient crossing that reverses is not reported as a lasting lead. If renting finishes ahead or the paths tie, report no sustained buying lead in this period. Annual chart checkpoints do not limit the monthly break-even calculation.
 
 ## Scope and maintenance
 
@@ -140,7 +140,7 @@ No live API is required. Review each dated source and its scope before changing 
 
 All inputs must be finite. Cash costs, loan rates and cost percentages cannot be negative. The down payment is between 0% and 100%; mortgage term and holding horizon are whole years from 1 to 50. Growth/return/inflation factors must stay above −100% annually. The UI uses tighter ranges, recorded alongside advanced fields in `content/rent-buy.ts`.
 
-Decimal inputs allow intermediate typing without sending invalid values to the engine. Zero interest, a cash purchase, negative investment returns, declining home values and negative exit wealth are supported. A result within one currency unit is approximately level. No salary or borrowing-eligibility test is inferred from a valid scenario.
+Decimal inputs allow intermediate typing without sending invalid values to the engine. Zero interest, a cash purchase, negative investment returns, declining home values and negative exit wealth are supported. A result within 1 DH ($0.10) is approximately level. No salary or borrowing-eligibility test is inferred from a valid scenario.
 
 ## Documentation maintenance
 

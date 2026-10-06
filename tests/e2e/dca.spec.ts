@@ -278,10 +278,18 @@ test("currency and CPI overrides update chart, summary and method together", asy
   await expect(outcome).toHaveText(/879\s360 DH/);
   await page.getByRole("button", { name: "USD", exact: true }).click();
   await expect(inflation).toHaveValue("us");
-  await expect(outcome).toHaveText(/991\s156 USD/);
+  await expect(page.getByLabel("Per month", { exact: true })).toHaveValue(
+    "150",
+  );
+  await expect(outcome).toHaveText(/99\s115[,\.]\d{1,2} \$/);
   await inflation.selectOption("morocco");
-  await expect(outcome).toHaveText(/879\s360 USD/);
-  await page.getByRole("button", { name: "DH", exact: true }).click();
+  await expect(outcome).toContainText("$");
+  expect(
+    Number(
+      (await outcome.innerText()).replace(/[^\d,]/g, "").replace(",", "."),
+    ),
+  ).toBeCloseTo(87936, 1);
+  await page.getByRole("button", { name: "MAD", exact: true }).click();
   await inflation.selectOption("us");
   await expect(outcome).toHaveText(/991\s156 DH/);
   for (const name of ["S&P 500", "Gold", "MSCI World"])
@@ -329,7 +337,9 @@ test("empty and unsupported histories remain finite and fit the chart", async ({
         nodes.every(
           (n) =>
             Number(n.getAttribute("y")) <
-            Number((n as SVGTextElement).ownerSVGElement!.viewBox.baseVal.height),
+            Number(
+              (n as SVGTextElement).ownerSVGElement!.viewBox.baseVal.height,
+            ),
         ),
       ),
   ).toBe(true);

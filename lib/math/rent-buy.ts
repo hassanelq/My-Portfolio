@@ -58,7 +58,7 @@ export interface HousingMonth {
   interestPaid: number;
 }
 
-export function compareRentBuy(input: RentBuyInputs) {
+export function compareRentBuy(input: RentBuyInputs, tieThreshold = 1) {
   const nonnegative: (keyof RentBuyInputs)[] = [
     "monthlyRent",
     "downPercent",
@@ -186,7 +186,7 @@ export function compareRentBuy(input: RentBuyInputs) {
   const final = records.at(-1)!;
   const advantage = final.buyerReal - final.renterReal;
   const winner =
-    Math.abs(advantage) < 1 ? "tie" : advantage > 0 ? "buy" : "rent";
+    Math.abs(advantage) < tieThreshold ? "tie" : advantage > 0 ? "buy" : "rent";
   // Report a lead that holds through the chosen horizon, not a transient crossing.
   let sustainedBreakEvenMonth: number | null = null;
   if (winner === "buy") {

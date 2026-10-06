@@ -19,7 +19,7 @@ Changing the current age keeps the horizon ordered. A permitted input horizon ca
 
 ## Currency and inflation
 
-The shared sidebar contains **currency only**: DH (MAD) or USD. It applies to monetary inputs, balances, tables and chart tooltips in every financial tool. Numbers stay unchanged when switching currency; this selects a unit for the scenario, not a live FX conversion. Re-enter amounts when changing the scenario’s denomination.
+The shared sidebar contains **currency only**: MAD or USD. Switching converts starting savings and monthly contributions at a fixed **10 DH = $1**. Values display DH or $ throughout inputs, balances, tables and chart tooltips. Input bounds and button steps scale with the money; ages stay unchanged. Amounts are stored internally in MAD so repeated switches preserve edits. This rate is an illustrative conversion, not a live quote or a replay of historical FX.
 
 DCA’s **Inflation reference** selector lives with its own controls. A currency change resets DCA to Moroccan CPI for DH or US CPI for USD. The user can then choose either CPI independently: DH + US CPI and USD + Moroccan CPI are supported. Selecting the already-active currency does not reset an override. DCA and retirement maintain separate CPI choices.
 
@@ -109,7 +109,7 @@ This is a **tax proxy**: total-return series do not isolate price gains from dis
 
 ## Recorded example results
 
-For zero starting savings, 1,500 per month and ages 23–50 (324 contributions), total nominal deposits are 486,000. These are rounded historical medians from the bundled snapshot. The portfolio includes the modeled fee and gains tax above; the standalone benchmarks are gross. Amounts use the selected unit; the table changes only the CPI reference, not the numeric inputs or FX assumptions.
+For zero starting savings, 1,500 per month and ages 23–50 (324 contributions), total nominal deposits are 486,000. These are rounded historical medians from the bundled snapshot. The portfolio includes the modeled fee and gains tax above; the standalone benchmarks are gross. The amounts below are in DH; divide by 10 for the equivalent dollar scenario with the same CPI reference. The table changes only the CPI reference, not the numeric inputs or FX assumptions.
 
 | Series | Complete windows | Moroccan CPI median | US CPI median |
 | --- | ---: | ---: | ---: |

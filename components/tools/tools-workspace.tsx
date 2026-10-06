@@ -52,10 +52,10 @@ function WorkspacePanels({
           <div className="parameter-label">
             <span className="eyebrow">CURRENCY / ALL TOOLS</span>
             <ParameterHelp label="Currency">
-              Choose DH (Moroccan dirhams) or USD for all tools. Existing
-              numbers stay the same; this is not an exchange-rate conversion.
-              DCA and FIRE default to the matching inflation reference, which
-              you can then change.
+              Choose MAD (Moroccan dirhams) or USD for all tools. Money amounts
+              convert at a fixed rate of 10 DH = $1. Inputs and results show DH
+              or $. DCA and FIRE default to the matching inflation reference,
+              which you can then change.
             </ParameterHelp>
           </div>
           <div className="tools-currency" role="group" aria-label="Currency">
@@ -66,7 +66,7 @@ function WorkspacePanels({
                 aria-pressed={currency === unit}
                 onClick={() => setCurrency(unit)}
               >
-                {unit}
+                {unit === "DH" ? "MAD" : unit}
               </button>
             ))}
           </div>

@@ -3,7 +3,7 @@
 **Workspace ID:** `retirement` · **UI:** `components/tools/retirement.tsx` · **Engine:** `lib/math/retirement.ts`.
 
 
-Currency follows the shared sidebar (DH by default or USD) for all inputs, balances, contribution examples and chart labels. Switching currency preserves numeric amounts and does not convert exchange rates. Its inflation reference remains inside the planner’s advanced controls: a currency change defaults to Moroccan CPI for DH or US CPI for USD, and either combination can then be selected. The choice is independent of DCA’s CPI setting.
+Currency follows the shared MAD / USD sidebar. Switching converts living costs, invested savings, salary and contribution examples at a fixed **10 DH = $1**. Values display DH or $ in inputs, balances, tables and charts. Monetary bounds and button steps also scale; ages, rates and durations stay unchanged. Its inflation reference remains inside the planner’s advanced controls: a currency change defaults to Moroccan CPI for DH or US CPI for USD, and either combination can then be selected. The choice is independent of DCA’s CPI setting.
 
 ## Purpose
 
@@ -29,7 +29,7 @@ Age controls maintain their ordering. The end age is a planning horizon, not a l
 
 The tool shows required capital, monthly investment, initial withdrawal rate, historical periods funded and the most demanding start. A shared interactive age chart separates accumulation from retirement and marks the retirement age.
 
-Alternative contribution rows compare 3,000 per month, the calculated amount and 12,000 per month in the selected currency. Candidate ages are whole years. Every age gets a newly calculated withdrawal target because the retirement duration changes. Selecting an available alternative applies its age to the plan.
+Alternative contribution rows compare 3,000 DH ($300) per month, the calculated amount and 12,000 DH ($1,200) per month. Candidate ages are whole years. Every age gets a newly calculated withdrawal target because the retirement duration changes. Selecting an available alternative applies its age to the plan.
 
 Every numeric parameter and both advanced selectors have a small question-mark help control: hover or keyboard focus for a short explanation, click or tap for a shared dialog. “How this works” uses six linked sections with LaTeX equations, current inputs, inflation and real-return statistics, a three-month withdrawal example, and a live results table. Dynamic numbers come from the current calculation and data, not a reference screenshot. State survives tool switching.
 
@@ -64,7 +64,7 @@ The chart’s retirement segment replays the most demanding start, sampled annua
 
 ### Accumulation and average-return mode
 
-Accumulation uses a **constant estimated real monthly growth factor**. By default, `g = (R[last]/R[first])^(1/(N−1))`. With a custom annual real growth rate `r`, use `g = (1+r)^(1/12)`. The historical default uses full precision internally; the control displays two decimal places. Existing savings are invested immediately; contributions arrive at month-end. For `M` months and contribution `C`, the final balance is `starting × g^M + C × sum(g^k, k=0…M−1)`. Solve this for `C`, floored at zero. Round the displayed contribution upward to the next whole currency unit; use the precise amount for the chart. A shortfall with zero saving months is shown as an immediate investment requirement.
+Accumulation uses a **constant estimated real monthly growth factor**. By default, `g = (R[last]/R[first])^(1/(N−1))`. With a custom annual real growth rate `r`, use `g = (1+r)^(1/12)`. The historical default uses full precision internally; the control displays two decimal places. Existing savings are invested immediately; contributions arrive at month-end. For `M` months and contribution `C`, the final balance is `starting × g^M + C × sum(g^k, k=0…M−1)`. Solve this for `C`, floored at zero. Round the displayed contribution upward to the next 1 DH (or $0.10); use the precise amount for the chart. A shortfall with zero saving months is shown as an immediate investment requirement.
 
 Unlike DCA, retirement contributions are **constant real amounts**, so their nominal value must rise with inflation. The smooth accumulation line uses the selected constant real growth rate, historical by default; it is an estimate rather than a historical replay or predicted return path.
 
@@ -82,9 +82,9 @@ The withdrawal rate remains a read-only result with hover/click help. It is annu
 
 ### Salary comparison
 
-Salary defaults to 0, meaning not supplied. For a positive monthly take-home salary `Y`, display `100 × ceil(C) / Y` rounded to the nearest whole percent beneath the monthly contribution. Use the displayed, rounded-up contribution for consistency. A value above 100% is shown with an explanation; it is not capped. With zero salary or an immediate-investment shortfall rather than a monthly contribution, hide the percentage. Zero contribution with a supplied salary displays 0%.
+Salary defaults to 0, meaning not supplied. For a positive monthly take-home salary `Y`, display `100 × C_shown / Y` rounded to the nearest whole percent beneath the monthly contribution. Here `C_shown = u × ceil(C / u)`, with `u = 1` in DH or `0.1` in dollars. Use the displayed, rounded-up contribution for consistency. A value above 100% is shown with an explanation; it is not capped. With zero salary or an immediate-investment shortfall rather than a monthly contribution, hide the percentage. Zero contribution with a supplied salary displays 0%.
 
-Salary is separate presentation state: it never changes the FIRE target, accumulation estimate or alternative retirement ages. It follows the shared currency and remains unchanged numerically on currency switches. The ratio compares today’s contribution with today’s salary, not a forecast of salary growth or an assessment of other household spending.
+Salary is separate presentation state: it never changes the FIRE target, accumulation estimate or alternative retirement ages. It follows the shared currency and converts at 10 DH = $1 on currency switches. The ratio compares today’s contribution with today’s salary, not a forecast of salary growth or an assessment of other household spending.
 
 ### Methodology equations
 

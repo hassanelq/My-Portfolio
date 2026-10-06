@@ -7,6 +7,7 @@ import type {
   RetirementPlan,
 } from "@/lib/math/retirement";
 import { formatMoney, monthLabel, type Currency } from "@/lib/format";
+import { currencySymbol, fromDirhams, roundContribution } from "@/lib/currency";
 
 const pct = (n: number) =>
   new Intl.NumberFormat("en-GB", {
@@ -55,7 +56,7 @@ export function RetirementMethod({
   const monthly =
     plan?.monthlyContribution == null
       ? null
-      : Math.ceil(plan.monthlyContribution);
+      : roundContribution(plan.monthlyContribution, currency);
   let balance = plan ? inputs.livingCost * plan.stats.capitalPerMonth : 0;
   const example = plan
     ? Array.from({ length: 3 }, (_, k) => {
@@ -162,7 +163,8 @@ export function RetirementMethod({
           Moroccan history begins in 1960; the US reference begins in 1928 and
           includes the 1929 crash. Both end in June 2025. Changing reference
           changes both inflation and the available market record. Currency
-          labels do not convert exchange rates.
+          switches convert money at a fixed 10 DH = $1; historical exchange-rate
+          changes are not modeled.
         </p>
       </section>
       <section id="fire-method-2" className="savings-method-section">
@@ -276,13 +278,13 @@ export function RetirementMethod({
         />
         <p>
           For g=1, A equals M. The chart uses the precise contribution; the
-          displayed amount is rounded up to the next whole currency unit. If
+          displayed amount is rounded up to the next 1 DH (or $0.10). If
           retirement begins now and there is a shortfall, the tool shows the
           amount needed immediately.
         </p>
         <h4>Share of your current pay</h4>
         <MathFormula
-          tex={String.raw`\text{salary share}=100\times\frac{\lceil C\rceil}{Y}\%\qquad(Y>0)`}
+          tex={String.raw`C_{\text{shown}}=u\left\lceil\frac{C}{u}\right\rceil,\quad u=${fromDirhams(1, currency)},\qquad\text{salary share}=100\times\frac{C_{\text{shown}}}{Y}\%\quad(Y>0)`}
         />
         <p>
           {salary > 0 && monthly !== null
@@ -320,7 +322,9 @@ export function RetirementMethod({
           tabIndex={0}
         >
           <table>
-            <caption>Results for the current inputs · {currency}</caption>
+            <caption>
+              Results for the current inputs · {currencySymbol(currency)}
+            </caption>
             <thead>
               <tr>
                 <th>Result</th>

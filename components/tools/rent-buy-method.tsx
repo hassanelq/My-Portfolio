@@ -1,7 +1,12 @@
 import { MathFormula } from "@/components/ui/math-formula";
-import { rentBuyAssumptions, rentBuySources } from "@/content/rent-buy";
+import {
+  rentBuyAssumptions,
+  rentBuySources,
+  rentBuyParameterHelp,
+} from "@/content/rent-buy";
 import { compareRentBuy, type RentBuyInputs } from "@/lib/math/rent-buy";
 import { formatMoney, type Currency } from "@/lib/format";
+import { currencySymbol, fromDirhams } from "@/lib/currency";
 
 const sections = [
   "Your inputs",
@@ -23,6 +28,9 @@ export function RentBuyMethod({
   currency: Currency;
 }) {
   const money = (n: number) => formatMoney(n, currency);
+  const symbol = currencySymbol(currency);
+  const exampleMoney = (dirhams: number) =>
+    money(fromDirhams(dirhams, currency));
   const final = result.final;
   const deflator = (1 + inputs.inflation / 100) ** inputs.horizonYears;
   const first = result.records[1];
@@ -82,7 +90,7 @@ export function RentBuyMethod({
         </dl>
         {rentBuyAssumptions.map((group) => (
           <div
-            className="savings-method-table"
+            className="savings-method-table rent-buy-settings-table"
             key={group.title}
             role="region"
             aria-label={group.title}
@@ -100,14 +108,16 @@ export function RentBuyMethod({
               <tbody>
                 {group.fields.map((field) => (
                   <tr key={field.key}>
-                    <th scope="row">{field.label.replace(/DH/g, currency)}</th>
+                    <th scope="row">{field.label.replace(/DH/g, symbol)}</th>
                     <td>
                       {field.key === "ownerMonthlyCosts" ||
                       field.key === "rentSetupCosts"
                         ? money(inputs[field.key])
                         : `${inputs[field.key]}${field.key === "rentDepositMonths" ? " months" : "%"}`}
                     </td>
-                    <td>{field.help.replace(/DH/g, currency)}</td>
+                    <td>
+                      {rentBuyParameterHelp(field.key, field.help, currency)}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -336,7 +346,7 @@ export function RentBuyMethod({
         >
           <table>
             <caption>
-              At year {inputs.horizonYears} · {currency}
+              At year {inputs.horizonYears} · {symbol}
             </caption>
             <thead>
               <tr>
@@ -398,8 +408,8 @@ export function RentBuyMethod({
         />
         <p>
           A positive difference means buying finishes ahead; a negative one
-          means renting finishes ahead. Differences smaller than one currency
-          unit are shown as almost level. Your current difference is{" "}
+          means renting finishes ahead. Differences smaller than 1 DH ($0.10)
+          are shown as almost level. Your current difference is{" "}
           {money(Math.abs(result.advantage))}
           {result.winner === "tie"
             ? ", so the two choices are almost level"
@@ -429,13 +439,15 @@ export function RentBuyMethod({
           2025 bulletin. They are not current quotes or long-term forecasts.
         </p>
         <p>
-          The other defaults are examples: 1,000,000 home price; 5,000 rent; 20%
-          from savings; a 20-year loan; a 10-year stay; 7% buying fees; 3%
-          selling fees; 1% repairs; 500 in other monthly bills; 0.3% loan
-          insurance; 2% rent increases; 5% investment growth; 2% inflation; one
-          month’s rental deposit; no one-time rental fees or sale-profit tax.
-          The original example was in DH. Currency changes relabel amounts
-          without changing rates, local rules or exchange rates.
+          The other defaults are examples: {exampleMoney(1000000)} home price;{" "}
+          {exampleMoney(5000)} rent; 20% from savings; a 20-year loan; a 10-year
+          stay; 7% buying fees; 3% selling fees; 1% repairs; {exampleMoney(300)}{" "}
+          in other monthly bills; 0.3% loan insurance; 2% rent increases; 5%
+          investment growth; 2% inflation; one month’s rental deposit; no
+          one-time rental fees or sale-profit tax. Switching MAD / USD converts
+          monetary amounts at a fixed 10 DH = $1. Rates, durations and local
+          rules stay the same; this is not a live exchange rate or a change to
+          US housing assumptions.
         </p>
         <ul className="savings-method-sources">
           {rentBuySources.map((source) => (

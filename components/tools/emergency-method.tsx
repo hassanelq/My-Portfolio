@@ -2,6 +2,7 @@ import { MathFormula } from "@/components/ui/math-formula";
 import { emergencyGuide, emergencyQuestions } from "@/content/emergency";
 import { calculateEmergencyFund } from "@/lib/math/emergency";
 import { formatMoney, type Currency } from "@/lib/format";
+import { fromDirhams } from "@/lib/currency";
 
 const exampleAnswers = {
   pay: "steady",
@@ -33,9 +34,17 @@ export function EmergencyMethod({
   currency: Currency;
 }) {
   const money = (n: number) => formatMoney(n, currency);
-  const current = result ?? calculateEmergencyFund(exampleAnswers, 3000, 2000);
-  const monthly = result ? spending : 3000;
-  const cash = result ? saved : 2000;
+  const exampleMoney = (dirhams: number) =>
+    money(fromDirhams(dirhams, currency));
+  const current =
+    result ??
+    calculateEmergencyFund(
+      exampleAnswers,
+      fromDirhams(3000, currency),
+      fromDirhams(2000, currency),
+    );
+  const monthly = result ? spending : fromDirhams(3000, currency);
+  const cash = result ? saved : fromDirhams(2000, currency);
   return (
     <div className="savings-method">
       <p className="savings-method-lede">
@@ -58,7 +67,7 @@ export function EmergencyMethod({
         <p>
           {result
             ? "These are your current answers and amounts. Changes beside your result update this guide too."
-            : "Finish the questions to see your own calculation here. Until then, the worked example below uses 3,000 per month, 2,000 saved, steady pay and the lowest-point answers."}
+            : `Finish the questions to see your own calculation here. Until then, the worked example below uses ${exampleMoney(3000)} per month, ${exampleMoney(2000)} saved, steady pay and the lowest-point answers.`}
         </p>
         <dl className="savings-method-facts">
           <div>
@@ -167,7 +176,7 @@ export function EmergencyMethod({
         />
         <p>
           Working for yourself sets a minimum of six months, even with a low
-          score. The same thresholds apply in DH and USD; changing the currency
+          score. The same thresholds apply in DH and $; changing the currency
           does not change your score.
         </p>
       </section>
@@ -259,7 +268,7 @@ export function EmergencyMethod({
         <p>
           No interest, investment return or future inflation is added. Job-loss
           payments affect points only: they are not subtracted from your
-          spending. Enter at least 1 {currency} of monthly spending, and update
+          spending. Enter at least 1 DH ($0.10) of monthly spending, and update
           it when your bills change.
         </p>
       </section>
@@ -268,9 +277,11 @@ export function EmergencyMethod({
         <h4>Percentages of pay</h4>
         <p>
           Use take-home pay, after deductions. Divide the relevant monthly bills
-          by that pay, then multiply by 100. If you receive 5,000 and spend
-          1,500 on your home and regular bills, that is 30%. Loan payments of
-          1,000 would be 20%.
+          by that pay, then multiply by 100. If you receive {exampleMoney(5000)}{" "}
+          and spend
+          {exampleMoney(1500)} on your home and regular bills, that is 30%. Loan
+          payments of
+          {exampleMoney(1000)} would be 20%.
         </p>
         <MathFormula
           tex={String.raw`\text{share of pay}=100\times\frac{\text{monthly bills}}{\text{monthly take-home pay}}\%`}
@@ -319,8 +330,9 @@ export function EmergencyMethod({
         <p>
           All calculations happen in your browser. No AI reads the answers. You
           can change every answer beside the result; switching tools keeps it
-          for this visit and reloading clears it. Currency changes relabel the
-          numbers without converting exchange rates.
+          for this visit and reloading clears it. Switching MAD / USD converts
+          all money at a fixed 10 DH = $1. Months, points and coverage stay the
+          same.
         </p>
       </section>
     </div>

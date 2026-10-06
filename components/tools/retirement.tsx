@@ -29,7 +29,12 @@ import {
 } from "@/lib/math/retirement";
 import { monthIndex } from "@/lib/math/dca";
 import { monthLabel } from "@/lib/format";
-import { useToolCurrency, useInflationReference } from "./tools-settings";
+import { roundContribution } from "@/lib/currency";
+import {
+  useToolCurrency,
+  useInflationReference,
+  useCurrencyInputs,
+} from "./tools-settings";
 
 const models = {
   morocco: createRetirementHistory({
@@ -49,15 +54,23 @@ const percent = (n: number) =>
     maximumFractionDigits: 2,
   }).format(n);
 type Popup = "intro" | "method" | null;
+const moneyKeys = ["livingCost", "starting"] as const;
+const salaryKeys = ["salary"] as const;
 const popupTitles = {
   intro: "How much to invest?",
   method: "How this works",
 };
 
 export default function Retirement() {
-  const { currency, money } = useToolCurrency();
-  const [inputs, setInputs] = useState<RetirementInputs>(retirementDefaults);
-  const [salary, setSalary] = useState(0);
+  const { currency, symbol, amount, money } = useToolCurrency();
+  const [inputs, setInputs] = useCurrencyInputs<RetirementInputs>(
+    retirementDefaults,
+    moneyKeys,
+  );
+  const [{ salary }, setSalaryInputs] = useCurrencyInputs(
+    { salary: 0 },
+    salaryKeys,
+  );
   const [advanced, setAdvanced] = useState(false);
   const [country, setCountry] = useInflationReference();
   const [mode, setMode] = useState<RetirementMode>("historical");
@@ -79,12 +92,14 @@ export default function Retirement() {
   const savingYears = inputs.retireAt - inputs.age;
   const monthly = plan?.monthlyContribution;
   const monthlyRounded =
-    monthly === null || monthly === undefined ? null : Math.ceil(monthly);
+    monthly === null || monthly === undefined
+      ? null
+      : roundContribution(monthly, currency);
   const alternatives = useMemo(
     () =>
       [
         ...new Set([
-          ...retirementContributions,
+          ...retirementContributions.map(amount),
           ...(monthlyRounded === null ? [] : [monthlyRounded]),
         ]),
       ]
@@ -99,7 +114,7 @@ export default function Retirement() {
             growthOverride ?? undefined,
           ),
         })),
-    [inputs, model, mode, monthlyRounded, growthOverride],
+    [inputs, model, mode, monthlyRounded, growthOverride, amount],
   );
   const chartSeries: AgeSeries[] = plan
     ? [
@@ -165,13 +180,15 @@ export default function Retirement() {
         </div>
         <div className="savings-fields retirement-fields">
           <NumberStepper
+            key={`livingCost-${currency}`}
             label="Living cost / month"
             value={inputs.livingCost}
             onChange={(v) => field("livingCost", v)}
             min={0}
-            max={1000000}
-            step={500}
-            prefix={currency}
+            max={amount(1000000)}
+            step={amount(500)}
+            precision={2}
+            prefix={symbol}
             help={
               <ParameterHelp label="Living cost / month">
                 What you expect to spend each month in retirement, at today’s
@@ -260,13 +277,15 @@ export default function Retirement() {
               </div>
             </div>
             <NumberStepper
+              key={`salary-${currency}`}
               label="Your salary / month"
               value={salary}
-              onChange={setSalary}
+              onChange={(salary) => setSalaryInputs({ salary })}
               min={0}
-              max={100000000}
-              step={500}
-              prefix={currency}
+              max={amount(100000000)}
+              step={amount(500)}
+              precision={2}
+              prefix={symbol}
               help={
                 <ParameterHelp label="Your salary / month">
                   Your monthly take-home pay, in today’s money. Leave 0 if you
@@ -276,6 +295,7 @@ export default function Retirement() {
               }
             />
             <NumberStepper
+              key={`starting-${currency}`}
               label="Already invested"
               help={
                 <ParameterHelp label="Already invested">
@@ -286,9 +306,10 @@ export default function Retirement() {
               value={inputs.starting}
               onChange={(v) => field("starting", v)}
               min={0}
-              max={100000000}
-              step={10000}
-              prefix={currency}
+              max={amount(100000000)}
+              step={amount(10000)}
+              precision={2}
+              prefix={symbol}
             />
             <NumberStepper
               label="Plan until age"

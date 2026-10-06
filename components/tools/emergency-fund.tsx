@@ -23,17 +23,24 @@ import {
   type EmergencyQuestion,
 } from "@/content/emergency";
 import { calculateEmergencyFund } from "@/lib/math/emergency";
-import { useToolCurrency } from "./tools-settings";
+import { useToolCurrency, useCurrencyInputs } from "./tools-settings";
 
 const questions: readonly EmergencyQuestion[] = emergencyQuestions;
 const totalSteps = questions.length + 2;
+const moneyKeys = ["spending", "saved"] as const;
 
 export default function EmergencyFund() {
-  const { currency, money } = useToolCurrency();
+  const { currency, symbol, amount, money } = useToolCurrency();
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Partial<EmergencyAnswers>>({});
-  const [spending, setSpending] = useState("");
-  const [saved, setSaved] = useState("0");
+  const [{ spending, saved }, setAmounts] = useCurrencyInputs(
+    { spending: "", saved: "0" },
+    moneyKeys,
+  );
+  const setSpending = (spending: string) =>
+    setAmounts((current) => ({ ...current, spending }));
+  const setSaved = (saved: string) =>
+    setAmounts((current) => ({ ...current, saved }));
   const [complete, setComplete] = useState(false);
   const [popup, setPopup] = useState<"intro" | "method" | null>(null);
   const heading = useRef<HTMLHeadingElement>(null);
@@ -42,8 +49,9 @@ export default function EmergencyFund() {
   const numericValue = step === 0 ? spending : saved;
   const valid = isMoney
     ? numericValue !== "" &&
-      Number.isSafeInteger(Number(numericValue)) &&
-      Number(numericValue) >= (step === 0 ? 1 : 0)
+      Number.isFinite(Number(numericValue)) &&
+      Number(numericValue) >= (step === 0 ? amount(1) : 0) &&
+      Number(numericValue) <= amount(999999999)
     : Boolean(answers[question.id as EmergencyFactor]);
   const result = complete
     ? calculateEmergencyFund(
@@ -131,19 +139,21 @@ export default function EmergencyFund() {
                   : "Emergency savings so far"}
               </label>
               <div>
-                <span>{currency}</span>
+                <span>{symbol}</span>
                 <input
                   id="emergency-money"
                   type="text"
-                  inputMode="numeric"
+                  inputMode="decimal"
                   autoComplete="off"
-                  maxLength={9}
+                  maxLength={12}
                   aria-describedby="emergency-question-help"
                   value={numericValue}
-                  placeholder={step === 0 ? "e.g. 3000" : "0"}
+                  placeholder={step === 0 ? `e.g. ${amount(3000)}` : "0"}
                   onChange={(event) => {
-                    const raw = event.target.value.replace(/[\s,]/g, "");
-                    if (/^\d{0,9}$/.test(raw))
+                    const raw = event.target.value
+                      .replace(/\s/g, "")
+                      .replace(",", ".");
+                    if (/^\d{0,9}(\.\d{0,2})?$/.test(raw))
                       (step === 0 ? setSpending : setSaved)(raw);
                   }}
                 />
@@ -294,6 +304,7 @@ export default function EmergencyFund() {
             <p>Change any answer below to see your new savings target.</p>
             <div className="emergency-amounts">
               <NumberStepper
+                key={`spending-${currency}`}
                 label="Basic monthly spending"
                 help={
                   <ParameterHelp label="Basic monthly spending">
@@ -303,12 +314,14 @@ export default function EmergencyFund() {
                 }
                 value={Number(spending)}
                 onChange={(v) => setSpending(String(v))}
-                min={1}
-                max={999999999}
-                step={500}
-                prefix={currency}
+                min={amount(1)}
+                max={amount(999999999)}
+                step={amount(500)}
+                precision={2}
+                prefix={symbol}
               />
               <NumberStepper
+                key={`saved-${currency}`}
                 label="Emergency savings so far"
                 help={
                   <ParameterHelp label="Emergency savings so far">
@@ -319,9 +332,10 @@ export default function EmergencyFund() {
                 value={Number(saved)}
                 onChange={(v) => setSaved(String(v))}
                 min={0}
-                max={999999999}
-                step={500}
-                prefix={currency}
+                max={amount(999999999)}
+                step={amount(500)}
+                precision={2}
+                prefix={symbol}
               />
             </div>
             <div className="emergency-edit-grid">
@@ -402,7 +416,7 @@ export default function EmergencyFund() {
             <div>
               <CircleCheck size={21} />
               <p>
-                See how many months to cover, the amount in {currency}, how much
+                See how many months to cover, the amount in {symbol}, how much
                 is left to save and where to keep it.
               </p>
             </div>
