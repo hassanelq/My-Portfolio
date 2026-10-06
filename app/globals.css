@@ -2131,6 +2131,112 @@ svg {
 }
 
 /* Financial tools: the portfolio's typography, hairlines and neutral palette. */
+.fees-inputs,
+.fees-plans,
+.fees-plan-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  align-items: start;
+}
+.fees-inputs {
+  gap: 28px 24px;
+}
+.fees-comparison-heading {
+  margin-top: 40px;
+}
+.fees-comparison-heading h2 {
+  font-size: 23px;
+  font-weight: 400;
+}
+.fees-note,
+.fees-comparison-heading p {
+  margin-top: 12px;
+  color: var(--color-smoke);
+  font-size: 15px;
+  line-height: 1.7;
+}
+.fees-plans {
+  margin-top: 24px;
+}
+.fees-plan {
+  min-width: 0;
+  margin: 0;
+  padding: 22px;
+  border: 1px solid var(--color-graphite);
+  border-radius: 4px;
+}
+.fees-plan legend {
+  padding: 0 10px;
+  font-size: 21px;
+}
+.fees-rate {
+  font-size: 28px;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 24px;
+}
+.fees-rate span {
+  color: var(--color-smoke);
+  font-size: 15px;
+}
+.fees-plan-fields {
+  grid-template-columns: 1fr;
+}
+.fees-outcome h2 {
+  overflow-wrap: anywhere;
+}
+.fees-breakdown {
+  margin-top: 32px;
+}
+.fees-sources {
+  margin-top: 36px;
+  border-block: 1px solid var(--color-graphite);
+  padding: 22px 0;
+}
+.fees-sources summary {
+  cursor: pointer;
+  font-size: 19px;
+}
+.fees-country-guides {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+}
+.fees-country-guides h3 {
+  font-size: 18px;
+  font-weight: 400;
+  margin-bottom: 12px;
+}
+.fees-country-guides p,
+.fees-country-guides a {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--color-smoke);
+}
+.fees-country-guides a {
+  display: inline-block;
+  margin-top: 16px;
+  color: var(--color-chalk);
+  text-underline-offset: 4px;
+  text-decoration: underline;
+}
+.fees-settings-table th:first-child {
+  width: 50%;
+}
+@media (max-width: 700px) {
+  .fees-inputs,
+  .fees-plans,
+  .fees-country-guides {
+    grid-template-columns: 1fr;
+  }
+  .fees-simulator .fees-balances {
+    grid-template-columns: 1fr;
+  }
+  .fees-plan {
+    padding: 18px;
+  }
+}
 .rent-buy-fields {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

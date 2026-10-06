@@ -11,11 +11,13 @@ export function ToolsWorkspace({
   retirement,
   emergency,
   rentBuy,
+  fees,
 }: {
   children: React.ReactNode;
   retirement: React.ReactNode;
   emergency: React.ReactNode;
   rentBuy: React.ReactNode;
+  fees: React.ReactNode;
 }) {
   return (
     <ToolsSettingsProvider>
@@ -23,6 +25,7 @@ export function ToolsWorkspace({
         retirement={retirement}
         emergency={emergency}
         rentBuy={rentBuy}
+        fees={fees}
       >
         {children}
       </WorkspacePanels>
@@ -35,11 +38,13 @@ function WorkspacePanels({
   retirement,
   emergency,
   rentBuy,
+  fees,
 }: {
   children: React.ReactNode;
   retirement: React.ReactNode;
   emergency: React.ReactNode;
   rentBuy: React.ReactNode;
+  fees: React.ReactNode;
 }) {
   const { currency, setCurrency } = useToolCurrency();
   const [active, setActive] = useState<string>("dca");
@@ -171,6 +176,15 @@ function WorkspacePanels({
           tabIndex={0}
         >
           {rentBuy}
+        </div>
+        <div
+          role="tabpanel"
+          id="tool-panel-fees"
+          aria-labelledby="tool-tab-fees"
+          hidden={active !== "fees"}
+          tabIndex={0}
+        >
+          {fees}
         </div>
       </div>
     </div>

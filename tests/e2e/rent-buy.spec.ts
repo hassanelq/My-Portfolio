@@ -10,7 +10,7 @@ test("fourth tool recalculates both paths and retains its inputs", async ({
   page,
 }) => {
   const panel = await openTool(page);
-  await expect(page.getByRole("tablist").getByRole("tab")).toHaveCount(4);
+  await expect(page.getByRole("tablist").getByRole("tab")).toHaveCount(5);
   await expect(page.getByRole("tablist")).not.toContainText("Coming soon");
   await expect(page.getByRole("tablist")).not.toContainText("Savings goal");
   const original = await panel.locator(".rent-buy-outcome h2").innerText();

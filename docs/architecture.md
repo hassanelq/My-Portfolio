@@ -55,7 +55,7 @@ Page shells, static copy and metadata use Server Components. Interactive filters
 
 Historical datasets are bundled JSON snapshots. Python importers fetch and normalize data only when a maintainer explicitly runs them. Visitors do not call a financial data API. The articles page fetches Hassan's and Zeta's public Substack RSS feeds on the server and revalidates them hourly.
 
-The tools workspace keeps all four panels mounted and hides inactive panels. Inputs and unfinished questionnaire progress survive tab changes, then reset on reload. The tab selection is local state, not a shareable query parameter. Correlation-game personal records use browser localStorage with a fallback when storage is unavailable. There is no account system or saved financial profile.
+The tools workspace keeps all five panels mounted and hides inactive panels. Inputs and unfinished questionnaire progress survive tab changes, then reset on reload. The tab selection is local state, not a shareable query parameter. Correlation-game personal records use browser localStorage with a fallback when storage is unavailable. There is no account system or saved financial profile.
 
 Monte Carlo renders a seeded initial sample and sends subsequent simulations to `components/lab/monte-carlo.worker.ts`. Most other calculations run synchronously in the browser.
 

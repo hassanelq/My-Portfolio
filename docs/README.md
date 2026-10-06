@@ -25,6 +25,7 @@ Current implementation, reviewed **3 October 2026**. These guides describe the a
 2. [Retirement planner](tools/retirement.md) — historical withdrawals, accumulation and alternative retirement ages.
 3. [Emergency fund](tools/emergency-fund.md) — guided questions, explicit scoring and editable results.
 4. [Rent or buy?](tools/rent-or-buy.md) — mortgage, housing costs, investment opportunity cost and exit wealth.
+5. [Investment fees](tools/investment-fees.md) — compare fund, account and trading charges and their effect on growth.
 
 ### Quant lab — concise
 
@@ -36,7 +37,7 @@ Current implementation, reviewed **3 October 2026**. These guides describe the a
 
 ## Current scope
 
-Six routes are implemented: `/`, `/projects`, `/lab`, `/tools`, `/arcade`, `/articles`. There are four active financial tools, seven lab instruments and three games. Articles reads Hassan's publication feed first and shows Zeta's four newest posts in a separate reading section. Projects link to their repositories and existing demos. English and French CVs are served from `public/cv/`.
+Six routes are implemented: `/`, `/projects`, `/lab`, `/tools`, `/arcade`, `/articles`. There are five active financial tools, seven lab instruments and three games. Articles reads Hassan's publication feed first and shows Zeta's four newest posts in a separate reading section. Projects link to their repositories and existing demos. English and French CVs are served from `public/cv/`.
 
 The rebuild plans and superseded feature blueprints have been consolidated into these guides. Deployment status is managed in Vercel; this documentation does not certify a production release.
 

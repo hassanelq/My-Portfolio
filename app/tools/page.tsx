@@ -4,11 +4,12 @@ import { ToolsWorkspace } from "@/components/tools/tools-workspace";
 import Retirement from "@/components/tools/retirement";
 import EmergencyFund from "@/components/tools/emergency-fund";
 import RentBuy from "@/components/tools/rent-buy";
+import InvestmentFees from "@/components/tools/investment-fees";
 export const metadata: Metadata = {
   alternates: { canonical: "/tools" },
   title: "Financial Tools",
   description:
-    "Explore monthly investing, retirement, emergency savings and the financial trade-offs of renting or buying a home.",
+    "Explore monthly investing, retirement, emergency savings, renting or buying a home, and the long-term cost of investment fees.",
 };
 export default function ToolsPage() {
   return (
@@ -17,6 +18,7 @@ export default function ToolsPage() {
         retirement={<Retirement />}
         emergency={<EmergencyFund />}
         rentBuy={<RentBuy />}
+        fees={<InvestmentFees />}
       >
         <DCA />
       </ToolsWorkspace>

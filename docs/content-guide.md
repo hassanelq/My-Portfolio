@@ -45,7 +45,7 @@ The versioned observations are in `dca-history.json`; provenance and SHA-256 has
 
 ## Add a tool
 
-Edit `toolCatalog` in `tools.ts` to add or rename a tool, pass its component from `app/tools/page.tsx`, then add its panel to `components/tools/tools-workspace.tsx`, using the entry’s stable ID for the tab/panel relationship. The four tools are DCA, retirement, emergency savings and rent/buy. There are no placeholder panels. Available calculators stay mounted when switching tools, so edits and questionnaire progress are preserved. Shared currency is provided by `tools-settings.tsx` and `formatMoney` in `lib/format.ts`; use them for all money inputs, outputs and chart labels. CPI controls remain local to relevant tools through `useInflationReference`. DCA uses distinct muted asset colors (gold for gold), with patterns; other tool series use the shared design tokens; line patterns distinguish the chart comparisons.
+Edit `toolCatalog` in `tools.ts` to add or rename a tool, pass its component from `app/tools/page.tsx`, then add its panel to `components/tools/tools-workspace.tsx`, using the entry’s stable ID for the tab/panel relationship. The five tools are DCA, retirement, emergency savings, rent/buy and investment fees. There are no placeholder panels. Available calculators stay mounted when switching tools, so edits and questionnaire progress are preserved. Shared currency is provided by `tools-settings.tsx` and `formatMoney` in `lib/format.ts`; use them for all money inputs, outputs and chart labels. CPI controls remain local to relevant tools through `useInflationReference`. DCA uses distinct muted asset colors (gold for gold), with patterns; other tool series use the shared design tokens; line patterns distinguish the chart comparisons.
 
 ## Maintain the rent/buy example
 
@@ -73,3 +73,7 @@ Runtime text comes from the TypeScript records, not Markdown. Update the related
 - [Articles](articles.md): publishing and empty state.
 - [Tools](tools/README.md): one detailed guide per calculator.
 - [Quant lab](quant-lab/README.md) and [arcade](arcade/README.md): short guides for each instrument and game.
+
+### Investment fees
+
+Edit `content/fees.ts` for the two illustrative schedules, parameter help and regulator links. Store monetary defaults in MAD and use `useCurrencyInputs` for starting money, contributions, annual flat fees and minimum commissions. The pure monthly model is in `lib/math/fees.ts`; both the chart and the structured guide use its records. No broker quote or market-return feed is used. See [Investment fees](tools/investment-fees.md) for formulas, source dates and limits.

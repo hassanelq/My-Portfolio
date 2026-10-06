@@ -8,8 +8,9 @@
 | 2 | [Retirement planner](retirement.md) | `retirement` | Historical withdrawal target plus estimated accumulation |
 | 3 | [Emergency fund](emergency-fund.md) | `emergency` | Deterministic questionnaire and cash-cushion rule |
 | 4 | [Rent or buy?](rent-or-buy.md) | `rent-buy` | Equal-resource housing and investment scenario |
+| 5 | [Investment fees](investment-fees.md) | `fees` | Compare two fee schedules with the same budget and gross return |
 
-All four tools are implemented. There is no Savings Goal or coming-soon panel.
+All five tools are implemented. There is no Savings Goal or coming-soon panel.
 
 ## Shared behavior
 
@@ -22,11 +23,11 @@ All four tools are implemented. There is no Savings Goal or coming-soon panel.
 - Use the portfolio's obsidian/chalk/graphite palette, gold icons and readable type. Inputs precede results, with charts and supporting details below.
 - `components/ui/dialog.tsx` supplies overview, methodology and field-help popups with consistent dismissal and focus behavior.
 - `number-stepper.tsx` supplies integer ages and decimal money/rate controls; `number-input.tsx` supports decimal assumptions.
-- DCA, retirement and rent/buy share `age-chart.tsx`, with pointer/touch/keyboard values, textual summaries and patterned lines. DCA additionally uses asset colors and a taller plot, with hover/focus details on its comparison options. Rent/buy uses years and supports negative wealth.
+- DCA, retirement, rent/buy and investment fees share `age-chart.tsx`, with pointer/touch/keyboard values, textual summaries and patterned lines. DCA additionally uses asset colors and a taller plot, with hover/focus details on its comparison options. Rent/buy uses years and supports negative wealth. Investment fees compares two balances and a no-fee reference by year.
 
 ## Reading the results
 
-DCA replays history; retirement combines a historical withdrawal test with a smooth accumulation estimate; emergency fund applies editorial rules; rent/buy explores assumptions. None provides a guaranteed future outcome. DH labels in the historical market tools assume constant exchange rates; see their individual guides.
+DCA replays history; retirement combines a historical withdrawal test with a smooth accumulation estimate; emergency fund applies editorial rules; rent/buy explores housing assumptions; investment fees compares charges under a shared assumed return. None provides a guaranteed future outcome. Investment-fee results are future nominal money without an inflation adjustment. DH labels in the historical market tools assume constant exchange rates; see their individual guides.
 
 ## Adding or changing a tool
 

@@ -199,14 +199,14 @@ test("tapping the mobile chart keeps values at the tapped age", async ({
   await context.close();
 });
 
-test("tool navigation shows four working tools and preserves DCA inputs", async ({
+test("tool navigation shows five working tools and preserves DCA inputs", async ({
   page,
 }) => {
   await page.goto("/tools");
   const list = page.getByRole("tablist", { name: "Financial tools" });
   await page.getByLabel("Per month", { exact: true }).fill("2500");
   await page.getByLabel("Per month", { exact: true }).blur();
-  await expect(list.getByRole("tab")).toHaveCount(4);
+  await expect(list.getByRole("tab")).toHaveCount(5);
   await expect(list).not.toContainText("Coming soon");
   await list.getByRole("tab", { name: /Retirement planner/ }).click();
   await expect(
@@ -219,7 +219,7 @@ test("tool navigation shows four working tools and preserves DCA inputs", async 
   ).toHaveAttribute("aria-selected", "true");
   await page.keyboard.press("End");
   await expect(
-    page.getByRole("heading", { name: "Rent or buy?", exact: true }),
+    page.getByRole("heading", { name: "Investment fees.", exact: true }),
   ).toBeVisible();
   await list.getByRole("tab", { name: /DCA simulator/ }).click();
   await expect(page.getByLabel("Per month", { exact: true })).toHaveValue(

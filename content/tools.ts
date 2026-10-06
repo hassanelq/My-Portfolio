@@ -28,6 +28,13 @@ export const toolCatalog = [
       "Compare owning a home with renting it and investing the difference.",
     status: "available",
   },
+  {
+    id: "fees",
+    title: "Investment fees",
+    description:
+      "Compare investment charges and the growth they cost over time.",
+    status: "available",
+  },
 ] as const;
 
 // Monthly source observations are in dca-history.json; no editable growth assumptions.
