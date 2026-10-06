@@ -20,7 +20,7 @@ DCA and retirement manifests record source URLs, SHA-256 hashes and an original 
 | Retirement | Same S&P reconstruction and Moroccan CPI, plus Shiller/BLS US CPI; historical withdrawal research provides context | [Retirement model](tools/retirement.md) |
 | Emergency fund | Explicit editorial weights and month bands; general cash-storage guidance from CFPB | [Emergency-fund rules](tools/emergency-fund.md) |
 | Rent or buy | Equal-resource scenario; dated BAM/ANCFCC benchmarks and editable illustrative costs/returns | [Housing method and research](tools/rent-or-buy.md) |
-| Investment fees | User-entered schedules and illustrative defaults; AMMC, AMF and SEC fee guidance, checked 6 October 2026 | [Fee comparison method and research](tools/investment-fees.md) |
+| Investment fees | Morocco: 10 supplied bank/broker/fund routes plus Wafabourse plans; 12 local PDFs and indexed Artbourse agreement; document dates and fee evidence recorded, optional VAT, unresolved fees flagged; France/USA coming soon | [Fee comparison method](tools/investment-fees.md) · [Detailed tariff records](tools/investment-fees-sources.md) |
 | Chart game | Recorded S&P closes and a fitted synthetic comparison path | [Chart Turing test](arcade/chart-turing-test.md) |
 | Quant lab | Analytical formulas and illustrative parameters; no live market calibration | [Quant lab](quant-lab/README.md) |
 | Correlation / Kelly games | Generated samples and explicit game rules | [Arcade](arcade/README.md) |

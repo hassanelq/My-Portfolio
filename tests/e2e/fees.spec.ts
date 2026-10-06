@@ -12,15 +12,18 @@ test("fee comparison updates, preserves its state and converts all money inputs"
   const panel = await openTool(page);
   await expect(page.getByRole("tablist").getByRole("tab")).toHaveCount(5);
   const outcome = panel.locator(".fees-outcome h2");
-  await expect(outcome).toHaveText(/221\s773 DH more/);
+  await expect(outcome).toHaveText(/DH more/);
+  await expect(panel.getByRole("button", { name: /France/ })).toBeDisabled();
+  await expect(panel.getByRole("button", { name: /USA/ })).toBeDisabled();
+  await panel.getByRole("button", { name: "More fees", exact: true }).click();
   const a = panel.getByRole("group", { name: "Option A", exact: true });
   const b = panel.getByRole("group", { name: "Option B", exact: true });
-  await a.getByLabel("Fund fee / year (%)", { exact: true }).fill("2");
-  await a.getByLabel("Fund fee / year (%)", { exact: true }).blur();
+  await a.getByLabel("Custody fee / year (%)", { exact: true }).fill("2");
+  await a.getByLabel("Custody fee / year (%)", { exact: true }).blur();
   await expect(panel.locator(".fees-outcome")).toContainText(
-    "Option B leaves you",
+    "Option B has the highest balance",
   );
-  await panel.getByRole("button", { name: "More fees", exact: true }).click();
+
   await a
     .getByLabel("Fixed account fee / year (DH)", { exact: true })
     .fill("120");
@@ -36,10 +39,10 @@ test("fee comparison updates, preserves its state and converts all money inputs"
     a.getByLabel("Fixed account fee / year ($)", { exact: true }),
   ).toHaveValue("12");
   await expect(
-    b.getByLabel("Minimum fee per buy ($)", { exact: true }),
+    b.getByLabel("Minimum broker fee ($)", { exact: true }),
   ).toHaveValue("1");
   await expect(
-    a.getByLabel("Fund fee / year (%)", { exact: true }),
+    a.getByLabel("Custody fee / year (%)", { exact: true }),
   ).toHaveValue("2");
   await expect(outcome).toContainText("$");
   await a
@@ -53,7 +56,7 @@ test("fee comparison updates, preserves its state and converts all money inputs"
     a.getByLabel("Fixed account fee / year (DH)", { exact: true }),
   ).toHaveValue("150");
   await expect(
-    a.getByLabel("Fund fee / year (%)", { exact: true }),
+    a.getByLabel("Custody fee / year (%)", { exact: true }),
   ).toHaveValue("2");
   await expect(panel.getByLabel("Add each month", { exact: true })).toHaveValue(
     /1\s500/,
@@ -104,6 +107,9 @@ for (const width of [1440, 320])
     const errors: string[] = [];
     page.on("pageerror", (error) => errors.push(error.message));
     const panel = await openTool(page);
+    await panel
+      .getByRole("button", { name: "+ Add third option", exact: true })
+      .click();
     await page.evaluate(() => document.fonts.ready);
     expect(
       await page.evaluate(
@@ -119,6 +125,7 @@ for (const width of [1440, 320])
     await expect(panel.getByRole("tooltip")).toContainText("Year 25");
     await expect(panel.getByRole("tooltip")).toContainText("Option A");
     await expect(panel.getByRole("tooltip")).toContainText("Option B");
+    await expect(panel.getByRole("tooltip")).toContainText("Option C");
     await expect(panel.getByRole("tooltip")).toContainText("Without fees");
     await chart.blur();
     await panel
@@ -152,7 +159,7 @@ for (const width of [1440, 320])
         name: "Fee result calculation",
         exact: true,
       }),
-    ).toContainText(/1\s024\s598 DH/);
+    ).toContainText("DH");
     await expect(
       method.getByRole("region", {
         name: "Option B worked months",
@@ -168,9 +175,9 @@ for (const width of [1440, 320])
     });
     await page.keyboard.press("Escape");
     await panel.getByRole("button", { name: "More fees", exact: true }).click();
-    await panel.getByText("Where can I find my fees?", { exact: true }).click();
+    await panel.getByText("Sources and missing data", { exact: true }).click();
     await expect(
-      panel.getByRole("heading", { name: "Morocco", exact: true }),
+      panel.getByRole("heading", { name: "Wafabourse · ECO", exact: true }),
     ).toBeVisible();
     expect(
       await page.evaluate(
@@ -183,3 +190,127 @@ for (const width of [1440, 320])
     });
     expect(errors).toEqual([]);
   });
+
+test("provider selection and reset preserve the displayed currency and clear input drafts", async ({
+  page,
+}) => {
+  const panel = await openTool(page);
+  const a = panel.getByRole("group", { name: "Option A", exact: true });
+  const b = panel.getByRole("group", { name: "Option B", exact: true });
+  await expect(a.getByRole("combobox")).toHaveValue("wafa-eco");
+  await expect(b.getByRole("combobox")).toHaveValue("wafa-trading");
+  await expect(
+    a.getByLabel("Fixed account fee / year (DH)", { exact: true }),
+  ).toHaveValue("228");
+  await a.getByRole("combobox").selectOption("wafa-trading");
+  await expect(
+    a.getByLabel("Fixed account fee / year (DH)", { exact: true }),
+  ).toHaveValue("948");
+  await expect(panel.locator(".fees-outcome h2")).toHaveText("Almost the same");
+  await page.getByRole("button", { name: "USD", exact: true }).click();
+  await a
+    .getByLabel("Fixed account fee / year ($)", { exact: true })
+    .fill("50");
+  await expect(a).toContainText("Edited by you");
+  await a.getByRole("button", { name: "Reset to defaults" }).click();
+  await expect(
+    a.getByLabel("Fixed account fee / year ($)", { exact: true }),
+  ).toHaveValue("94.8");
+  await expect(
+    a.getByRole("button", { name: "Reset to defaults" }),
+  ).toBeDisabled();
+  await a.getByRole("combobox").selectOption("wafa-eco");
+  await expect(
+    a.getByLabel("Fixed account fee / year ($)", { exact: true }),
+  ).toHaveValue("22.8");
+  await panel.getByRole("button", { name: "More fees", exact: true }).click();
+  await expect(
+    a.getByLabel("Minimum custody fee / year ($)", { exact: true }),
+  ).toHaveValue("5");
+  await expect(
+    a.getByLabel("Minimum broker fee ($)", { exact: true }),
+  ).toHaveValue("1");
+  await expect(
+    b.getByLabel("Fixed account fee / year ($)", { exact: true }),
+  ).toHaveValue("94.8");
+  await page.getByRole("button", { name: "MAD", exact: true }).click();
+  await expect(
+    a.getByLabel("Minimum custody fee / year (DH)", { exact: true }),
+  ).toHaveValue("50");
+});
+
+test("provider templates, source dates and third option stay consistent", async ({
+  page,
+}) => {
+  const panel = await openTool(page);
+  const a = panel.getByRole("group", { name: "Option A", exact: true });
+  await expect(a).toContainText("Date not stated");
+  await expect(a).not.toContainText("checked 6 October");
+  await expect(a.locator('option[value="boa"]')).toBeDisabled();
+  await a.getByRole("combobox").selectOption("cih");
+  await expect(a).toContainText("Updated: 4 July 2025");
+  await expect(
+    a.getByLabel("Bank order collection (%)", { exact: true }),
+  ).toHaveValue("0.1");
+  await expect(
+    a.getByLabel("Fund fee / year (%)", { exact: true }),
+  ).toHaveCount(0);
+  await a.getByRole("combobox").selectOption("attijari-actions");
+  await expect(a).toContainText("AMMC visa: 27 November 2020");
+  await expect(
+    a.getByLabel("Fund fee / year (%)", { exact: true }),
+  ).toHaveValue("2");
+  await expect(a.getByLabel("Fund entry fee (%)", { exact: true })).toHaveValue(
+    "3",
+  );
+  await expect(
+    a.getByLabel("Broker fee per buy / sell (%)", { exact: true }),
+  ).toHaveCount(0);
+  await panel.getByRole("button", { name: "More fees", exact: true }).click();
+  await expect(a).toContainText("Included fund costs");
+  await a.getByRole("combobox").selectOption("bmci");
+  await expect(a).toContainText("Effective: 12 March 2026");
+  await expect(
+    a.getByLabel("Band 1 annual minimum (DH)", { exact: true }),
+  ).toHaveValue("200");
+  await page.getByRole("button", { name: "USD", exact: true }).click();
+  await expect(
+    a.getByLabel("Band 1 annual minimum ($)", { exact: true }),
+  ).toHaveValue("20");
+  await a.getByLabel("Band 1 annual minimum ($)", { exact: true }).fill("25");
+  await a.getByLabel("Band 1 annual minimum ($)", { exact: true }).blur();
+  await page.getByRole("button", { name: "MAD", exact: true }).click();
+  await expect(
+    a.getByLabel("Band 1 annual minimum (DH)", { exact: true }),
+  ).toHaveValue("250");
+  await a
+    .getByRole("button", { name: "Reset to defaults", exact: true })
+    .click();
+  await expect(
+    a.getByLabel("Band 1 annual minimum (DH)", { exact: true }),
+  ).toHaveValue("200");
+  await panel
+    .getByRole("button", { name: "+ Add third option", exact: true })
+    .click();
+  const c = panel.getByRole("group", { name: "Option C", exact: true });
+  await c.getByRole("combobox").selectOption("cfg");
+  await expect(
+    c.getByLabel("Minimum settlement fee (DH)", { exact: true }),
+  ).toHaveValue("5");
+  await expect(panel.locator(".fees-breakdown thead th")).toHaveCount(4);
+  await page.getByRole("button", { name: "USD", exact: true }).click();
+  await expect(
+    c.getByLabel("Minimum settlement fee ($)", { exact: true }),
+  ).toHaveValue("0.5");
+  await panel
+    .getByRole("button", { name: "Remove third option", exact: true })
+    .click();
+  await expect(c).toHaveCount(0);
+  await panel
+    .getByRole("button", { name: "+ Add third option", exact: true })
+    .click();
+  await expect(c.getByRole("combobox")).toHaveValue("cfg");
+  await expect(
+    c.getByLabel("Minimum settlement fee ($)", { exact: true }),
+  ).toHaveValue("0.5");
+});

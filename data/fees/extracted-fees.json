@@ -1,0 +1,2564 @@
+{
+  "researchedOn": "2026-10-06",
+  "providers": [
+    {
+      "id": "wafa-eco",
+      "name": "Wafabourse · ECO",
+      "template": "broker",
+      "sourceId": "wafabourse",
+      "taxBasis": "Before VAT (HT)",
+      "unavailable": null,
+      "fields": [
+        {
+          "key": "tradePercent",
+          "label": "Broker fee per buy / sell (%)",
+          "unit": "percent",
+          "modeledValue": 1,
+          "status": "published_or_normalized",
+          "note": "The broker’s percentage charge. Its minimum below is a floor, not an extra fee.",
+          "sourceId": "wafabourse",
+          "sourceUrl": "https://www.wafabourse.com/sites/default/files/2025-03/Bulletin%20d%E2%80%99abonnement%20a%CC%80%20la%20%20bourse%20en%20ligne.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "5, article 21"
+        },
+        {
+          "key": "tradeMinimum",
+          "label": "Minimum broker fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 10,
+          "status": "published_or_normalized",
+          "note": "Minimum on brokerage alone. Other commissions keep their own separate minimums.",
+          "sourceId": "wafabourse",
+          "sourceUrl": "https://www.wafabourse.com/sites/default/files/2025-03/Bulletin%20d%E2%80%99abonnement%20a%CC%80%20la%20%20bourse%20en%20ligne.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "5, article 21"
+        },
+        {
+          "key": "settlementPercent",
+          "label": "Settlement / delivery (%)",
+          "unit": "percent",
+          "modeledValue": 0.2,
+          "status": "published_or_normalized",
+          "note": "Charge for completing the transaction and delivering the shares; added separately to brokerage.",
+          "sourceId": "wafabourse",
+          "sourceUrl": "https://www.wafabourse.com/sites/default/files/2025-03/Bulletin%20d%E2%80%99abonnement%20a%CC%80%20la%20%20bourse%20en%20ligne.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "5, article 21"
+        },
+        {
+          "key": "settlementMinimum",
+          "label": "Minimum settlement fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "wafabourse",
+          "sourceUrl": "https://www.wafabourse.com/sites/default/files/2025-03/Bulletin%20d%E2%80%99abonnement%20a%CC%80%20la%20%20bourse%20en%20ligne.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "5, article 21"
+        },
+        {
+          "key": "marketPercent",
+          "label": "Casablanca exchange fee (%)",
+          "unit": "percent",
+          "modeledValue": 0.1,
+          "status": "published_or_normalized",
+          "note": "The exchange charge, when stated separately. Confirm whether it is already included in a quoted all-in commission.",
+          "sourceId": "wafabourse",
+          "sourceUrl": "https://www.wafabourse.com/sites/default/files/2025-03/Bulletin%20d%E2%80%99abonnement%20a%CC%80%20la%20%20bourse%20en%20ligne.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "5, article 21"
+        },
+        {
+          "key": "accountAnnual",
+          "label": "Custody fee / year (%)",
+          "unit": "percent",
+          "modeledValue": 0.15,
+          "status": "assumed",
+          "note": "PDF prints an unclear ‘0,15 Dh’ unit. 0.15% yearly is an assumption; confirm it with Wafabourse.",
+          "sourceId": "wafabourse",
+          "sourceUrl": "https://www.wafabourse.com/sites/default/files/2025-03/Bulletin%20d%E2%80%99abonnement%20a%CC%80%20la%20%20bourse%20en%20ligne.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "5, article 21"
+        },
+        {
+          "key": "accountMinimumAnnual",
+          "label": "Minimum custody fee / year (DH)",
+          "unit": "MAD",
+          "modeledValue": 50,
+          "status": "published_or_normalized",
+          "note": "Annual equivalent of the minimum custody charge. Quarterly minimum 50 DH means 200 DH here.",
+          "sourceId": "wafabourse",
+          "sourceUrl": "https://www.wafabourse.com/sites/default/files/2025-03/Bulletin%20d%E2%80%99abonnement%20a%CC%80%20la%20%20bourse%20en%20ligne.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "5, article 21"
+        },
+        {
+          "key": "accountFixedAnnual",
+          "label": "Fixed account fee / year (DH)",
+          "unit": "MAD",
+          "modeledValue": 228,
+          "status": "published_or_normalized",
+          "note": "Subscription or securities-account maintenance. Monthly 19 DH equals 228 DH per year. General banking packages are not automatically included.",
+          "sourceId": "wafabourse",
+          "sourceUrl": "https://www.wafabourse.com/sites/default/files/2025-03/Bulletin%20d%E2%80%99abonnement%20a%CC%80%20la%20%20bourse%20en%20ligne.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "5, article 21"
+        },
+        {
+          "key": "dividendPercent",
+          "label": "Dividend collection fee (%)",
+          "unit": "percent",
+          "modeledValue": 2,
+          "status": "published_or_normalized",
+          "note": "Charge on dividends, not on the whole account. Applies only when you enter a positive dividend yield; capitalizing funds do not distribute dividends here.",
+          "sourceId": "wafabourse",
+          "sourceUrl": "https://www.wafabourse.com/sites/default/files/2025-03/Bulletin%20d%E2%80%99abonnement%20a%CC%80%20la%20%20bourse%20en%20ligne.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "5, article 21"
+        },
+        {
+          "key": "transferPercent",
+          "label": "Transfer to another provider (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "missing",
+          "note": "Only transfers between Attijariwafa accounts are stated free; an external transfer needs a quote.",
+          "sourceId": "wafabourse",
+          "sourceUrl": "https://www.wafabourse.com/sites/default/files/2025-03/Bulletin%20d%E2%80%99abonnement%20a%CC%80%20la%20%20bourse%20en%20ligne.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "5, article 21"
+        },
+        {
+          "key": "transferMinimum",
+          "label": "Minimum transfer fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "wafabourse",
+          "sourceUrl": "https://www.wafabourse.com/sites/default/files/2025-03/Bulletin%20d%E2%80%99abonnement%20a%CC%80%20la%20%20bourse%20en%20ligne.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "5, article 21"
+        },
+        {
+          "key": "fxPercent",
+          "label": "Currency exchange fee / buy (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "wafabourse",
+          "sourceUrl": "https://www.wafabourse.com/sites/default/files/2025-03/Bulletin%20d%E2%80%99abonnement%20a%CC%80%20la%20%20bourse%20en%20ligne.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "5, article 21"
+        },
+        {
+          "key": "vatPercent",
+          "label": "VAT on modeled fees (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "missing",
+          "note": "VAT rate not printed in this agreement. Enter a confirmed rate only.",
+          "sourceId": "wafabourse",
+          "sourceUrl": "https://www.wafabourse.com/sites/default/files/2025-03/Bulletin%20d%E2%80%99abonnement%20a%CC%80%20la%20%20bourse%20en%20ligne.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "5, article 21"
+        }
+      ],
+      "custodyMonths": 1,
+      "custodyBands": null,
+      "notes": [
+        "Subscription: 19 / 79 DH monthly, depending on plan. One order per month.",
+        "Custody minimum is annual; monthly accrual is a modeling convention."
+      ],
+      "referenceFees": [
+        {
+          "label": "Fund order transmission",
+          "value": "10 DH HT per order (not used for direct shares)"
+        },
+        {
+          "label": "SMS alerts",
+          "value": "1 DH HT each"
+        },
+        {
+          "label": "Capital subscription / exchange",
+          "value": "0.2% HT, minimum 20 DH"
+        },
+        {
+          "label": "Bank transfer",
+          "value": "10 DH HT"
+        }
+      ]
+    },
+    {
+      "id": "wafa-trading",
+      "name": "Wafabourse · TRADING",
+      "template": "broker",
+      "sourceId": "wafabourse",
+      "taxBasis": "Before VAT (HT)",
+      "unavailable": null,
+      "fields": [
+        {
+          "key": "tradePercent",
+          "label": "Broker fee per buy / sell (%)",
+          "unit": "percent",
+          "modeledValue": 0.6,
+          "status": "published_or_normalized",
+          "note": "The broker’s percentage charge. Its minimum below is a floor, not an extra fee.",
+          "sourceId": "wafabourse",
+          "sourceUrl": "https://www.wafabourse.com/sites/default/files/2025-03/Bulletin%20d%E2%80%99abonnement%20a%CC%80%20la%20%20bourse%20en%20ligne.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "5, article 21"
+        },
+        {
+          "key": "tradeMinimum",
+          "label": "Minimum broker fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 10,
+          "status": "published_or_normalized",
+          "note": "Minimum on brokerage alone. Other commissions keep their own separate minimums.",
+          "sourceId": "wafabourse",
+          "sourceUrl": "https://www.wafabourse.com/sites/default/files/2025-03/Bulletin%20d%E2%80%99abonnement%20a%CC%80%20la%20%20bourse%20en%20ligne.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "5, article 21"
+        },
+        {
+          "key": "settlementPercent",
+          "label": "Settlement / delivery (%)",
+          "unit": "percent",
+          "modeledValue": 0.2,
+          "status": "published_or_normalized",
+          "note": "Charge for completing the transaction and delivering the shares; added separately to brokerage.",
+          "sourceId": "wafabourse",
+          "sourceUrl": "https://www.wafabourse.com/sites/default/files/2025-03/Bulletin%20d%E2%80%99abonnement%20a%CC%80%20la%20%20bourse%20en%20ligne.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "5, article 21"
+        },
+        {
+          "key": "settlementMinimum",
+          "label": "Minimum settlement fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "wafabourse",
+          "sourceUrl": "https://www.wafabourse.com/sites/default/files/2025-03/Bulletin%20d%E2%80%99abonnement%20a%CC%80%20la%20%20bourse%20en%20ligne.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "5, article 21"
+        },
+        {
+          "key": "marketPercent",
+          "label": "Casablanca exchange fee (%)",
+          "unit": "percent",
+          "modeledValue": 0.1,
+          "status": "published_or_normalized",
+          "note": "The exchange charge, when stated separately. Confirm whether it is already included in a quoted all-in commission.",
+          "sourceId": "wafabourse",
+          "sourceUrl": "https://www.wafabourse.com/sites/default/files/2025-03/Bulletin%20d%E2%80%99abonnement%20a%CC%80%20la%20%20bourse%20en%20ligne.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "5, article 21"
+        },
+        {
+          "key": "accountAnnual",
+          "label": "Custody fee / year (%)",
+          "unit": "percent",
+          "modeledValue": 0.15,
+          "status": "assumed",
+          "note": "PDF prints an unclear ‘0,15 Dh’ unit. 0.15% yearly is an assumption; confirm it with Wafabourse.",
+          "sourceId": "wafabourse",
+          "sourceUrl": "https://www.wafabourse.com/sites/default/files/2025-03/Bulletin%20d%E2%80%99abonnement%20a%CC%80%20la%20%20bourse%20en%20ligne.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "5, article 21"
+        },
+        {
+          "key": "accountMinimumAnnual",
+          "label": "Minimum custody fee / year (DH)",
+          "unit": "MAD",
+          "modeledValue": 50,
+          "status": "published_or_normalized",
+          "note": "Annual equivalent of the minimum custody charge. Quarterly minimum 50 DH means 200 DH here.",
+          "sourceId": "wafabourse",
+          "sourceUrl": "https://www.wafabourse.com/sites/default/files/2025-03/Bulletin%20d%E2%80%99abonnement%20a%CC%80%20la%20%20bourse%20en%20ligne.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "5, article 21"
+        },
+        {
+          "key": "accountFixedAnnual",
+          "label": "Fixed account fee / year (DH)",
+          "unit": "MAD",
+          "modeledValue": 948,
+          "status": "published_or_normalized",
+          "note": "Subscription or securities-account maintenance. Monthly 19 DH equals 228 DH per year. General banking packages are not automatically included.",
+          "sourceId": "wafabourse",
+          "sourceUrl": "https://www.wafabourse.com/sites/default/files/2025-03/Bulletin%20d%E2%80%99abonnement%20a%CC%80%20la%20%20bourse%20en%20ligne.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "5, article 21"
+        },
+        {
+          "key": "dividendPercent",
+          "label": "Dividend collection fee (%)",
+          "unit": "percent",
+          "modeledValue": 2,
+          "status": "published_or_normalized",
+          "note": "Charge on dividends, not on the whole account. Applies only when you enter a positive dividend yield; capitalizing funds do not distribute dividends here.",
+          "sourceId": "wafabourse",
+          "sourceUrl": "https://www.wafabourse.com/sites/default/files/2025-03/Bulletin%20d%E2%80%99abonnement%20a%CC%80%20la%20%20bourse%20en%20ligne.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "5, article 21"
+        },
+        {
+          "key": "transferPercent",
+          "label": "Transfer to another provider (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "missing",
+          "note": "Only transfers between Attijariwafa accounts are stated free; an external transfer needs a quote.",
+          "sourceId": "wafabourse",
+          "sourceUrl": "https://www.wafabourse.com/sites/default/files/2025-03/Bulletin%20d%E2%80%99abonnement%20a%CC%80%20la%20%20bourse%20en%20ligne.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "5, article 21"
+        },
+        {
+          "key": "transferMinimum",
+          "label": "Minimum transfer fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "wafabourse",
+          "sourceUrl": "https://www.wafabourse.com/sites/default/files/2025-03/Bulletin%20d%E2%80%99abonnement%20a%CC%80%20la%20%20bourse%20en%20ligne.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "5, article 21"
+        },
+        {
+          "key": "fxPercent",
+          "label": "Currency exchange fee / buy (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "wafabourse",
+          "sourceUrl": "https://www.wafabourse.com/sites/default/files/2025-03/Bulletin%20d%E2%80%99abonnement%20a%CC%80%20la%20%20bourse%20en%20ligne.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "5, article 21"
+        },
+        {
+          "key": "vatPercent",
+          "label": "VAT on modeled fees (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "missing",
+          "note": "VAT rate not printed in this agreement. Enter a confirmed rate only.",
+          "sourceId": "wafabourse",
+          "sourceUrl": "https://www.wafabourse.com/sites/default/files/2025-03/Bulletin%20d%E2%80%99abonnement%20a%CC%80%20la%20%20bourse%20en%20ligne.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "5, article 21"
+        }
+      ],
+      "custodyMonths": 1,
+      "custodyBands": null,
+      "notes": [
+        "Subscription: 19 / 79 DH monthly, depending on plan. One order per month.",
+        "Custody minimum is annual; monthly accrual is a modeling convention."
+      ],
+      "referenceFees": [
+        {
+          "label": "Fund order transmission",
+          "value": "10 DH HT per order (not used for direct shares)"
+        },
+        {
+          "label": "SMS alerts",
+          "value": "1 DH HT each"
+        },
+        {
+          "label": "Capital subscription / exchange",
+          "value": "0.2% HT, minimum 20 DH"
+        },
+        {
+          "label": "Bank transfer",
+          "value": "10 DH HT"
+        }
+      ]
+    },
+    {
+      "id": "attijari-bank",
+      "name": "Attijariwafa bank · shares",
+      "template": "bank",
+      "sourceId": "attijari-bank",
+      "taxBasis": "Quoted document amounts · tax basis needs confirmation",
+      "unavailable": null,
+      "fields": [
+        {
+          "key": "collectionPercent",
+          "label": "Bank order collection (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "attijari-bank",
+          "sourceUrl": "https://www.attijariwafabank.com/sites/default/files/2023-08/23-000349-AFF-Affiche%20tarification%202023%2860x80%29VF-V4.pdf",
+          "documentDate": "1 June 2024",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "tradePercent",
+          "label": "Broker fee per buy / sell (%)",
+          "unit": "percent",
+          "modeledValue": 0.6,
+          "status": "published_or_normalized",
+          "note": "The broker’s percentage charge. Its minimum below is a floor, not an extra fee.",
+          "sourceId": "attijari-bank",
+          "sourceUrl": "https://www.attijariwafabank.com/sites/default/files/2023-08/23-000349-AFF-Affiche%20tarification%202023%2860x80%29VF-V4.pdf",
+          "documentDate": "1 June 2024",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "tradeMinimum",
+          "label": "Minimum broker fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "attijari-bank",
+          "sourceUrl": "https://www.attijariwafabank.com/sites/default/files/2023-08/23-000349-AFF-Affiche%20tarification%202023%2860x80%29VF-V4.pdf",
+          "documentDate": "1 June 2024",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "settlementPercent",
+          "label": "Settlement / delivery (%)",
+          "unit": "percent",
+          "modeledValue": 0.2,
+          "status": "published_or_normalized",
+          "note": "Charge for completing the transaction and delivering the shares; added separately to brokerage.",
+          "sourceId": "attijari-bank",
+          "sourceUrl": "https://www.attijariwafabank.com/sites/default/files/2023-08/23-000349-AFF-Affiche%20tarification%202023%2860x80%29VF-V4.pdf",
+          "documentDate": "1 June 2024",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "settlementMinimum",
+          "label": "Minimum settlement fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "attijari-bank",
+          "sourceUrl": "https://www.attijariwafabank.com/sites/default/files/2023-08/23-000349-AFF-Affiche%20tarification%202023%2860x80%29VF-V4.pdf",
+          "documentDate": "1 June 2024",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "marketPercent",
+          "label": "Casablanca exchange fee (%)",
+          "unit": "percent",
+          "modeledValue": 0.1,
+          "status": "published_or_normalized",
+          "note": "The exchange charge, when stated separately. Confirm whether it is already included in a quoted all-in commission.",
+          "sourceId": "attijari-bank",
+          "sourceUrl": "https://www.attijariwafabank.com/sites/default/files/2023-08/23-000349-AFF-Affiche%20tarification%202023%2860x80%29VF-V4.pdf",
+          "documentDate": "1 June 2024",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "accountAnnual",
+          "label": "Custody fee / year (%)",
+          "unit": "percent",
+          "modeledValue": 0.6,
+          "status": "assumed",
+          "note": "0.15% is shown beside a quarterly minimum and monthly valuation. Model uses 0.6% annualized; confirm the percentage period and tax basis.",
+          "sourceId": "attijari-bank",
+          "sourceUrl": "https://www.attijariwafabank.com/sites/default/files/2023-08/23-000349-AFF-Affiche%20tarification%202023%2860x80%29VF-V4.pdf",
+          "documentDate": "1 June 2024",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "accountMinimumAnnual",
+          "label": "Minimum custody fee / year (DH)",
+          "unit": "MAD",
+          "modeledValue": 55.08,
+          "status": "published_or_normalized",
+          "note": "Annual equivalent of the minimum custody charge. Quarterly minimum 50 DH means 200 DH here.",
+          "sourceId": "attijari-bank",
+          "sourceUrl": "https://www.attijariwafabank.com/sites/default/files/2023-08/23-000349-AFF-Affiche%20tarification%202023%2860x80%29VF-V4.pdf",
+          "documentDate": "1 June 2024",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "accountFixedAnnual",
+          "label": "Fixed account fee / year (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "missing",
+          "note": "No separate securities account subscription is identified; general bank account charges are excluded.",
+          "sourceId": "attijari-bank",
+          "sourceUrl": "https://www.attijariwafabank.com/sites/default/files/2023-08/23-000349-AFF-Affiche%20tarification%202023%2860x80%29VF-V4.pdf",
+          "documentDate": "1 June 2024",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "dividendPercent",
+          "label": "Dividend collection fee (%)",
+          "unit": "percent",
+          "modeledValue": 2,
+          "status": "published_or_normalized",
+          "note": "Charge on dividends, not on the whole account. Applies only when you enter a positive dividend yield; capitalizing funds do not distribute dividends here.",
+          "sourceId": "attijari-bank",
+          "sourceUrl": "https://www.attijariwafabank.com/sites/default/files/2023-08/23-000349-AFF-Affiche%20tarification%202023%2860x80%29VF-V4.pdf",
+          "documentDate": "1 June 2024",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "dividendMinimum",
+          "label": "Minimum dividend fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "attijari-bank",
+          "sourceUrl": "https://www.attijariwafabank.com/sites/default/files/2023-08/23-000349-AFF-Affiche%20tarification%202023%2860x80%29VF-V4.pdf",
+          "documentDate": "1 June 2024",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "transferPercent",
+          "label": "Transfer to another provider (%)",
+          "unit": "percent",
+          "modeledValue": 0.2,
+          "status": "published_or_normalized",
+          "note": "Fee on assets transferred; used only with Transfer at end, not charged annually or together with selling.",
+          "sourceId": "attijari-bank",
+          "sourceUrl": "https://www.attijariwafabank.com/sites/default/files/2023-08/23-000349-AFF-Affiche%20tarification%202023%2860x80%29VF-V4.pdf",
+          "documentDate": "1 June 2024",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "transferMinimum",
+          "label": "Minimum transfer fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 22,
+          "status": "published_or_normalized",
+          "note": "Floor on a single final transfer. Not added to its percentage fee.",
+          "sourceId": "attijari-bank",
+          "sourceUrl": "https://www.attijariwafabank.com/sites/default/files/2023-08/23-000349-AFF-Affiche%20tarification%202023%2860x80%29VF-V4.pdf",
+          "documentDate": "1 June 2024",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "fxPercent",
+          "label": "Currency exchange fee / buy (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "attijari-bank",
+          "sourceUrl": "https://www.attijariwafabank.com/sites/default/files/2023-08/23-000349-AFF-Affiche%20tarification%202023%2860x80%29VF-V4.pdf",
+          "documentDate": "1 June 2024",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "vatPercent",
+          "label": "VAT on modeled fees (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "missing",
+          "note": "Mixed/unclear tax basis; normalize your quote to HT before adding VAT.",
+          "sourceId": "attijari-bank",
+          "sourceUrl": "https://www.attijariwafabank.com/sites/default/files/2023-08/23-000349-AFF-Affiche%20tarification%202023%2860x80%29VF-V4.pdf",
+          "documentDate": "1 June 2024",
+          "dateKind": "Effective",
+          "pages": "1"
+        }
+      ],
+      "custodyMonths": 3,
+      "custodyBands": null,
+      "notes": [
+        "Quarterly minimum: 13.77 DH; model annualizes it to 55.08 DH.",
+        "Bank tariff and Wafabourse subscriptions are alternative routes; they are not stacked."
+      ],
+      "referenceFees": [
+        {
+          "label": "Listed bonds",
+          "value": "Settlement 110 DH flat; market levy 0.005%; brokerage 0% (different product, not added to shares)."
+        },
+        {
+          "label": "Securities redemption",
+          "value": "Free"
+        },
+        {
+          "label": "Exchange of shares",
+          "value": "0.3%, minimum 22 DH"
+        },
+        {
+          "label": "Domestic / foreign title transfer",
+          "value": "0.2%, minimum 22 DH; foreign correspondent charges extra"
+        }
+      ]
+    },
+    {
+      "id": "bmci",
+      "name": "BMCI · shares",
+      "template": "bands",
+      "sourceId": "bmci",
+      "taxBasis": "Before VAT (HT)",
+      "unavailable": null,
+      "fields": [
+        {
+          "key": "collectionPercent",
+          "label": "Bank order collection (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "bmci",
+          "sourceUrl": "https://www.bmci.ma/wp-content/blogs.dir/sites/2/2024/01/Affiche-tarifaire-2024.pdf",
+          "documentDate": "12 March 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "tradePercent",
+          "label": "Broker fee per buy / sell (%)",
+          "unit": "percent",
+          "modeledValue": 0.6,
+          "status": "published_or_normalized",
+          "note": "The broker’s percentage charge. Its minimum below is a floor, not an extra fee.",
+          "sourceId": "bmci",
+          "sourceUrl": "https://www.bmci.ma/wp-content/blogs.dir/sites/2/2024/01/Affiche-tarifaire-2024.pdf",
+          "documentDate": "12 March 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "tradeMinimum",
+          "label": "Minimum broker fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "bmci",
+          "sourceUrl": "https://www.bmci.ma/wp-content/blogs.dir/sites/2/2024/01/Affiche-tarifaire-2024.pdf",
+          "documentDate": "12 March 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "settlementPercent",
+          "label": "Settlement / delivery (%)",
+          "unit": "percent",
+          "modeledValue": 0.3,
+          "status": "published_or_normalized",
+          "note": "Charge for completing the transaction and delivering the shares; added separately to brokerage.",
+          "sourceId": "bmci",
+          "sourceUrl": "https://www.bmci.ma/wp-content/blogs.dir/sites/2/2024/01/Affiche-tarifaire-2024.pdf",
+          "documentDate": "12 March 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "settlementMinimum",
+          "label": "Minimum settlement fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "bmci",
+          "sourceUrl": "https://www.bmci.ma/wp-content/blogs.dir/sites/2/2024/01/Affiche-tarifaire-2024.pdf",
+          "documentDate": "12 March 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "marketPercent",
+          "label": "Casablanca exchange fee (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "missing",
+          "note": "Retail table does not separately state an exchange charge. Do not copy the corporate tariff into this retail route.",
+          "sourceId": "bmci",
+          "sourceUrl": "https://www.bmci.ma/wp-content/blogs.dir/sites/2/2024/01/Affiche-tarifaire-2024.pdf",
+          "documentDate": "12 March 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "accountAnnual",
+          "label": "Custody fee / year (%)",
+          "unit": "percent",
+          "modeledValue": 0.3,
+          "status": "published_or_normalized",
+          "note": "Yearly charge to keep the assets in your account. Published ranges and uncertain periods are flagged below.",
+          "sourceId": "bmci",
+          "sourceUrl": "https://www.bmci.ma/wp-content/blogs.dir/sites/2/2024/01/Affiche-tarifaire-2024.pdf",
+          "documentDate": "12 March 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "accountMinimumAnnual",
+          "label": "Minimum custody fee / year (DH)",
+          "unit": "MAD",
+          "modeledValue": 200,
+          "status": "published_or_normalized",
+          "note": "Annual equivalent of the minimum custody charge. Quarterly minimum 50 DH means 200 DH here.",
+          "sourceId": "bmci",
+          "sourceUrl": "https://www.bmci.ma/wp-content/blogs.dir/sites/2/2024/01/Affiche-tarifaire-2024.pdf",
+          "documentDate": "12 March 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "accountFixedAnnual",
+          "label": "Fixed account fee / year (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "missing",
+          "note": "Bank account/package costs are outside the securities tariff shown.",
+          "sourceId": "bmci",
+          "sourceUrl": "https://www.bmci.ma/wp-content/blogs.dir/sites/2/2024/01/Affiche-tarifaire-2024.pdf",
+          "documentDate": "12 March 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "dividendPercent",
+          "label": "Dividend collection fee (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "bmci",
+          "sourceUrl": "https://www.bmci.ma/wp-content/blogs.dir/sites/2/2024/01/Affiche-tarifaire-2024.pdf",
+          "documentDate": "12 March 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "dividendMinimum",
+          "label": "Minimum dividend fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "bmci",
+          "sourceUrl": "https://www.bmci.ma/wp-content/blogs.dir/sites/2/2024/01/Affiche-tarifaire-2024.pdf",
+          "documentDate": "12 March 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "transferPercent",
+          "label": "Transfer to another provider (%)",
+          "unit": "percent",
+          "modeledValue": 0.2,
+          "status": "published_or_normalized",
+          "note": "Fee on assets transferred; used only with Transfer at end, not charged annually or together with selling.",
+          "sourceId": "bmci",
+          "sourceUrl": "https://www.bmci.ma/wp-content/blogs.dir/sites/2/2024/01/Affiche-tarifaire-2024.pdf",
+          "documentDate": "12 March 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "transferMinimum",
+          "label": "Minimum transfer fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 20,
+          "status": "published_or_normalized",
+          "note": "Floor on a single final transfer. Not added to its percentage fee.",
+          "sourceId": "bmci",
+          "sourceUrl": "https://www.bmci.ma/wp-content/blogs.dir/sites/2/2024/01/Affiche-tarifaire-2024.pdf",
+          "documentDate": "12 March 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "fxPercent",
+          "label": "Currency exchange fee / buy (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "bmci",
+          "sourceUrl": "https://www.bmci.ma/wp-content/blogs.dir/sites/2/2024/01/Affiche-tarifaire-2024.pdf",
+          "documentDate": "12 March 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "vatPercent",
+          "label": "VAT on modeled fees (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "missing",
+          "note": "Document says VAT at the rate in force, without a number.",
+          "sourceId": "bmci",
+          "sourceUrl": "https://www.bmci.ma/wp-content/blogs.dir/sites/2/2024/01/Affiche-tarifaire-2024.pdf",
+          "documentDate": "12 March 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        }
+      ],
+      "custodyMonths": 3,
+      "custodyBands": [
+        {
+          "upperMAD": 1000000,
+          "annualRate": 0.3,
+          "minimumAnnual": 200
+        },
+        {
+          "upperMAD": 10000000,
+          "annualRate": 0.2,
+          "minimumAnnual": 0
+        },
+        {
+          "upperMAD": 20000000,
+          "annualRate": 0.1,
+          "minimumAnnual": 0
+        },
+        {
+          "upperMAD": null,
+          "annualRate": 0.05,
+          "minimumAnnual": 0
+        }
+      ],
+      "notes": [
+        "Custody charged quarterly. Each band is applied to the whole portfolio, not progressively; confirm that interpretation in your contract.",
+        "Published retail brokerage: 0.6%; settlement: 0.3%."
+      ],
+      "referenceFees": [
+        {
+          "label": "Non-domiciled Moroccan coupons",
+          "value": "2%, minimum 20 DH; domiciled coupons free"
+        },
+        {
+          "label": "External OPCVM orders",
+          "value": "300 DH flat per subscription / redemption"
+        },
+        {
+          "label": "BMCI Actions fund",
+          "value": "Entry 2% TTC (includes 0.2% to fund); exit 0.75% (includes 0.5% to fund). Management rate not supplied here."
+        },
+        {
+          "label": "Refund / exchange",
+          "value": "0.4% / 0.2%, minimum 20 DH"
+        },
+        {
+          "label": "Capital increase",
+          "value": "Subscription 0.2%, minimum 20 DH; attribution 0.3%, minimum 20 DH."
+        },
+        {
+          "label": "Other BMCI funds: entry / exit",
+          "value": "Obligations Court Terme 0% / 0%; Obligations 0.5% / 0.25%; Diversifiée 0% / 0%; Monétaires 0% / 0%. Quoted TTC; management costs require each fund’s document."
+        },
+        {
+          "label": "Additional securities statement",
+          "value": "Free"
+        }
+      ]
+    },
+    {
+      "id": "cih",
+      "name": "CIH Bank · shares",
+      "template": "bank",
+      "sourceId": "cih",
+      "taxBasis": "Before VAT (HT)",
+      "unavailable": null,
+      "fields": [
+        {
+          "key": "collectionPercent",
+          "label": "Bank order collection (%)",
+          "unit": "percent",
+          "modeledValue": 0.1,
+          "status": "published_or_normalized",
+          "note": "What the bank charges for sending your order. This does not automatically include the broker’s fee.",
+          "sourceId": "cih",
+          "sourceUrl": "https://www.cihbank.ma/themes/ciht/pdf/Tarification_particuliers_VF.pdf",
+          "documentDate": "4 July 2025",
+          "dateKind": "Updated",
+          "pages": "3–4"
+        },
+        {
+          "key": "tradePercent",
+          "label": "Broker fee per buy / sell (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "missing",
+          "note": "Order collection is not brokerage. Broker commission needs a separate quote.",
+          "sourceId": "cih",
+          "sourceUrl": "https://www.cihbank.ma/themes/ciht/pdf/Tarification_particuliers_VF.pdf",
+          "documentDate": "4 July 2025",
+          "dateKind": "Updated",
+          "pages": "3–4"
+        },
+        {
+          "key": "tradeMinimum",
+          "label": "Minimum broker fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "cih",
+          "sourceUrl": "https://www.cihbank.ma/themes/ciht/pdf/Tarification_particuliers_VF.pdf",
+          "documentDate": "4 July 2025",
+          "dateKind": "Updated",
+          "pages": "3–4"
+        },
+        {
+          "key": "settlementPercent",
+          "label": "Settlement / delivery (%)",
+          "unit": "percent",
+          "modeledValue": 0.2,
+          "status": "published_or_normalized",
+          "note": "Charge for completing the transaction and delivering the shares; added separately to brokerage.",
+          "sourceId": "cih",
+          "sourceUrl": "https://www.cihbank.ma/themes/ciht/pdf/Tarification_particuliers_VF.pdf",
+          "documentDate": "4 July 2025",
+          "dateKind": "Updated",
+          "pages": "3–4"
+        },
+        {
+          "key": "settlementMinimum",
+          "label": "Minimum settlement fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "cih",
+          "sourceUrl": "https://www.cihbank.ma/themes/ciht/pdf/Tarification_particuliers_VF.pdf",
+          "documentDate": "4 July 2025",
+          "dateKind": "Updated",
+          "pages": "3–4"
+        },
+        {
+          "key": "marketPercent",
+          "label": "Casablanca exchange fee (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "missing",
+          "note": "Exchange commission not listed in this bank table.",
+          "sourceId": "cih",
+          "sourceUrl": "https://www.cihbank.ma/themes/ciht/pdf/Tarification_particuliers_VF.pdf",
+          "documentDate": "4 July 2025",
+          "dateKind": "Updated",
+          "pages": "3–4"
+        },
+        {
+          "key": "accountAnnual",
+          "label": "Custody fee / year (%)",
+          "unit": "percent",
+          "modeledValue": 0.3,
+          "status": "range",
+          "note": "Published range 0.075%–0.30%, minimum 50 DH. Uses upper rate; period and band thresholds are not supplied. Annual billing is an assumption.",
+          "sourceId": "cih",
+          "sourceUrl": "https://www.cihbank.ma/themes/ciht/pdf/Tarification_particuliers_VF.pdf",
+          "documentDate": "4 July 2025",
+          "dateKind": "Updated",
+          "pages": "3–4"
+        },
+        {
+          "key": "accountMinimumAnnual",
+          "label": "Minimum custody fee / year (DH)",
+          "unit": "MAD",
+          "modeledValue": 50,
+          "status": "published_or_normalized",
+          "note": "Annual equivalent of the minimum custody charge. Quarterly minimum 50 DH means 200 DH here.",
+          "sourceId": "cih",
+          "sourceUrl": "https://www.cihbank.ma/themes/ciht/pdf/Tarification_particuliers_VF.pdf",
+          "documentDate": "4 July 2025",
+          "dateKind": "Updated",
+          "pages": "3–4"
+        },
+        {
+          "key": "accountFixedAnnual",
+          "label": "Fixed account fee / year (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "missing",
+          "note": "General bank account costs excluded; confirm any securities-only charges.",
+          "sourceId": "cih",
+          "sourceUrl": "https://www.cihbank.ma/themes/ciht/pdf/Tarification_particuliers_VF.pdf",
+          "documentDate": "4 July 2025",
+          "dateKind": "Updated",
+          "pages": "3–4"
+        },
+        {
+          "key": "dividendPercent",
+          "label": "Dividend collection fee (%)",
+          "unit": "percent",
+          "modeledValue": 2,
+          "status": "published_or_normalized",
+          "note": "Charge on dividends, not on the whole account. Applies only when you enter a positive dividend yield; capitalizing funds do not distribute dividends here.",
+          "sourceId": "cih",
+          "sourceUrl": "https://www.cihbank.ma/themes/ciht/pdf/Tarification_particuliers_VF.pdf",
+          "documentDate": "4 July 2025",
+          "dateKind": "Updated",
+          "pages": "3–4"
+        },
+        {
+          "key": "dividendMinimum",
+          "label": "Minimum dividend fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "cih",
+          "sourceUrl": "https://www.cihbank.ma/themes/ciht/pdf/Tarification_particuliers_VF.pdf",
+          "documentDate": "4 July 2025",
+          "dateKind": "Updated",
+          "pages": "3–4"
+        },
+        {
+          "key": "transferPercent",
+          "label": "Transfer to another provider (%)",
+          "unit": "percent",
+          "modeledValue": 0.2,
+          "status": "published_or_normalized",
+          "note": "Fee on assets transferred; used only with Transfer at end, not charged annually or together with selling.",
+          "sourceId": "cih",
+          "sourceUrl": "https://www.cihbank.ma/themes/ciht/pdf/Tarification_particuliers_VF.pdf",
+          "documentDate": "4 July 2025",
+          "dateKind": "Updated",
+          "pages": "3–4"
+        },
+        {
+          "key": "transferMinimum",
+          "label": "Minimum transfer fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "cih",
+          "sourceUrl": "https://www.cihbank.ma/themes/ciht/pdf/Tarification_particuliers_VF.pdf",
+          "documentDate": "4 July 2025",
+          "dateKind": "Updated",
+          "pages": "3–4"
+        },
+        {
+          "key": "fxPercent",
+          "label": "Currency exchange fee / buy (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "cih",
+          "sourceUrl": "https://www.cihbank.ma/themes/ciht/pdf/Tarification_particuliers_VF.pdf",
+          "documentDate": "4 July 2025",
+          "dateKind": "Updated",
+          "pages": "3–4"
+        },
+        {
+          "key": "vatPercent",
+          "label": "VAT on modeled fees (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "missing",
+          "note": "Fees are HT, but a VAT rate is not specified.",
+          "sourceId": "cih",
+          "sourceUrl": "https://www.cihbank.ma/themes/ciht/pdf/Tarification_particuliers_VF.pdf",
+          "documentDate": "4 July 2025",
+          "dateKind": "Updated",
+          "pages": "3–4"
+        }
+      ],
+      "custodyMonths": 1,
+      "custodyBands": null,
+      "notes": [
+        "Buying charges shown: 0.10% collection plus 0.20% settlement.",
+        "The guide was updated 4 July 2025; September effective dates apply only to starred rows, not these securities charges."
+      ],
+      "referenceFees": [
+        {
+          "label": "Non-equity custody",
+          "value": "0.04%–0.30%, minimum 50 DH; CIH-depository fund units free"
+        },
+        {
+          "label": "Domestic coupons",
+          "value": "Free when domiciled; otherwise 2%"
+        },
+        {
+          "label": "Subscription / exchange",
+          "value": "0.3% minimum 20 DH / 0.2% minimum 10 DH"
+        },
+        {
+          "label": "Redemption / CIH IPO intermediation",
+          "value": "0.4% / 0.2%"
+        },
+        {
+          "label": "Extra statement / ownership certificate",
+          "value": "10 DH / 50 DH"
+        }
+      ]
+    },
+    {
+      "id": "saham",
+      "name": "Saham Bank · shares",
+      "template": "bank",
+      "sourceId": "saham",
+      "taxBasis": "Before VAT (HT)",
+      "unavailable": null,
+      "fields": [
+        {
+          "key": "collectionPercent",
+          "label": "Bank order collection (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "saham",
+          "sourceUrl": "https://www.sahambank.com/wp-content/uploads/2026/01/Affiche-tarifaire-JAN-2026-Saham-Bank.pdf",
+          "documentDate": "January 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "tradePercent",
+          "label": "Broker fee per buy / sell (%)",
+          "unit": "percent",
+          "modeledValue": 0.9,
+          "status": "published_or_normalized",
+          "note": "The broker’s percentage charge. Its minimum below is a floor, not an extra fee.",
+          "sourceId": "saham",
+          "sourceUrl": "https://www.sahambank.com/wp-content/uploads/2026/01/Affiche-tarifaire-JAN-2026-Saham-Bank.pdf",
+          "documentDate": "January 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "tradeMinimum",
+          "label": "Minimum broker fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "saham",
+          "sourceUrl": "https://www.sahambank.com/wp-content/uploads/2026/01/Affiche-tarifaire-JAN-2026-Saham-Bank.pdf",
+          "documentDate": "January 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "settlementPercent",
+          "label": "Settlement / delivery (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "missing",
+          "note": "Not separately specified; confirm whether the 0.9% includes settlement.",
+          "sourceId": "saham",
+          "sourceUrl": "https://www.sahambank.com/wp-content/uploads/2026/01/Affiche-tarifaire-JAN-2026-Saham-Bank.pdf",
+          "documentDate": "January 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "settlementMinimum",
+          "label": "Minimum settlement fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "saham",
+          "sourceUrl": "https://www.sahambank.com/wp-content/uploads/2026/01/Affiche-tarifaire-JAN-2026-Saham-Bank.pdf",
+          "documentDate": "January 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "marketPercent",
+          "label": "Casablanca exchange fee (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "missing",
+          "note": "Not separately specified; confirm whether included in 0.9%.",
+          "sourceId": "saham",
+          "sourceUrl": "https://www.sahambank.com/wp-content/uploads/2026/01/Affiche-tarifaire-JAN-2026-Saham-Bank.pdf",
+          "documentDate": "January 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "accountAnnual",
+          "label": "Custody fee / year (%)",
+          "unit": "percent",
+          "modeledValue": 0.3,
+          "status": "range",
+          "note": "Published range 0.1%–0.3% depending on portfolio. Uses upper rate; annual period assumed because the table gives no period or bands.",
+          "sourceId": "saham",
+          "sourceUrl": "https://www.sahambank.com/wp-content/uploads/2026/01/Affiche-tarifaire-JAN-2026-Saham-Bank.pdf",
+          "documentDate": "January 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "accountMinimumAnnual",
+          "label": "Minimum custody fee / year (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "saham",
+          "sourceUrl": "https://www.sahambank.com/wp-content/uploads/2026/01/Affiche-tarifaire-JAN-2026-Saham-Bank.pdf",
+          "documentDate": "January 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "accountFixedAnnual",
+          "label": "Fixed account fee / year (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "missing",
+          "note": "General bank packages excluded.",
+          "sourceId": "saham",
+          "sourceUrl": "https://www.sahambank.com/wp-content/uploads/2026/01/Affiche-tarifaire-JAN-2026-Saham-Bank.pdf",
+          "documentDate": "January 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "dividendPercent",
+          "label": "Dividend collection fee (%)",
+          "unit": "percent",
+          "modeledValue": 2,
+          "status": "published_or_normalized",
+          "note": "Charge on dividends, not on the whole account. Applies only when you enter a positive dividend yield; capitalizing funds do not distribute dividends here.",
+          "sourceId": "saham",
+          "sourceUrl": "https://www.sahambank.com/wp-content/uploads/2026/01/Affiche-tarifaire-JAN-2026-Saham-Bank.pdf",
+          "documentDate": "January 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "dividendMinimum",
+          "label": "Minimum dividend fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "saham",
+          "sourceUrl": "https://www.sahambank.com/wp-content/uploads/2026/01/Affiche-tarifaire-JAN-2026-Saham-Bank.pdf",
+          "documentDate": "January 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "transferPercent",
+          "label": "Transfer to another provider (%)",
+          "unit": "percent",
+          "modeledValue": 0.2,
+          "status": "published_or_normalized",
+          "note": "Fee on assets transferred; used only with Transfer at end, not charged annually or together with selling.",
+          "sourceId": "saham",
+          "sourceUrl": "https://www.sahambank.com/wp-content/uploads/2026/01/Affiche-tarifaire-JAN-2026-Saham-Bank.pdf",
+          "documentDate": "January 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "transferMinimum",
+          "label": "Minimum transfer fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "saham",
+          "sourceUrl": "https://www.sahambank.com/wp-content/uploads/2026/01/Affiche-tarifaire-JAN-2026-Saham-Bank.pdf",
+          "documentDate": "January 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "fxPercent",
+          "label": "Currency exchange fee / buy (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "saham",
+          "sourceUrl": "https://www.sahambank.com/wp-content/uploads/2026/01/Affiche-tarifaire-JAN-2026-Saham-Bank.pdf",
+          "documentDate": "January 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "vatPercent",
+          "label": "VAT on modeled fees (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "missing",
+          "note": "HT tariff; no numeric VAT rate supplied.",
+          "sourceId": "saham",
+          "sourceUrl": "https://www.sahambank.com/wp-content/uploads/2026/01/Affiche-tarifaire-JAN-2026-Saham-Bank.pdf",
+          "documentDate": "January 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        }
+      ],
+      "custodyMonths": 1,
+      "custodyBands": null,
+      "notes": [],
+      "referenceFees": [
+        {
+          "label": "Dividend collection",
+          "value": "2% HT"
+        },
+        {
+          "label": "External securities transfer",
+          "value": "0.2% HT"
+        }
+      ]
+    },
+    {
+      "id": "cdm",
+      "name": "Crédit du Maroc · shares",
+      "template": "bank",
+      "sourceId": "cdm",
+      "taxBasis": "Before VAT (HT)",
+      "unavailable": null,
+      "fields": [
+        {
+          "key": "collectionPercent",
+          "label": "Bank order collection (%)",
+          "unit": "percent",
+          "modeledValue": 0.1,
+          "status": "published_or_normalized",
+          "note": "What the bank charges for sending your order. This does not automatically include the broker’s fee.",
+          "sourceId": "cdm",
+          "sourceUrl": "https://www.creditdumaroc.ma/sites/default/files/brevaire_cdm.pdf",
+          "documentDate": "9 March 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "tradePercent",
+          "label": "Broker fee per buy / sell (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "missing",
+          "note": "Broker commission not provided; bank order collection is a different charge.",
+          "sourceId": "cdm",
+          "sourceUrl": "https://www.creditdumaroc.ma/sites/default/files/brevaire_cdm.pdf",
+          "documentDate": "9 March 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "tradeMinimum",
+          "label": "Minimum broker fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "cdm",
+          "sourceUrl": "https://www.creditdumaroc.ma/sites/default/files/brevaire_cdm.pdf",
+          "documentDate": "9 March 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "settlementPercent",
+          "label": "Settlement / delivery (%)",
+          "unit": "percent",
+          "modeledValue": 0.2,
+          "status": "published_or_normalized",
+          "note": "Charge for completing the transaction and delivering the shares; added separately to brokerage.",
+          "sourceId": "cdm",
+          "sourceUrl": "https://www.creditdumaroc.ma/sites/default/files/brevaire_cdm.pdf",
+          "documentDate": "9 March 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "settlementMinimum",
+          "label": "Minimum settlement fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "cdm",
+          "sourceUrl": "https://www.creditdumaroc.ma/sites/default/files/brevaire_cdm.pdf",
+          "documentDate": "9 March 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "marketPercent",
+          "label": "Casablanca exchange fee (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "missing",
+          "note": "Exchange charge not included in this table.",
+          "sourceId": "cdm",
+          "sourceUrl": "https://www.creditdumaroc.ma/sites/default/files/brevaire_cdm.pdf",
+          "documentDate": "9 March 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "accountAnnual",
+          "label": "Custody fee / year (%)",
+          "unit": "percent",
+          "modeledValue": 0.3,
+          "status": "published_or_normalized",
+          "note": "Yearly charge to keep the assets in your account. Published ranges and uncertain periods are flagged below.",
+          "sourceId": "cdm",
+          "sourceUrl": "https://www.creditdumaroc.ma/sites/default/files/brevaire_cdm.pdf",
+          "documentDate": "9 March 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "accountMinimumAnnual",
+          "label": "Minimum custody fee / year (DH)",
+          "unit": "MAD",
+          "modeledValue": 50,
+          "status": "assumed",
+          "note": "50 DH minimum listed with a yearly rate and quarterly payment. Model assumes 50 DH per year, apportioned quarterly; confirm minimum period.",
+          "sourceId": "cdm",
+          "sourceUrl": "https://www.creditdumaroc.ma/sites/default/files/brevaire_cdm.pdf",
+          "documentDate": "9 March 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "accountFixedAnnual",
+          "label": "Fixed account fee / year (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "missing",
+          "note": "General bank account charges excluded.",
+          "sourceId": "cdm",
+          "sourceUrl": "https://www.creditdumaroc.ma/sites/default/files/brevaire_cdm.pdf",
+          "documentDate": "9 March 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "dividendPercent",
+          "label": "Dividend collection fee (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "cdm",
+          "sourceUrl": "https://www.creditdumaroc.ma/sites/default/files/brevaire_cdm.pdf",
+          "documentDate": "9 March 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "dividendMinimum",
+          "label": "Minimum dividend fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "cdm",
+          "sourceUrl": "https://www.creditdumaroc.ma/sites/default/files/brevaire_cdm.pdf",
+          "documentDate": "9 March 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "transferPercent",
+          "label": "Transfer to another provider (%)",
+          "unit": "percent",
+          "modeledValue": 0.2,
+          "status": "published_or_normalized",
+          "note": "Fee on assets transferred; used only with Transfer at end, not charged annually or together with selling.",
+          "sourceId": "cdm",
+          "sourceUrl": "https://www.creditdumaroc.ma/sites/default/files/brevaire_cdm.pdf",
+          "documentDate": "9 March 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "transferMinimum",
+          "label": "Minimum transfer fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "cdm",
+          "sourceUrl": "https://www.creditdumaroc.ma/sites/default/files/brevaire_cdm.pdf",
+          "documentDate": "9 March 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "fxPercent",
+          "label": "Currency exchange fee / buy (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "cdm",
+          "sourceUrl": "https://www.creditdumaroc.ma/sites/default/files/brevaire_cdm.pdf",
+          "documentDate": "9 March 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "vatPercent",
+          "label": "VAT on modeled fees (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "missing",
+          "note": "HT tariff; VAT number not stated.",
+          "sourceId": "cdm",
+          "sourceUrl": "https://www.creditdumaroc.ma/sites/default/files/brevaire_cdm.pdf",
+          "documentDate": "9 March 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        }
+      ],
+      "custodyMonths": 3,
+      "custodyBands": null,
+      "notes": [
+        "Annual custody 0.30%, collected quarterly, based on quarter-end market value and deposit days. Model assumes full quarters."
+      ],
+      "referenceFees": [
+        {
+          "label": "Coupons",
+          "value": "Domiciled free; non-domiciled 2%, foreign correspondent / transfer charges extra"
+        },
+        {
+          "label": "Capital subscription",
+          "value": "0.2% or the issue’s information note"
+        },
+        {
+          "label": "CDM fund entry / exit · HT",
+          "value": "Cash, Liquidité, Sécurité Plus, Oblig Plus, Monétaire Plus, Obligations: 0% / 0%; Optimum, Expansion, Profit Dynamisme: 1.5% / 0.5%; Génération, Trésor Plus, Profit Sérénité: 0.5% / 0.25%; Profil Équilibre: 1.5% / 0.25%. Management rates need the individual fund documents."
+        },
+        {
+          "label": "External title transfer",
+          "value": "0.2% of value on transfer date"
+        }
+      ]
+    },
+    {
+      "id": "cfg",
+      "name": "CFG Bank · shares",
+      "template": "bank",
+      "sourceId": "cfg",
+      "taxBasis": "Before VAT (HT)",
+      "unavailable": null,
+      "fields": [
+        {
+          "key": "collectionPercent",
+          "label": "Bank order collection (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "cfg",
+          "sourceUrl": "https://www.cfgbank.com/wp-content/uploads/2024/01/LIVRET-TARIFICATION-JANVIER-2024.pdf",
+          "documentDate": "January 2024",
+          "dateKind": "Document",
+          "pages": "8 (printed 14–15)"
+        },
+        {
+          "key": "tradePercent",
+          "label": "Broker fee per buy / sell (%)",
+          "unit": "percent",
+          "modeledValue": 0.6,
+          "status": "range",
+          "note": "Published 0.4%–0.6% HT, minimum 5 DH. Uses upper rate.",
+          "sourceId": "cfg",
+          "sourceUrl": "https://www.cfgbank.com/wp-content/uploads/2024/01/LIVRET-TARIFICATION-JANVIER-2024.pdf",
+          "documentDate": "January 2024",
+          "dateKind": "Document",
+          "pages": "8 (printed 14–15)"
+        },
+        {
+          "key": "tradeMinimum",
+          "label": "Minimum broker fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 5,
+          "status": "published_or_normalized",
+          "note": "Minimum on brokerage alone. Other commissions keep their own separate minimums.",
+          "sourceId": "cfg",
+          "sourceUrl": "https://www.cfgbank.com/wp-content/uploads/2024/01/LIVRET-TARIFICATION-JANVIER-2024.pdf",
+          "documentDate": "January 2024",
+          "dateKind": "Document",
+          "pages": "8 (printed 14–15)"
+        },
+        {
+          "key": "settlementPercent",
+          "label": "Settlement / delivery (%)",
+          "unit": "percent",
+          "modeledValue": 0.2,
+          "status": "range",
+          "note": "Published 0.1%–0.2% HT, independent minimum 5 DH. Uses upper rate.",
+          "sourceId": "cfg",
+          "sourceUrl": "https://www.cfgbank.com/wp-content/uploads/2024/01/LIVRET-TARIFICATION-JANVIER-2024.pdf",
+          "documentDate": "January 2024",
+          "dateKind": "Document",
+          "pages": "8 (printed 14–15)"
+        },
+        {
+          "key": "settlementMinimum",
+          "label": "Minimum settlement fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 5,
+          "status": "published_or_normalized",
+          "note": "Independent floor on settlement costs, not part of the broker’s minimum.",
+          "sourceId": "cfg",
+          "sourceUrl": "https://www.cfgbank.com/wp-content/uploads/2024/01/LIVRET-TARIFICATION-JANVIER-2024.pdf",
+          "documentDate": "January 2024",
+          "dateKind": "Document",
+          "pages": "8 (printed 14–15)"
+        },
+        {
+          "key": "marketPercent",
+          "label": "Casablanca exchange fee (%)",
+          "unit": "percent",
+          "modeledValue": 0.1,
+          "status": "published_or_normalized",
+          "note": "The exchange charge, when stated separately. Confirm whether it is already included in a quoted all-in commission.",
+          "sourceId": "cfg",
+          "sourceUrl": "https://www.cfgbank.com/wp-content/uploads/2024/01/LIVRET-TARIFICATION-JANVIER-2024.pdf",
+          "documentDate": "January 2024",
+          "dateKind": "Document",
+          "pages": "8 (printed 14–15)"
+        },
+        {
+          "key": "accountAnnual",
+          "label": "Custody fee / year (%)",
+          "unit": "percent",
+          "modeledValue": 0.2,
+          "status": "range",
+          "note": "Annual range 0.1%–0.2% HT, quarterly billing. Uses upper rate.",
+          "sourceId": "cfg",
+          "sourceUrl": "https://www.cfgbank.com/wp-content/uploads/2024/01/LIVRET-TARIFICATION-JANVIER-2024.pdf",
+          "documentDate": "January 2024",
+          "dateKind": "Document",
+          "pages": "8 (printed 14–15)"
+        },
+        {
+          "key": "accountMinimumAnnual",
+          "label": "Minimum custody fee / year (DH)",
+          "unit": "MAD",
+          "modeledValue": 50,
+          "status": "assumed",
+          "note": "Minimum 50 DH; table does not clearly say annual or per invoice. Annual minimum modeled; confirm.",
+          "sourceId": "cfg",
+          "sourceUrl": "https://www.cfgbank.com/wp-content/uploads/2024/01/LIVRET-TARIFICATION-JANVIER-2024.pdf",
+          "documentDate": "January 2024",
+          "dateKind": "Document",
+          "pages": "8 (printed 14–15)"
+        },
+        {
+          "key": "accountFixedAnnual",
+          "label": "Fixed account fee / year (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "cfg",
+          "sourceUrl": "https://www.cfgbank.com/wp-content/uploads/2024/01/LIVRET-TARIFICATION-JANVIER-2024.pdf",
+          "documentDate": "January 2024",
+          "dateKind": "Document",
+          "pages": "8 (printed 14–15)"
+        },
+        {
+          "key": "dividendPercent",
+          "label": "Dividend collection fee (%)",
+          "unit": "percent",
+          "modeledValue": 0.15,
+          "status": "published_or_normalized",
+          "note": "Charge on dividends, not on the whole account. Applies only when you enter a positive dividend yield; capitalizing funds do not distribute dividends here.",
+          "sourceId": "cfg",
+          "sourceUrl": "https://www.cfgbank.com/wp-content/uploads/2024/01/LIVRET-TARIFICATION-JANVIER-2024.pdf",
+          "documentDate": "January 2024",
+          "dateKind": "Document",
+          "pages": "8 (printed 14–15)"
+        },
+        {
+          "key": "dividendMinimum",
+          "label": "Minimum dividend fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "cfg",
+          "sourceUrl": "https://www.cfgbank.com/wp-content/uploads/2024/01/LIVRET-TARIFICATION-JANVIER-2024.pdf",
+          "documentDate": "January 2024",
+          "dateKind": "Document",
+          "pages": "8 (printed 14–15)"
+        },
+        {
+          "key": "transferPercent",
+          "label": "Transfer to another provider (%)",
+          "unit": "percent",
+          "modeledValue": 0.15,
+          "status": "published_or_normalized",
+          "note": "Fee on assets transferred; used only with Transfer at end, not charged annually or together with selling.",
+          "sourceId": "cfg",
+          "sourceUrl": "https://www.cfgbank.com/wp-content/uploads/2024/01/LIVRET-TARIFICATION-JANVIER-2024.pdf",
+          "documentDate": "January 2024",
+          "dateKind": "Document",
+          "pages": "8 (printed 14–15)"
+        },
+        {
+          "key": "transferMinimum",
+          "label": "Minimum transfer fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "cfg",
+          "sourceUrl": "https://www.cfgbank.com/wp-content/uploads/2024/01/LIVRET-TARIFICATION-JANVIER-2024.pdf",
+          "documentDate": "January 2024",
+          "dateKind": "Document",
+          "pages": "8 (printed 14–15)"
+        },
+        {
+          "key": "fxPercent",
+          "label": "Currency exchange fee / buy (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "cfg",
+          "sourceUrl": "https://www.cfgbank.com/wp-content/uploads/2024/01/LIVRET-TARIFICATION-JANVIER-2024.pdf",
+          "documentDate": "January 2024",
+          "dateKind": "Document",
+          "pages": "8 (printed 14–15)"
+        },
+        {
+          "key": "vatPercent",
+          "label": "VAT on modeled fees (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "cfg",
+          "sourceUrl": "https://www.cfgbank.com/wp-content/uploads/2024/01/LIVRET-TARIFICATION-JANVIER-2024.pdf",
+          "documentDate": "January 2024",
+          "dateKind": "Document",
+          "pages": "8 (printed 14–15)"
+        }
+      ],
+      "custodyMonths": 3,
+      "custodyBands": null,
+      "notes": [
+        "HT and TTC columns are explicit: e.g. 0.6% → 0.66%. VAT is 10% in this 2024 document; use 10 in VAT input to reproduce it.",
+        "Securities account opening and maintenance are stated free. Optional general banking packages are not added."
+      ],
+      "referenceFees": [
+        {
+          "label": "Bond custody",
+          "value": "0.05%–0.10% HT annually, minimum 10 DH; billed quarterly. Minimum period needs confirmation."
+        },
+        {
+          "label": "Bond coupons",
+          "value": "0.15% HT of coupon"
+        },
+        {
+          "label": "Unlisted share trades / other corporate actions",
+          "value": "Quote required"
+        },
+        {
+          "label": "Other manager’s OPCVM custody",
+          "value": "0.10% HT annually; CFG Gestion funds free"
+        },
+        {
+          "label": "Entry, exit and management of OPCVM",
+          "value": "Consult each fund’s factsheet"
+        },
+        {
+          "label": "Capital subscription / title exchange",
+          "value": "0.1%–0.3% / 0.3% HT"
+        },
+        {
+          "label": "Requested portfolio statement",
+          "value": "10 DH HT; quarterly statement free"
+        }
+      ]
+    },
+    {
+      "id": "boa",
+      "name": "BANK OF AFRICA / BMCE · quote needed",
+      "template": "bank",
+      "sourceId": "boa",
+      "taxBasis": "Before VAT (HT)",
+      "unavailable": "The supplied bank poster has no securities brokerage/custody tariff. A BMCE Capital Bourse tariff is needed.",
+      "fields": [
+        {
+          "key": "collectionPercent",
+          "label": "Bank order collection (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "boa",
+          "sourceUrl": "https://www.bankofafrica.ma/sites/default/files/2026-01/50x70cm_Commissions_Janvier_2026_VF_0.pdf",
+          "documentDate": "8 May 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "tradePercent",
+          "label": "Broker fee per buy / sell (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "boa",
+          "sourceUrl": "https://www.bankofafrica.ma/sites/default/files/2026-01/50x70cm_Commissions_Janvier_2026_VF_0.pdf",
+          "documentDate": "8 May 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "tradeMinimum",
+          "label": "Minimum broker fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "boa",
+          "sourceUrl": "https://www.bankofafrica.ma/sites/default/files/2026-01/50x70cm_Commissions_Janvier_2026_VF_0.pdf",
+          "documentDate": "8 May 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "settlementPercent",
+          "label": "Settlement / delivery (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "boa",
+          "sourceUrl": "https://www.bankofafrica.ma/sites/default/files/2026-01/50x70cm_Commissions_Janvier_2026_VF_0.pdf",
+          "documentDate": "8 May 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "settlementMinimum",
+          "label": "Minimum settlement fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "boa",
+          "sourceUrl": "https://www.bankofafrica.ma/sites/default/files/2026-01/50x70cm_Commissions_Janvier_2026_VF_0.pdf",
+          "documentDate": "8 May 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "marketPercent",
+          "label": "Casablanca exchange fee (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "boa",
+          "sourceUrl": "https://www.bankofafrica.ma/sites/default/files/2026-01/50x70cm_Commissions_Janvier_2026_VF_0.pdf",
+          "documentDate": "8 May 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "accountAnnual",
+          "label": "Custody fee / year (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "boa",
+          "sourceUrl": "https://www.bankofafrica.ma/sites/default/files/2026-01/50x70cm_Commissions_Janvier_2026_VF_0.pdf",
+          "documentDate": "8 May 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "accountMinimumAnnual",
+          "label": "Minimum custody fee / year (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "boa",
+          "sourceUrl": "https://www.bankofafrica.ma/sites/default/files/2026-01/50x70cm_Commissions_Janvier_2026_VF_0.pdf",
+          "documentDate": "8 May 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "accountFixedAnnual",
+          "label": "Fixed account fee / year (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "boa",
+          "sourceUrl": "https://www.bankofafrica.ma/sites/default/files/2026-01/50x70cm_Commissions_Janvier_2026_VF_0.pdf",
+          "documentDate": "8 May 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "dividendPercent",
+          "label": "Dividend collection fee (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "boa",
+          "sourceUrl": "https://www.bankofafrica.ma/sites/default/files/2026-01/50x70cm_Commissions_Janvier_2026_VF_0.pdf",
+          "documentDate": "8 May 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "dividendMinimum",
+          "label": "Minimum dividend fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "boa",
+          "sourceUrl": "https://www.bankofafrica.ma/sites/default/files/2026-01/50x70cm_Commissions_Janvier_2026_VF_0.pdf",
+          "documentDate": "8 May 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "transferPercent",
+          "label": "Transfer to another provider (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "boa",
+          "sourceUrl": "https://www.bankofafrica.ma/sites/default/files/2026-01/50x70cm_Commissions_Janvier_2026_VF_0.pdf",
+          "documentDate": "8 May 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "transferMinimum",
+          "label": "Minimum transfer fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "boa",
+          "sourceUrl": "https://www.bankofafrica.ma/sites/default/files/2026-01/50x70cm_Commissions_Janvier_2026_VF_0.pdf",
+          "documentDate": "8 May 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "fxPercent",
+          "label": "Currency exchange fee / buy (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "boa",
+          "sourceUrl": "https://www.bankofafrica.ma/sites/default/files/2026-01/50x70cm_Commissions_Janvier_2026_VF_0.pdf",
+          "documentDate": "8 May 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        },
+        {
+          "key": "vatPercent",
+          "label": "VAT on modeled fees (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "boa",
+          "sourceUrl": "https://www.bankofafrica.ma/sites/default/files/2026-01/50x70cm_Commissions_Janvier_2026_VF_0.pdf",
+          "documentDate": "8 May 2026",
+          "dateKind": "Effective",
+          "pages": "1"
+        }
+      ],
+      "custodyMonths": 1,
+      "custodyBands": null,
+      "notes": [
+        "Document is effective 8 May 2026, despite January in the URL."
+      ],
+      "referenceFees": [
+        {
+          "label": "Bank cheque-account maintenance",
+          "value": "65 DH / quarter, HT. Not automatically an investment-account fee."
+        }
+      ]
+    },
+    {
+      "id": "artbourse",
+      "name": "Artbourse · intermediation",
+      "template": "broker",
+      "sourceId": "artbourse",
+      "taxBasis": "Before VAT (HT)",
+      "unavailable": null,
+      "fields": [
+        {
+          "key": "tradePercent",
+          "label": "Broker fee per buy / sell (%)",
+          "unit": "percent",
+          "modeledValue": 0.6,
+          "status": "published_or_normalized",
+          "note": "The broker’s percentage charge. Its minimum below is a floor, not an extra fee.",
+          "sourceId": "artbourse",
+          "sourceUrl": "https://artbourse.ma/files/conventions/morale/convention.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "2"
+        },
+        {
+          "key": "tradeMinimum",
+          "label": "Minimum broker fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "artbourse",
+          "sourceUrl": "https://artbourse.ma/files/conventions/morale/convention.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "2"
+        },
+        {
+          "key": "settlementPercent",
+          "label": "Settlement / delivery (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "missing",
+          "note": "Agreement refers to a separate depository contract; settlement needs a quote.",
+          "sourceId": "artbourse",
+          "sourceUrl": "https://artbourse.ma/files/conventions/morale/convention.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "2"
+        },
+        {
+          "key": "settlementMinimum",
+          "label": "Minimum settlement fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "artbourse",
+          "sourceUrl": "https://artbourse.ma/files/conventions/morale/convention.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "2"
+        },
+        {
+          "key": "marketPercent",
+          "label": "Casablanca exchange fee (%)",
+          "unit": "percent",
+          "modeledValue": 0.1,
+          "status": "published_or_normalized",
+          "note": "The exchange charge, when stated separately. Confirm whether it is already included in a quoted all-in commission.",
+          "sourceId": "artbourse",
+          "sourceUrl": "https://artbourse.ma/files/conventions/morale/convention.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "2"
+        },
+        {
+          "key": "accountAnnual",
+          "label": "Custody fee / year (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "missing",
+          "note": "Custody tariff not provided.",
+          "sourceId": "artbourse",
+          "sourceUrl": "https://artbourse.ma/files/conventions/morale/convention.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "2"
+        },
+        {
+          "key": "accountMinimumAnnual",
+          "label": "Minimum custody fee / year (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "artbourse",
+          "sourceUrl": "https://artbourse.ma/files/conventions/morale/convention.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "2"
+        },
+        {
+          "key": "accountFixedAnnual",
+          "label": "Fixed account fee / year (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "missing",
+          "note": "Account subscription not provided.",
+          "sourceId": "artbourse",
+          "sourceUrl": "https://artbourse.ma/files/conventions/morale/convention.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "2"
+        },
+        {
+          "key": "dividendPercent",
+          "label": "Dividend collection fee (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "artbourse",
+          "sourceUrl": "https://artbourse.ma/files/conventions/morale/convention.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "2"
+        },
+        {
+          "key": "transferPercent",
+          "label": "Transfer to another provider (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "artbourse",
+          "sourceUrl": "https://artbourse.ma/files/conventions/morale/convention.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "2"
+        },
+        {
+          "key": "transferMinimum",
+          "label": "Minimum transfer fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "artbourse",
+          "sourceUrl": "https://artbourse.ma/files/conventions/morale/convention.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "2"
+        },
+        {
+          "key": "fxPercent",
+          "label": "Currency exchange fee / buy (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "artbourse",
+          "sourceUrl": "https://artbourse.ma/files/conventions/morale/convention.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "2"
+        },
+        {
+          "key": "vatPercent",
+          "label": "VAT on modeled fees (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "artbourse",
+          "sourceUrl": "https://artbourse.ma/files/conventions/morale/convention.pdf",
+          "documentDate": "Date not stated",
+          "dateKind": "Undated",
+          "pages": "2"
+        }
+      ],
+      "custodyMonths": 1,
+      "custodyBands": null,
+      "notes": [
+        "Indexed agreement lists brokerage 0.6% HT; contractual commission is negotiable.",
+        "Agreement states 10% VAT; enter 10 in the VAT input to include it.",
+        "Official PDF is indexed but its download endpoints currently return 404. Extracted terms are stored with this limitation."
+      ],
+      "referenceFees": [
+        {
+          "label": "Document VAT",
+          "value": "10%"
+        }
+      ]
+    },
+    {
+      "id": "attijari-actions",
+      "name": "Wafa Gestion · Attijari Actions",
+      "template": "fund",
+      "sourceId": "attijari-actions-fs",
+      "taxBasis": "Before VAT (HT)",
+      "unavailable": null,
+      "fields": [
+        {
+          "key": "fundAnnual",
+          "label": "Fund fee / year (%)",
+          "unit": "percent",
+          "modeledValue": 2,
+          "status": "maximum",
+          "note": "Maximum 2% HT yearly, including internal expenses. Do not add the fund’s own depositary/AMMC costs again.",
+          "sourceId": "attijari-actions-fs",
+          "sourceUrl": "https://www.wafagestion.com/sites/default/files/widgets/files/ATTIJARI%20ACTIONS_FS.pdf",
+          "documentDate": "27 November 2020",
+          "dateKind": "AMMC visa",
+          "pages": "1, 4"
+        },
+        {
+          "key": "entryPercent",
+          "label": "Fund entry fee (%)",
+          "unit": "percent",
+          "modeledValue": 3,
+          "status": "maximum",
+          "note": "Maximum 3% HT, includes 0.4% non-waivable acquired by fund. Enter your actual distributor quote.",
+          "sourceId": "attijari-actions-fs",
+          "sourceUrl": "https://www.wafagestion.com/sites/default/files/widgets/files/ATTIJARI%20ACTIONS_FS.pdf",
+          "documentDate": "27 November 2020",
+          "dateKind": "AMMC visa",
+          "pages": "1, 4"
+        },
+        {
+          "key": "exitPercent",
+          "label": "Fund exit fee (%)",
+          "unit": "percent",
+          "modeledValue": 1.5,
+          "status": "maximum",
+          "note": "Maximum 1.5% HT, includes 0.4% non-waivable acquired by fund.",
+          "sourceId": "attijari-actions-fs",
+          "sourceUrl": "https://www.wafagestion.com/sites/default/files/widgets/files/ATTIJARI%20ACTIONS_FS.pdf",
+          "documentDate": "27 November 2020",
+          "dateKind": "AMMC visa",
+          "pages": "1, 4"
+        },
+        {
+          "key": "accountAnnual",
+          "label": "Custody fee / year (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "missing",
+          "note": "Distributor / holder-account charges are not provided by the fund factsheet.",
+          "sourceId": "attijari-actions-fs",
+          "sourceUrl": "https://www.wafagestion.com/sites/default/files/widgets/files/ATTIJARI%20ACTIONS_FS.pdf",
+          "documentDate": "27 November 2020",
+          "dateKind": "AMMC visa",
+          "pages": "1, 4"
+        },
+        {
+          "key": "accountMinimumAnnual",
+          "label": "Minimum custody fee / year (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "attijari-actions-fs",
+          "sourceUrl": "https://www.wafagestion.com/sites/default/files/widgets/files/ATTIJARI%20ACTIONS_FS.pdf",
+          "documentDate": "27 November 2020",
+          "dateKind": "AMMC visa",
+          "pages": "1, 4"
+        },
+        {
+          "key": "accountFixedAnnual",
+          "label": "Fixed account fee / year (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "attijari-actions-fs",
+          "sourceUrl": "https://www.wafagestion.com/sites/default/files/widgets/files/ATTIJARI%20ACTIONS_FS.pdf",
+          "documentDate": "27 November 2020",
+          "dateKind": "AMMC visa",
+          "pages": "1, 4"
+        },
+        {
+          "key": "buyFixed",
+          "label": "Fixed fund order fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "attijari-actions-fs",
+          "sourceUrl": "https://www.wafagestion.com/sites/default/files/widgets/files/ATTIJARI%20ACTIONS_FS.pdf",
+          "documentDate": "27 November 2020",
+          "dateKind": "AMMC visa",
+          "pages": "1, 4"
+        },
+        {
+          "key": "transferPercent",
+          "label": "Transfer to another provider (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "missing",
+          "note": "The fund document does not quote an external transfer fee; ask the account holder.",
+          "sourceId": "attijari-actions-fs",
+          "sourceUrl": "https://www.wafagestion.com/sites/default/files/widgets/files/ATTIJARI%20ACTIONS_FS.pdf",
+          "documentDate": "27 November 2020",
+          "dateKind": "AMMC visa",
+          "pages": "1, 4"
+        },
+        {
+          "key": "transferMinimum",
+          "label": "Minimum transfer fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "attijari-actions-fs",
+          "sourceUrl": "https://www.wafagestion.com/sites/default/files/widgets/files/ATTIJARI%20ACTIONS_FS.pdf",
+          "documentDate": "27 November 2020",
+          "dateKind": "AMMC visa",
+          "pages": "1, 4"
+        },
+        {
+          "key": "fxPercent",
+          "label": "Currency exchange fee / buy (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "attijari-actions-fs",
+          "sourceUrl": "https://www.wafagestion.com/sites/default/files/widgets/files/ATTIJARI%20ACTIONS_FS.pdf",
+          "documentDate": "27 November 2020",
+          "dateKind": "AMMC visa",
+          "pages": "1, 4"
+        },
+        {
+          "key": "vatPercent",
+          "label": "VAT on modeled fees (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "missing",
+          "note": "HT rates; confirm the applicable fee-tax rate.",
+          "sourceId": "attijari-actions-fs",
+          "sourceUrl": "https://www.wafagestion.com/sites/default/files/widgets/files/ATTIJARI%20ACTIONS_FS.pdf",
+          "documentDate": "27 November 2020",
+          "dateKind": "AMMC visa",
+          "pages": "1, 4"
+        }
+      ],
+      "custodyMonths": 1,
+      "custodyBands": null,
+      "notes": [
+        "Capitalizing equity fund, ISIN MA0000036063. Asset returns already include dividends.",
+        "Internal AMMC, depositary, audit and Maroclear costs are covered by management fees, not extra personal invoices."
+      ],
+      "referenceFees": [
+        {
+          "label": "Included fund costs",
+          "value": "AMMC 0.025%; depositary 0.08%; publication 20,000 DH; audit 10,000 DH; Maroclear issuance account 3,600 DH/year. All fund-level, not added to your account."
+        },
+        {
+          "label": "Exit charge timing",
+          "value": "Only deducted when ‘Sell at end’ is selected."
+        }
+      ]
+    },
+    {
+      "id": "capital-actions",
+      "name": "BMCE Capital Gestion · Capital Actions",
+      "template": "fund",
+      "sourceId": "capital-actions-fs",
+      "taxBasis": "Before VAT (HT)",
+      "unavailable": null,
+      "fields": [
+        {
+          "key": "fundAnnual",
+          "label": "Fund fee / year (%)",
+          "unit": "percent",
+          "modeledValue": 2,
+          "status": "maximum",
+          "note": "Maximum 2% HT yearly, covers internal fund expenses.",
+          "sourceId": "capital-actions-fs",
+          "sourceUrl": "https://bmcecapitalgestion.com/sites/default/files/2025-04/fiche_signaletique_fcp_capital_actions_-_visa_ammc_30092020_841708784.pdf",
+          "documentDate": "30 September 2020",
+          "dateKind": "AMMC visa",
+          "pages": "1, 4"
+        },
+        {
+          "key": "entryPercent",
+          "label": "Fund entry fee (%)",
+          "unit": "percent",
+          "modeledValue": 2,
+          "status": "maximum",
+          "note": "Maximum 2% HT, includes 0.2% non-waivable to fund.",
+          "sourceId": "capital-actions-fs",
+          "sourceUrl": "https://bmcecapitalgestion.com/sites/default/files/2025-04/fiche_signaletique_fcp_capital_actions_-_visa_ammc_30092020_841708784.pdf",
+          "documentDate": "30 September 2020",
+          "dateKind": "AMMC visa",
+          "pages": "1, 4"
+        },
+        {
+          "key": "exitPercent",
+          "label": "Fund exit fee (%)",
+          "unit": "percent",
+          "modeledValue": 2,
+          "status": "maximum",
+          "note": "Maximum 2% HT, includes 0.1% non-waivable to fund.",
+          "sourceId": "capital-actions-fs",
+          "sourceUrl": "https://bmcecapitalgestion.com/sites/default/files/2025-04/fiche_signaletique_fcp_capital_actions_-_visa_ammc_30092020_841708784.pdf",
+          "documentDate": "30 September 2020",
+          "dateKind": "AMMC visa",
+          "pages": "1, 4"
+        },
+        {
+          "key": "accountAnnual",
+          "label": "Custody fee / year (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "missing",
+          "note": "Fund note explicitly requires asking the account holder about separate charges.",
+          "sourceId": "capital-actions-fs",
+          "sourceUrl": "https://bmcecapitalgestion.com/sites/default/files/2025-04/fiche_signaletique_fcp_capital_actions_-_visa_ammc_30092020_841708784.pdf",
+          "documentDate": "30 September 2020",
+          "dateKind": "AMMC visa",
+          "pages": "1, 4"
+        },
+        {
+          "key": "accountMinimumAnnual",
+          "label": "Minimum custody fee / year (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "capital-actions-fs",
+          "sourceUrl": "https://bmcecapitalgestion.com/sites/default/files/2025-04/fiche_signaletique_fcp_capital_actions_-_visa_ammc_30092020_841708784.pdf",
+          "documentDate": "30 September 2020",
+          "dateKind": "AMMC visa",
+          "pages": "1, 4"
+        },
+        {
+          "key": "accountFixedAnnual",
+          "label": "Fixed account fee / year (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "capital-actions-fs",
+          "sourceUrl": "https://bmcecapitalgestion.com/sites/default/files/2025-04/fiche_signaletique_fcp_capital_actions_-_visa_ammc_30092020_841708784.pdf",
+          "documentDate": "30 September 2020",
+          "dateKind": "AMMC visa",
+          "pages": "1, 4"
+        },
+        {
+          "key": "buyFixed",
+          "label": "Fixed fund order fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "capital-actions-fs",
+          "sourceUrl": "https://bmcecapitalgestion.com/sites/default/files/2025-04/fiche_signaletique_fcp_capital_actions_-_visa_ammc_30092020_841708784.pdf",
+          "documentDate": "30 September 2020",
+          "dateKind": "AMMC visa",
+          "pages": "1, 4"
+        },
+        {
+          "key": "transferPercent",
+          "label": "Transfer to another provider (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "missing",
+          "note": "External account-transfer fee is not supplied; ask the account holder.",
+          "sourceId": "capital-actions-fs",
+          "sourceUrl": "https://bmcecapitalgestion.com/sites/default/files/2025-04/fiche_signaletique_fcp_capital_actions_-_visa_ammc_30092020_841708784.pdf",
+          "documentDate": "30 September 2020",
+          "dateKind": "AMMC visa",
+          "pages": "1, 4"
+        },
+        {
+          "key": "transferMinimum",
+          "label": "Minimum transfer fee (DH)",
+          "unit": "MAD",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "capital-actions-fs",
+          "sourceUrl": "https://bmcecapitalgestion.com/sites/default/files/2025-04/fiche_signaletique_fcp_capital_actions_-_visa_ammc_30092020_841708784.pdf",
+          "documentDate": "30 September 2020",
+          "dateKind": "AMMC visa",
+          "pages": "1, 4"
+        },
+        {
+          "key": "fxPercent",
+          "label": "Currency exchange fee / buy (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "scenario_default",
+          "note": "Zero scenario input; not evidence that this charge is free. See route notes and reference fees.",
+          "sourceId": "capital-actions-fs",
+          "sourceUrl": "https://bmcecapitalgestion.com/sites/default/files/2025-04/fiche_signaletique_fcp_capital_actions_-_visa_ammc_30092020_841708784.pdf",
+          "documentDate": "30 September 2020",
+          "dateKind": "AMMC visa",
+          "pages": "1, 4"
+        },
+        {
+          "key": "vatPercent",
+          "label": "VAT on modeled fees (%)",
+          "unit": "percent",
+          "modeledValue": 0,
+          "status": "missing",
+          "note": "HT charges; applicable VAT rate needs confirmation.",
+          "sourceId": "capital-actions-fs",
+          "sourceUrl": "https://bmcecapitalgestion.com/sites/default/files/2025-04/fiche_signaletique_fcp_capital_actions_-_visa_ammc_30092020_841708784.pdf",
+          "documentDate": "30 September 2020",
+          "dateKind": "AMMC visa",
+          "pages": "1, 4"
+        }
+      ],
+      "custodyMonths": 1,
+      "custodyBands": null,
+      "notes": [
+        "Capitalizing equity fund, ISIN MA0000036303; no separate dividend payout fee modeled.",
+        "Same-NAV, zero-net-volume paired redemptions/subscriptions can be exempt; monthly new contributions do not meet that condition."
+      ],
+      "referenceFees": [
+        {
+          "label": "Included fund costs",
+          "value": "AMMC 0.025%; depositary 0.0965% maximum (cap: 10% × (total management fees − AMMC commission)); audit 18,000 DH; Maroclear issuance account 3,600 DH/year; publication and admission per schedule. Already inside management costs."
+        }
+      ]
+    }
+  ]
+}

@@ -2199,7 +2199,7 @@ svg {
 }
 .fees-country-guides {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: 24px;
   margin-top: 24px;
 }
@@ -4034,4 +4034,211 @@ svg {
 }
 .number-input-label .ui-tooltip {
   flex-shrink: 0;
+}
+
+/* Provider presets use the same quiet controls as the other financial tools. */
+.fees-country {
+  border: 0;
+  padding: 0 0 24px;
+  margin: 0;
+  min-width: 0;
+}
+.fees-country legend {
+  font-size: 20px;
+  margin-bottom: 14px;
+}
+.fees-country-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.fees-country-buttons button {
+  border: 1px solid var(--color-smoke);
+  padding: 12px 18px;
+  font-size: 17px;
+}
+.fees-country-buttons button[aria-pressed="true"] {
+  color: var(--color-chalk);
+  background: var(--color-graphite);
+}
+.fees-country-buttons button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.fees-country-buttons span {
+  display: block;
+  font-size: 13px;
+  margin-top: 3px;
+}
+.fees-country p,
+.fees-source-caveat,
+.fees-sources > p {
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--color-ash);
+  margin: 16px 0;
+}
+.fees-source-caveat {
+  border-left: 2px solid var(--color-smoke);
+  padding-left: 16px;
+  margin: 24px 0 32px;
+}
+.fees-provider-label {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+.fees-plan select {
+  width: 100%;
+  min-width: 0;
+  color: var(--color-chalk);
+  background: var(--color-obsidian);
+  border: 1px solid var(--color-smoke);
+  padding: 12px;
+  font-size: 18px;
+}
+.fees-preset-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+  margin: 14px 0;
+  font-size: 14px;
+}
+.fees-preset-status span {
+  color: var(--color-ash);
+}
+.fees-preset-status button {
+  padding: 6px 0;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.fees-preset-status button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.fees-plan a,
+.fees-sources a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.fees-country-buttons button:focus-visible,
+.fees-plan select:focus-visible,
+.fees-preset-status button:focus-visible {
+  outline: 2px solid var(--color-chalk);
+  outline-offset: 4px;
+}
+
+.fees-template-label {
+  color: var(--color-ash);
+  font-size: 16px;
+  margin: 12px 0;
+}
+.fees-field-evidence {
+  color: var(--color-smoke);
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 8px 0 14px;
+}
+.fees-field-evidence strong {
+  color: var(--color-ash);
+  font-weight: 500;
+}
+.fees-add-option {
+  border: 1px solid var(--color-iron);
+  padding: 12px 18px;
+  margin-top: 20px;
+  font-size: 17px;
+}
+.fees-add-option:focus-visible {
+  outline: 2px solid var(--color-chalk);
+  outline-offset: 4px;
+}
+.fees-bands h3,
+.fees-provider-details h3 {
+  font-size: 18px;
+  margin: 20px 0 12px;
+}
+.fees-bands > div {
+  border-top: 1px solid var(--color-graphite);
+  padding: 14px 0;
+}
+.fees-bands p,
+.fees-bands span,
+.fees-provider-details p,
+.fees-provider-details dd,
+.fees-provider-details dt {
+  font-size: 15px;
+  line-height: 1.65;
+}
+.fees-provider-details {
+  margin-top: 20px;
+}
+.fees-provider-details p,
+.fees-provider-details dd {
+  color: var(--color-ash);
+}
+.fees-provider-details dl > div {
+  padding: 12px 0;
+  border-top: 1px solid var(--color-graphite);
+}
+.fees-provider-details dd {
+  margin: 6px 0 0;
+}
+.fees-end-action label {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 17px;
+}
+.fees-end-action select {
+  width: 100%;
+  background: var(--color-obsidian);
+  color: var(--color-chalk);
+  border: 1px solid var(--color-iron);
+  padding: 12px;
+  font-size: 17px;
+}
+.fees-sources article {
+  border-top: 1px solid var(--color-graphite);
+  padding: 18px 0;
+}
+.fees-sources article h3 {
+  font-size: 18px;
+}
+.fees-sources article p {
+  color: var(--color-ash);
+  font-size: 16px;
+  line-height: 1.65;
+  margin: 12px 0;
+}
+.fees-three-plans > :last-child {
+  grid-column: 1 / -1;
+}
+.fees-simulator .fees-balances {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+}
+/* Keep three money columns readable; only the table scrolls on narrow screens. */
+.fees-breakdown table {
+  min-width: 680px;
+}
+.fees-breakdown td {
+  white-space: nowrap;
+}
+.fees-method .savings-method-table table {
+  min-width: 680px;
+}
+.fees-table-hint {
+  display: none;
+}
+@media (max-width: 700px) {
+  .fees-table-hint {
+    display: block;
+    color: var(--color-smoke);
+    font-size: 14px;
+    margin: 0 0 12px;
+  }
+  .fees-breakdown th:first-child {
+    width: 140px;
+  }
 }

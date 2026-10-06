@@ -12,10 +12,14 @@ import {
 } from "lucide-react";
 import {
   feeDefaults,
-  feeFields,
+  feeProviders,
   feeSchedules,
-  feeSources,
+  scheduleMoneyKeys,
+  getFeeSource,
+  getFeeFields,
+  feeTemplateNames,
 } from "@/content/fees";
+import { convertMoneyFields } from "@/lib/currency";
 import { compareFees, type FeeInputs, type FeeSchedule } from "@/lib/math/fees";
 import { NumberStepper } from "@/components/ui/number-stepper";
 import { NumberInput } from "@/components/ui/number-input";
@@ -26,10 +30,10 @@ import { useCurrencyInputs, useToolCurrency } from "./tools-settings";
 import { FeesMethod } from "./fees-method";
 
 const moneyKeys = ["starting", "monthly"] as const;
-const scheduleMoneyKeys = ["accountFixedAnnual", "tradeMinimum"] as const;
 const styles = [
   { color: "var(--color-chalk)", dash: "" },
   { color: "var(--color-ash)", dash: "7 4" },
+  { color: "var(--color-smoke)", dash: "2 4" },
 ];
 
 function ScheduleFields({
@@ -38,52 +42,196 @@ function ScheduleFields({
   value,
   onChange,
   advanced,
+  providerId,
+  onSelect,
+  onReset,
+  resetVersion,
+  onBandChange,
 }: {
   name: string;
   index: number;
   value: FeeSchedule;
-  onChange: (key: keyof FeeSchedule, value: number) => void;
+  onChange: (key: import("@/lib/math/fees").FeeKey, value: number) => void;
   advanced: boolean;
+  providerId: string;
+  onSelect: (id: string) => void;
+  onReset: () => void;
+  resetVersion: number;
+  onBandChange: (
+    index: number,
+    key: "annualRate" | "minimumAnnual",
+    value: number,
+  ) => void;
 }) {
   const { currency, symbol, amount, money } = useToolCurrency();
+  const provider = feeProviders.find((p) => p.id === providerId)!,
+    source = getFeeSource(provider);
+  const defaults = convertMoneyFields(
+    provider.schedule,
+    scheduleMoneyKeys,
+    "DH",
+    currency,
+  );
+  const edited = JSON.stringify(value) !== JSON.stringify(defaults);
+  const fields = getFeeFields(provider).filter(
+    (f) =>
+      !value.custodyBands ||
+      !["accountAnnual", "accountMinimumAnnual"].includes(f.key),
+  );
   return (
     <fieldset className="fees-plan">
       <legend>
         <span style={{ color: styles[index].color }}>{name}</span>
       </legend>
-      <p className="fees-rate">
-        {new Intl.NumberFormat("en", { maximumFractionDigits: 2 }).format(
-          value.fundAnnual + value.accountAnnual,
-        )}
-        % <span>a year on investments</span>
+      <label className="fees-provider-label" htmlFor={`fees-provider-${index}`}>
+        Provider / plan
+      </label>
+      <select
+        id={`fees-provider-${index}`}
+        value={providerId}
+        onChange={(e) => onSelect(e.target.value)}
+      >
+        {feeProviders.map((p) => (
+          <option key={p.id} value={p.id} disabled={!!p.unavailable}>
+            {p.name}
+          </option>
+        ))}
+      </select>
+      <p className="fees-template-label">
+        {feeTemplateNames[provider.template]}
+      </p>
+      <div className="fees-preset-status">
+        <span>{edited ? "Edited by you" : "Source defaults"}</span>
+        <button type="button" onClick={onReset} disabled={!edited}>
+          Reset to defaults
+        </button>
+      </div>
+      <p className="fees-note">
+        {provider.taxBasis}.{" "}
+        <a href={source.url} target="_blank" rel="noreferrer">
+          Source ↗
+        </a>{" "}
+        ·{" "}
+        {source.dateKind === "Undated"
+          ? source.documentDate
+          : `${source.dateKind}: ${source.documentDate}`}
+        .
       </p>
       <div className="fees-plan-fields">
-        {feeFields
-          .filter((_, i) => advanced || i < 2)
-          .map((field) => (
-            <NumberInput
-              key={`${field.key}-${currency}`}
-              label={field.label.replace(/DH/g, symbol)}
-              value={value[field.key]}
-              onChange={(next) => onChange(field.key, next)}
-              min={0}
-              max={field.monetary ? amount(field.max) : field.max}
-              step={field.monetary ? amount(field.step) : field.step}
-              help={field.help}
-              helpPopover
-            />
-          ))}
+        {fields
+          .filter((f) => advanced || provider.important.includes(f.key))
+          .map((f) => {
+            const evidence = provider.evidence.find((e) => e.key === f.key);
+            return (
+              <div key={`${f.key}-${currency}-${providerId}-${resetVersion}`}>
+                <NumberInput
+                  label={f.label.replace(/DH/g, symbol)}
+                  value={value[f.key] ?? 0}
+                  onChange={(n) => onChange(f.key, n)}
+                  min={0}
+                  max={f.monetary ? amount(f.max) : f.max}
+                  step={f.monetary ? amount(f.step) : f.step}
+                  help={f.help}
+                  helpPopover
+                />
+                {evidence && (
+                  <p
+                    className={`fees-field-evidence fees-evidence-${evidence.status}`}
+                  >
+                    <strong>
+                      {evidence.status === "missing"
+                        ? "Quote needed"
+                        : evidence.status === "range"
+                          ? "Published range"
+                          : evidence.status === "maximum"
+                            ? "Published maximum"
+                            : "Assumption"}
+                      :
+                    </strong>{" "}
+                    {evidence.note}
+                  </p>
+                )}
+              </div>
+            );
+          })}
       </div>
+      {value.custodyBands && (
+        <div className="fees-bands">
+          <h3>Custody bands · billed quarterly</h3>
+          {value.custodyBands.map((band, i) => (
+            <div key={`${i}-${currency}-${providerId}-${resetVersion}`}>
+              <p>
+                {i === 0
+                  ? "Below "
+                  : `From ${money(amount(value.custodyBands![i - 1].upperMAD!))} to `}
+                {band.upperMAD === null
+                  ? "no upper limit"
+                  : money(amount(band.upperMAD))}
+              </p>
+              {advanced ? (
+                <>
+                  <NumberInput
+                    label={`Band ${i + 1} annual custody (%)`}
+                    value={band.annualRate}
+                    onChange={(n) => onBandChange(i, "annualRate", n)}
+                    min={0}
+                    max={10}
+                    step={0.01}
+                    help="Annual equivalent of the document’s quarterly rate, applied to the whole balance in this band."
+                    helpPopover
+                  />
+                  <NumberInput
+                    label={`Band ${i + 1} annual minimum (${symbol})`}
+                    value={amount(band.minimumAnnual)}
+                    onChange={(n) =>
+                      onBandChange(i, "minimumAnnual", n / amount(1))
+                    }
+                    min={0}
+                    max={amount(100000)}
+                    step={amount(10)}
+                    help="Annual equivalent: a quarterly 50 DH minimum is 200 DH per year."
+                    helpPopover
+                  />
+                </>
+              ) : (
+                <span>
+                  {band.annualRate}% / year · minimum{" "}
+                  {money(amount(band.minimumAnnual))} / year
+                </span>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
       {!advanced && (
         <p className="fees-note">
-          Buying fee: {value.tradePercent}% · minimum{" "}
-          {money(value.tradeMinimum)}.
-          {value.accountFixedAnnual > 0 &&
-            ` Flat account fee: ${money(value.accountFixedAnnual)} / year.`}
-          {value.fxPercent > 0 &&
-            ` Currency exchange: ${value.fxPercent}% per buy.`}{" "}
-          All charges are editable under More fees.
+          More fees shows the separate commissions, minimum charges and source
+          details for this plan.
         </p>
+      )}
+      {advanced && (
+        <div className="fees-provider-details">
+          {provider.notes.map((n) => (
+            <p key={n}>{n}</p>
+          ))}
+          {provider.extras.length > 0 && (
+            <>
+              <h3>Other published charges · source amounts in DH</h3>
+              <dl>
+                {provider.extras.map((e) => (
+                  <div key={e.label}>
+                    <dt>{e.label}</dt>
+                    <dd>{e.value}</dd>
+                  </div>
+                ))}
+              </dl>
+              <p>
+                These reference charges are not automatically added. Only the
+                editable fees and selected end action affect the result.
+              </p>
+            </>
+          )}
+        </div>
       )}
     </fieldset>
   );
@@ -103,12 +251,41 @@ export default function InvestmentFees() {
     feeSchedules[1],
     scheduleMoneyKeys,
   );
+  const [c, setC] = useCurrencyInputs<FeeSchedule>(
+    feeProviders.find((p) => p.id === "cih")!.schedule,
+    scheduleMoneyKeys,
+  );
+  const [third, setThird] = useState(false);
+  const [providerIds, setProviderIds] = useState([
+    feeProviders[0].id,
+    feeProviders[1].id,
+    "cih",
+  ]);
+  const [resetVersions, setResetVersions] = useState([0, 0, 0]);
+  const providers = providerIds
+    .slice(0, third ? 3 : 2)
+    .map((id) => feeProviders.find((p) => p.id === id)!);
+  function loadProvider(index: number, id: string) {
+    const provider = feeProviders.find((p) => p.id === id)!;
+    [setA, setB, setC][index](
+      convertMoneyFields(provider.schedule, scheduleMoneyKeys, "DH", currency),
+    );
+    setProviderIds((current) => current.map((v, i) => (i === index ? id : v)));
+    setResetVersions((current) =>
+      current.map((v, i) => (i === index ? v + 1 : v)),
+    );
+  }
   const [advanced, setAdvanced] = useState(false);
   const [popup, setPopup] = useState<"intro" | "method" | null>(null);
-  const result = useMemo(() => compareFees(inputs, [a, b]), [inputs, a, b]);
-  const schedules = [a, b];
-  const tied = Math.abs(result.difference) < amount(1);
-  const winner = result.difference >= 0 ? "Option A" : "Option B";
+  const schedules = third ? [a, b, c] : [a, b];
+  const result = useMemo(
+    () => compareFees(inputs, third ? [a, b, c] : [a, b], amount(1)),
+    [inputs, a, b, c, third, amount],
+  );
+  const balances = result.paths.map((p) => p.final.balance);
+  const difference = Math.max(...balances) - Math.min(...balances);
+  const tied = difference < amount(1);
+  const winner = `Option ${String.fromCharCode(65 + balances.indexOf(Math.max(...balances)))}`;
   const series: AgeSeries[] = [
     {
       id: "no-fees",
@@ -123,7 +300,7 @@ export default function InvestmentFees() {
     },
     ...result.paths.map((path, index) => ({
       id: `option-${index}`,
-      label: `Option ${index === 0 ? "A" : "B"}`,
+      label: `Option ${String.fromCharCode(65 + index)} · ${providers[index].shortName}`,
       ...styles[index],
       basis: "After fund, account, buying and currency-exchange fees",
       points: path.annual.map((p) => ({ age: p.month / 12, value: p.balance })),
@@ -137,13 +314,25 @@ export default function InvestmentFees() {
       label: "Currency exchange fees",
       values: result.paths.map((p) => p.fxPaid),
     },
+    {
+      label: "Dividend collection",
+      values: result.paths.map((p) => p.dividendPaid),
+    },
+    {
+      label: "Final sale / transfer",
+      values: result.paths.map((p) => p.exitPaid),
+    },
+    { label: "VAT on fees", values: result.paths.map((p) => p.vatPaid) },
     { label: "Total fees paid", values: result.paths.map((p) => p.paid) },
     {
       label: "Growth difference",
       values: result.paths.map((p) => p.growthDifference),
     },
   ];
-  function field(key: keyof FeeInputs, value: number) {
+  function field(
+    key: "starting" | "monthly" | "years" | "growth" | "dividendYield",
+    value: number,
+  ) {
     setInputs((current) => ({ ...current, [key]: value }));
   }
 
@@ -161,7 +350,7 @@ export default function InvestmentFees() {
           <p>
             What do fees really cost?
             <br />
-            Compare two ways to invest the same money.
+            Compare up to three ways to invest the same money.
           </p>
           <button className="savings-info" onClick={() => setPopup("intro")}>
             <Info size={18} strokeWidth={1.5} /> What is this?
@@ -169,6 +358,89 @@ export default function InvestmentFees() {
         </div>
       </header>
       <div className="savings-controls">
+        <fieldset className="fees-country">
+          <legend>Country</legend>
+          <div className="fees-country-buttons">
+            <button type="button" aria-pressed="true">
+              Morocco
+            </button>
+            <button type="button" disabled>
+              France <span>Coming soon</span>
+            </button>
+            <button type="button" disabled>
+              USA <span>Coming soon</span>
+            </button>
+          </div>
+          <p>
+            Compare Moroccan investment routes. Choose up to three plans, then
+            adjust their fees or your investment budget.
+          </p>
+        </fieldset>
+        <div className="fees-comparison-heading">
+          <h2>Compare the charges</h2>
+          <p>
+            Choose bank accounts, broker plans or investment funds. Each shows
+            its own fees. Ranges, maximum rates and missing charges are labeled;
+            change them to match your quote.
+          </p>
+        </div>
+        <button
+          className="retirement-advanced-toggle"
+          aria-expanded={advanced}
+          aria-controls="fees-plans"
+          onClick={() => setAdvanced(!advanced)}
+        >
+          <span>
+            <SlidersHorizontal size={16} /> More fees
+          </span>
+          <ChevronDown size={17} className={advanced ? "rotated" : ""} />
+        </button>
+        <div
+          id="fees-plans"
+          className={`fees-plans ${third ? "fees-three-plans" : ""}`}
+        >
+          {providers.map((provider, index) => (
+            <ScheduleFields
+              key={index}
+              name={`Option ${String.fromCharCode(65 + index)}`}
+              index={index}
+              providerId={provider.id}
+              value={schedules[index]}
+              advanced={advanced}
+              resetVersion={resetVersions[index]}
+              onSelect={(id) => loadProvider(index, id)}
+              onReset={() => loadProvider(index, providerIds[index])}
+              onChange={(key, n) =>
+                [setA, setB, setC][index]((current) => ({
+                  ...current,
+                  [key]: n,
+                }))
+              }
+              onBandChange={(band, key, n) =>
+                [setA, setB, setC][index]((current) => ({
+                  ...current,
+                  custodyBands: current.custodyBands!.map((b, i) =>
+                    i === band ? { ...b, [key]: n } : b,
+                  ),
+                }))
+              }
+            />
+          ))}
+        </div>
+        <button
+          className="fees-add-option"
+          type="button"
+          onClick={() => setThird(!third)}
+        >
+          {third ? "Remove third option" : "+ Add third option"}
+        </button>
+        <p className="fees-source-caveat">
+          Results use the entered charges. Missing costs are excluded until you
+          enter a quote; ranges use their upper rate and funds start at their
+          published maximums. General bank packages are excluded. Different
+          products have different risks: this compares costs using the same
+          growth assumption.
+        </p>
         <div className="savings-section-label">
           <h2>Your investment plan</h2>
           <span className="mono">SAME MONEY · SAME RETURN</span>
@@ -230,46 +502,43 @@ export default function InvestmentFees() {
             max={25}
             step={0.1}
             helpPopover
-            help="Your assumed yearly investment return before every fee and before inflation. Both options use this same smooth return. The starting 6% is an example, not a forecast. Published fund returns usually already include fund costs: entering them here would count those costs twice."
+            help="Your assumed yearly share-price growth before fees and inflation. Enter dividends separately below if they are not included here. All options use the same smooth return. The starting 6% is an example, not a forecast. Published fund returns usually already include fund costs: entering them here would count those costs twice."
+          />{" "}
+          <NumberInput
+            label="Dividend income (% / year)"
+            value={inputs.dividendYield ?? 0}
+            onChange={(n) => field("dividendYield", n)}
+            min={0}
+            max={25}
+            step={0.1}
+            helpPopover
+            help="Separate dividends for direct shares, before collection fees. Use 0 if dividends are already included in your growth assumption. Capitalizing funds reinvest internally and skip personal dividend collection charges."
           />
-        </div>
-        <div className="fees-comparison-heading">
-          <h2>Compare the charges</h2>
-          <p>
-            These are examples. Replace them with the costs of your fund and
-            account.
-          </p>
-        </div>
-        <button
-          className="retirement-advanced-toggle"
-          aria-expanded={advanced}
-          aria-controls="fees-plans"
-          onClick={() => setAdvanced(!advanced)}
-        >
-          <span>
-            <SlidersHorizontal size={16} /> More fees
-          </span>
-          <ChevronDown size={17} className={advanced ? "rotated" : ""} />
-        </button>
-        <div id="fees-plans" className="fees-plans">
-          <ScheduleFields
-            name="Option A"
-            index={0}
-            value={a}
-            advanced={advanced}
-            onChange={(key, value) =>
-              setA((current) => ({ ...current, [key]: value }))
-            }
-          />
-          <ScheduleFields
-            name="Option B"
-            index={1}
-            value={b}
-            advanced={advanced}
-            onChange={(key, value) =>
-              setB((current) => ({ ...current, [key]: value }))
-            }
-          />
+          <div className="fees-end-action">
+            <div className="parameter-label">
+              <label htmlFor="fees-exit">At the end of the comparison</label>
+              <ParameterHelp label="At the end of the comparison">
+                Keep invested leaves the assets in place. Sell / redeem deducts
+                the selected route’s selling charges once, at the end. Transfer
+                instead applies its transfer charge. Missing charges need your
+                provider’s quote; these actions do not include taxes on gains.
+              </ParameterHelp>
+            </div>
+            <select
+              id="fees-exit"
+              value={inputs.exit ?? "hold"}
+              onChange={(e) =>
+                setInputs((current) => ({
+                  ...current,
+                  exit: e.target.value as FeeInputs["exit"],
+                }))
+              }
+            >
+              <option value="hold">Keep invested</option>
+              <option value="sell">Sell / redeem at end</option>
+              <option value="transfer">Transfer to another provider</option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -280,22 +549,22 @@ export default function InvestmentFees() {
           aria-atomic="true"
         >
           <p>After {inputs.years} years, with these assumptions</p>
-          <h2>
-            {tied
-              ? "Almost the same"
-              : `${money(Math.abs(result.difference))} more`}
-          </h2>
+          <h2>{tied ? "Almost the same" : `${money(difference)} more`}</h2>
           <p>
             {tied
-              ? "The two options finish within 1 DH ($0.10) of each other."
-              : `${winner} leaves you with more money after fees.`}{" "}
-            Future amounts, before inflation and tax.
+              ? "All selected options finish within 1 DH ($0.10) of each other."
+              : `${winner} has the highest balance under these entered fees.`}{" "}
+            Future amounts, before investment taxes and inflation. VAT is only
+            included when entered in a plan’s More fees.
           </p>
         </div>
         <div className="rent-buy-balances fees-balances">
           {result.paths.map((path, i) => (
             <div key={i}>
-              <span>Option {i === 0 ? "A" : "B"} · money left</span>
+              <span>
+                Option {String.fromCharCode(65 + i)} · {providers[i].shortName}{" "}
+                · money left
+              </span>
               <strong>{money(path.final.balance)}</strong>
               <small>
                 {money(path.gap)} less than the same investment without fees.
@@ -316,7 +585,7 @@ export default function InvestmentFees() {
           chartHeight={{ desktop: 440, mobile: 360 }}
         />
         <p className="fees-note">
-          The dotted line shows the same investment without fees. Every line
+          The reference line shows the same investment without fees. Every line
           uses your {inputs.growth}% growth assumption. Hover, tap or use the
           arrow keys to compare a year.
         </p>
@@ -324,14 +593,14 @@ export default function InvestmentFees() {
           <div key={i}>
             {path.delayedPurchases > 0 && (
               <p className="savings-unavailable">
-                Option {i === 0 ? "A" : "B"}: some purchases wait because the
-                cash does not cover the minimum buying fee. Waiting cash earns
-                nothing and is included in the balance.
+                Option {String.fromCharCode(65 + i)}: some purchases wait
+                because the cash does not cover the minimum buying fee. Waiting
+                cash earns nothing and is included in the balance.
               </p>
             )}
             {path.unpaidAccountFees > amount(0.000001) && (
               <p className="savings-unavailable">
-                Option {i === 0 ? "A" : "B"}: the balance cannot cover{" "}
+                Option {String.fromCharCode(65 + i)}: the balance cannot cover{" "}
                 {money(path.unpaidAccountFees)} of account charges. The result
                 stops at zero rather than adding debt. Your provider may bill
                 these separately; adjust the inputs before using this
@@ -345,6 +614,9 @@ export default function InvestmentFees() {
             <h2>Where the difference comes from</h2>
             <span className="mono">OVER {inputs.years} YEARS</span>
           </div>
+          <p className="fees-table-hint">
+            Scroll sideways to compare every option.
+          </p>
           <div
             className="rent-buy-table-wrap"
             role="region"
@@ -355,8 +627,11 @@ export default function InvestmentFees() {
               <thead>
                 <tr>
                   <th scope="col">Cost</th>
-                  <th scope="col">Option A</th>
-                  <th scope="col">Option B</th>
+                  {providers.map((p, i) => (
+                    <th key={p.id + String(i)} scope="col">
+                      Option {String.fromCharCode(65 + i)} · {p.shortName}
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
@@ -387,18 +662,31 @@ export default function InvestmentFees() {
           </p>
         </div>
         <details className="fees-sources">
-          <summary>Where can I find my fees?</summary>
-          <div className="fees-country-guides">
-            {feeSources.map((source) => (
-              <article key={source.country}>
-                <h3>{source.country}</h3>
-                <p>{source.description}</p>
-                <a href={source.url} target="_blank" rel="noreferrer">
-                  Read the regulator’s guide ↗
-                </a>
-              </article>
-            ))}
-          </div>
+          <summary>Sources and missing data</summary>
+          <p>
+            BANK OF AFRICA’s supplied poster has no securities tariff, so its
+            option is unavailable. Ask for the BMCE Capital Bourse brokerage,
+            settlement and custody schedule. Artbourse’s PDF download currently
+            returns 404; indexed terms are recorded, but a current downloadable
+            agreement is needed.
+          </p>
+          {providers.map((p, i) => (
+            <article key={i}>
+              <h3>{p.name}</h3>
+              <p>
+                {getFeeSource(p).title} · {getFeeSource(p).documentDate} · pages{" "}
+                {getFeeSource(p).pages}
+              </p>
+              <a href={getFeeSource(p).url} target="_blank" rel="noreferrer">
+                Source ↗
+              </a>
+              {p.evidence
+                .filter((e) => e.status === "missing" || e.status === "assumed")
+                .map((e) => (
+                  <p key={e.key}>{e.note}</p>
+                ))}
+            </article>
+          ))}
         </details>
         <div className="savings-bottom">
           <p>A cost comparison using your assumptions. Not financial advice.</p>
@@ -426,8 +714,8 @@ export default function InvestmentFees() {
             <div>
               <Wallet size={22} />
               <p>
-                Put the same money into two options. Change their fees and see
-                what you keep.
+                Put the same money into up to three options. Change their fees
+                and see what you keep.
               </p>
             </div>
             <div>
@@ -452,6 +740,7 @@ export default function InvestmentFees() {
             schedules={schedules}
             result={result}
             currency={currency}
+            providers={providers}
           />
         )}
       </Dialog>

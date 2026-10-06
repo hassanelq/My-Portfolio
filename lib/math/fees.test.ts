@@ -68,9 +68,9 @@ describe("investment fee comparison", () => {
     expect(path.records[0].cash).toBe(5);
     expect(path.records[1].cash).toBe(10);
     expect(path.records[1].paid).toBe(0);
-    expect(path.records[2].invested).toBe(5);
+    expect(path.records[2].invested).toBeCloseTo(5, 10);
     expect(path.records[2].tradingFee).toBe(10);
-    expect(path.final.balance + path.paid).toBe(65);
+    expect(path.final.balance + path.paid).toBeCloseTo(65, 10);
     expect(path.delayedPurchases).toBeGreaterThan(0);
   });
 
@@ -104,10 +104,17 @@ describe("investment fee comparison", () => {
       tradePercent: 0.5,
       tradeMinimum: 10,
       fxPercent: 1,
+      otherTradePercent: 0.3,
+      accountMinimumAnnual: 50,
     };
     const mad = compareFees(input, [fees, zero]);
     const usd = compareFees({ ...input, starting: 100, monthly: 10 }, [
-      { ...fees, accountFixedAnnual: 12, tradeMinimum: 1 },
+      {
+        ...fees,
+        accountFixedAnnual: 12,
+        tradeMinimum: 1,
+        accountMinimumAnnual: 5,
+      },
       zero,
     ]);
     for (const key of [
@@ -147,5 +154,122 @@ describe("investment fee comparison", () => {
         path.records.every((p) => Object.values(p).every(Number.isFinite)),
       ),
     ).toBe(true);
+  });
+});
+
+describe("Moroccan provider tariff mechanics", () => {
+  it("adds market fees outside the broker floor", () => {
+    const path = compareFees(
+      { starting: 110.3, monthly: 0, years: 1, growth: 0 },
+      [
+        { ...zero, tradePercent: 1, tradeMinimum: 10, otherTradePercent: 0.3 },
+        zero,
+      ],
+    ).paths[0];
+    expect(path.records[0].invested).toBeCloseTo(100, 10);
+    expect(path.tradingPaid).toBeCloseTo(10.3, 10);
+    expect(path.final.balance + path.paid).toBeCloseTo(110.3, 10);
+  });
+  it("applies a custody floor instead of adding it to the percentage", () => {
+    const path = compareFees(
+      { starting: 1000, monthly: 0, years: 1, growth: 0 },
+      [{ ...zero, accountAnnual: 0.15, accountMinimumAnnual: 60 }, zero],
+    ).paths[0];
+    expect(path.accountPaid).toBeCloseTo(60, 10);
+    expect(path.final.balance).toBeCloseTo(940, 10);
+  });
+});
+
+describe("provider-specific fee structures", () => {
+  it("solves two independent floors plus market fees and VAT from one budget", () => {
+    // 100 invested + (5 broker + 5 settlement + 0.1 market) × 1.1.
+    const schedule = {
+      ...zero,
+      tradePercent: 0.6,
+      tradeMinimum: 5,
+      settlementPercent: 0.2,
+      settlementMinimum: 5,
+      marketPercent: 0.1,
+      vatPercent: 10,
+    };
+    const path = compareFees(
+      { starting: 111.11, monthly: 0, years: 1, growth: 0 },
+      [schedule, zero],
+    ).paths[0];
+    expect(path.final.balance).toBeCloseTo(100, 9);
+    expect(path.tradingPaid).toBeCloseTo(10.1, 9);
+    expect(path.vatPaid).toBeCloseTo(1.01, 9);
+    expect(path.final.balance + path.paid).toBeCloseTo(111.11, 9);
+  });
+
+  it("charges quarterly whole-balance custody bands, converting thresholds and floors", () => {
+    const schedule = {
+      ...zero,
+      custodyMonths: 3,
+      custodyBands: [
+        { upperMAD: 1000, annualRate: 0.3, minimumAnnual: 20 },
+        { upperMAD: null, annualRate: 0.1, minimumAnnual: 0 },
+      ],
+    };
+    const plan = { starting: 900, monthly: 0, years: 1, growth: 0 };
+    const mad = compareFees(plan, [schedule, zero]).paths[0];
+    const usd = compareFees({ ...plan, starting: 90 }, [schedule, zero], 0.1)
+      .paths[0];
+    expect(mad.accountPaid).toBeCloseTo(20, 9);
+    expect(mad.records[1].accountFee).toBe(0);
+    expect(mad.records[3].accountFee).toBeCloseTo(5, 9);
+    expect(usd.accountPaid).toBeCloseTo(2, 9);
+    expect(usd.final.balance).toBeCloseTo(mad.final.balance / 10, 9);
+    const upper = compareFees({ ...plan, starting: 2000 }, [schedule, zero])
+      .paths[0];
+    expect(upper.records[3].accountFee).toBeCloseTo(0.5, 9);
+  });
+
+  it("distinguishes holding, selling a fund and transferring shares", () => {
+    const fund = {
+      ...zero,
+      entryPercent: 3,
+      exitPercent: 1.5,
+      transferPercent: 0.2,
+      transferMinimum: 20,
+      vatPercent: 10,
+    };
+    const plan = { starting: 1033, monthly: 0, years: 1, growth: 0 };
+    const held = compareFees(plan, [fund, zero]).paths[0];
+    const sold = compareFees({ ...plan, exit: "sell" }, [fund, zero]).paths[0];
+    const transfer = compareFees({ ...plan, exit: "transfer" }, [fund, zero])
+      .paths[0];
+    expect(held.final.balance).toBeCloseTo(1000, 9);
+    expect(held.exitPaid).toBe(0);
+    expect(sold.exitPaid).toBeCloseTo(15, 9);
+    expect(sold.final.balance).toBeCloseTo(983.5, 9);
+    expect(sold.final.invested).toBe(0);
+    expect(sold.vatPaid).toBeCloseTo(4.5, 9);
+    expect(transfer.exitPaid).toBeCloseTo(20, 9);
+    expect(transfer.final.balance).toBeCloseTo(978, 9);
+    expect(sold.final.balance + sold.paid).toBeCloseTo(plan.starting, 9);
+  });
+
+  it("charges on dividend income rather than the whole account", () => {
+    const schedule = { ...zero, dividendPercent: 2 };
+    const path = compareFees(
+      { starting: 1000, monthly: 0, years: 1, growth: 0, dividendYield: 12 },
+      [schedule, zero],
+    ).paths[0];
+    expect(path.records[1].dividendFee).toBeCloseTo(0.2, 10);
+    expect(path.final.balance).toBeCloseTo(1000 * 1.0098 ** 12, 8);
+    expect(path.gap).toBeCloseTo(path.paid + path.growthDifference, 9);
+  });
+
+  it("supports three options with identical baseline and independent records", () => {
+    const result = compareFees(input, [
+      zero,
+      { ...zero, tradePercent: 1 },
+      { ...zero, fundAnnual: 2 },
+    ]);
+    expect(result.paths).toHaveLength(3);
+    expect(new Set(result.paths.map((p) => p.final.baseline)).size).toBe(1);
+    expect(result.paths[2].paid).toBeGreaterThan(0);
+    expect(result.paths[0].paid).toBe(0);
   });
 });

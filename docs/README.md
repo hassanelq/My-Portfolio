@@ -25,7 +25,7 @@ Current implementation, reviewed **3 October 2026**. These guides describe the a
 2. [Retirement planner](tools/retirement.md) — historical withdrawals, accumulation and alternative retirement ages.
 3. [Emergency fund](tools/emergency-fund.md) — guided questions, explicit scoring and editable results.
 4. [Rent or buy?](tools/rent-or-buy.md) — mortgage, housing costs, investment opportunity cost and exit wealth.
-5. [Investment fees](tools/investment-fees.md) — compare fund, account and trading charges and their effect on growth.
+5. [Investment fees](tools/investment-fees.md) — compare up to three Moroccan investment routes with provider-specific fees, source dates and editable defaults. [Detailed tariff records](tools/investment-fees-sources.md).
 
 ### Quant lab — concise
 
